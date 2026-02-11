@@ -3,7 +3,7 @@
   "info": {
     "title": "CRM API Full Documentation",
     "version": "1.0.0",
-    "description": "Повний опис усіх ендпоінтів CRM: Адмінка, Авторизація та Замовлення"
+    "description": "Повний опис усіх ендпоінтів CRM: Адмінка, Авторизація, Замовлення та Групи."
   },
   "servers": [{ "url": "http://localhost:9000", "description": "Local server" }],
   "components": {
@@ -21,6 +21,7 @@
         "tags": ["Auth"],
         "summary": "Вхід у систему",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -40,7 +41,7 @@
     "/api/auth/activate/{token}": {
       "patch": {
         "tags": ["Auth"],
-        "summary": "Активація менеджера через токен",
+        "summary": "Активація менеджера",
         "parameters": [{ "name": "token", "in": "path", "required": true, "schema": { "type": "string" } }],
         "requestBody": {
           "content": {
@@ -58,51 +59,41 @@
     "/api/orders": {
       "get": {
         "tags": ["Orders"],
-        "summary": "Отримати всі заявки (з фільтрами)",
+        "summary": "Отримати заявки з фільтрами",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
           { "name": "name", "in": "query", "schema": { "type": "string" } },
-          { "name": "course", "in": "query", "schema": { "type": "string" } }
+          { "name": "course", "in": "query", "schema": { "type": "string" } },
+          { "name": "status", "in": "query", "schema": { "type": "string" } },
+          { "name": "sortBy", "in": "query", "schema": { "type": "string", "default": "created_at" } },
+          { "name": "order", "in": "query", "schema": { "type": "string", "enum": ["asc", "desc"] } }
         ],
         "responses": { "200": { "description": "Success" } }
-      }
-    },
-    "/api/orders/export": {
-      "get": {
-        "tags": ["Orders"],
-        "summary": "Експорт в Excel",
-        "security": [{ "bearerAuth": [] }],
-        "responses": { "200": { "description": "File Download" } }
       }
     },
     "/api/orders/groups": {
       "get": {
         "tags": ["Groups"],
-        "summary": "Список груп",
-        "security": [{ "bearerAuth": [] }],
-        "responses": { "200": { "description": "Success" } },
-        "post": {
-          "tags": ["Groups"],
-          "summary": "Створити групу",
-          "security": [{ "bearerAuth": [] }],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": { "type": "object", "properties": { "name": { "type": "string" } } }
-              }
-            }
-          },
-          "responses": { "201": { "description": "Created" } }
-        }
-      }
-    },
-    "/api/orders/stats": {
-      "get": {
-        "tags": ["Orders"],
-        "summary": "Статистика заявок",
+        "summary": "Отримати всі групи",
         "security": [{ "bearerAuth": [] }],
         "responses": { "200": { "description": "Success" } }
+      },
+      "post": {
+        "tags": ["Groups"],
+        "summary": "Створити нову групу",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "name": { "type": "string", "example": "March-2026" } }
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
       }
     },
     "/api/orders/{id}": {
@@ -111,6 +102,20 @@
         "summary": "Редагувати заявку",
         "security": [{ "bearerAuth": [] }],
         "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "string" },
+                  "sum": { "type": "number" },
+                  "group": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
         "responses": { "200": { "description": "Updated" } }
       }
     },
@@ -121,7 +126,14 @@
         "security": [{ "bearerAuth": [] }],
         "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "requestBody": {
-          "content": { "application/json": { "schema": { "type": "object", "properties": { "msg": { "type": "string" } } } } }
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "text": { "type": "string", "example": "Передзвонити" } }
+              }
+            }
+          }
         },
         "responses": { "200": { "description": "Comment added" } }
       }
@@ -131,45 +143,27 @@
         "tags": ["Admin"],
         "summary": "Список менеджерів",
         "security": [{ "bearerAuth": [] }],
-        "responses": { "200": { "description": "Success" } },
-        "post": {
-          "tags": ["Admin"],
-          "summary": "Створити менеджера",
-          "security": [{ "bearerAuth": [] }],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "name": { "type": "string" },
-                    "surname": { "type": "string" },
-                    "email": { "type": "string" }
-                  }
+        "responses": { "200": { "description": "Success" } }
+      },
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Створити менеджера",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "surname": { "type": "string" },
+                  "email": { "type": "string" }
                 }
               }
             }
-          },
-          "responses": { "201": { "description": "Created" } }
-        }
-      }
-    },
-    "/api/admin/users/{id}/re-token": {
-      "post": {
-        "tags": ["Admin"],
-        "summary": "Перевипустити токен активації",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
-        "responses": { "200": { "description": "Success" } }
-      }
-    },
-    "/api/admin/users/{id}/recovery": {
-      "post": {
-        "tags": ["Admin"],
-        "summary": "Відновлення доступу (новий токен)",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
-        "responses": { "200": { "description": "Success" } }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
       }
     },
     "/api/admin/users/{id}/ban": {
@@ -188,6 +182,24 @@
         "security": [{ "bearerAuth": [] }],
         "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "responses": { "200": { "description": "Unbanned" } }
+      }
+    },
+    "/api/admin/users/{id}/re-token": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Перевипустити токен",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/api/admin/users/{id}/recovery": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Відновлення доступу",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "Success" } }
       }
     },
     "/api/admin/stats": {

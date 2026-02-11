@@ -3,8 +3,8 @@
     "target": "ESNext",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "allowImportingTsExtensions": true, // ДОДАНО: дозволяє імпорт з .ts
-    "noEmit": true,                     // ЗМІНЕНО: обов'язково для allowImportingTsExtensions
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,

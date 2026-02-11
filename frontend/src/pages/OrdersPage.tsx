@@ -3,11 +3,15 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Settings, LogOut, ChevronLeft, ChevronRight } from 'lucide-react';
 import api from '../api/axios';
 
+
+
 import { useOrders } from '../hooks/useOrders';
+
 import OrderStats from '../components/Orders/OrdersStats';
 import OrderFilters from '../components/Orders/OrderFilters';
 import OrderRow from '../components/Orders/OrderRow';
 import OrderEditModal from '../components/Orders/OrderEditModal';
+import type {IFilters, IOrder} from "../interfaces/order.interface.ts";
 
 const STATUSES = ["New", "In work", "Agree", "Disagree", "Dubbing"];
 const COURSES = ["FS", "QACX", "JCX", "JSCX", "FE", "PCX"];
@@ -18,13 +22,13 @@ const OrdersPage: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
 
-
     const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
-    const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
+
+    const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
     const [commentText, setCommentText] = useState("");
 
 
-    const initialFilters = useMemo(() => ({
+    const initialFilters = useMemo((): IFilters => ({
         page: Number(searchParams.get('page')) || 1,
         sortBy: searchParams.get('sortBy') || 'created_at',
         order: (searchParams.get('order') as 'asc' | 'desc') || 'desc',
@@ -43,11 +47,9 @@ const OrdersPage: React.FC = () => {
         my: searchParams.get('my') === 'true'
     }), [searchParams]);
 
-
     const { orders, stats, total, groups, setGroups, filters, setFilters, fetchData } = useOrders(initialFilters);
 
     const totalPages = Math.ceil(total / 25) || 1;
-
 
     useEffect(() => {
         const params: Record<string, string> = {};
@@ -59,13 +61,12 @@ const OrdersPage: React.FC = () => {
         setSearchParams(params);
     }, [filters, setSearchParams]);
 
-
     const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
     const fullName = `${storedUser.name || ''} ${storedUser.surname || ''}`.trim() || "User";
     const userRole = storedUser.role || "manager";
     const currentUserSurname = storedUser.surname || "Unknown";
 
-    const handleSort = (column: string) => {
+    const handleSort = (column: keyof IOrder | 'created_at') => {
         const isAsc = filters.sortBy === column && filters.order === 'asc';
         setFilters({
             ...filters,
@@ -101,7 +102,8 @@ const OrdersPage: React.FC = () => {
         } catch (error) { alert("Excel export failed"); }
     };
 
-    const handleCommentSubmit = async (order: any, text: string) => {
+
+    const handleCommentSubmit = async (order: IOrder, text: string) => {
         if (!text.trim()) return;
         try {
             await api.post(`/orders/${order._id}/comment`, { text });
@@ -124,6 +126,7 @@ const OrdersPage: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-white font-sans text-gray-800">
+
             <header className="bg-[#8bc34a] px-6 py-2 flex justify-between items-center text-white">
                 <h1 className="text-2xl font-bold tracking-tight">CRM LOGO</h1>
                 <div className="flex items-center gap-4">
@@ -152,6 +155,7 @@ const OrdersPage: React.FC = () => {
                     <table className="w-full text-left border-collapse text-[11px] min-w-[1700px]">
                         <thead className="bg-[#8bc34a] text-white uppercase font-bold">
                         <tr>
+
                             <th className="p-2 border border-white/20 cursor-pointer hover:bg-green-600 transition" onClick={() => handleSort('id_old')}>id {renderSortIcon('id_old')}</th>
                             <th className="p-2 border border-white/20 cursor-pointer hover:bg-green-600 transition" onClick={() => handleSort('name')}>name {renderSortIcon('name')}</th>
                             <th className="p-2 border border-white/20 cursor-pointer hover:bg-green-600 transition" onClick={() => handleSort('surname')}>surname {renderSortIcon('surname')}</th>
@@ -183,6 +187,7 @@ const OrdersPage: React.FC = () => {
                         </tbody>
                     </table>
                 </div>
+
 
                 <div className="mt-8 mb-10 flex justify-center items-center gap-1">
                     <button onClick={() => setFilters({...filters, page: filters.page - 1})} disabled={filters.page === 1} className="w-10 h-10 flex items-center justify-center rounded-full bg-green-500 text-white hover:bg-green-600 disabled:opacity-50 transition"><ChevronLeft size={20} /></button>

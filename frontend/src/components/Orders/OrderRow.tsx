@@ -1,14 +1,17 @@
 import React from 'react';
+import type {IComment, IOrder} from "../../interfaces/order.interface.ts";
+
 
 interface OrderRowProps {
-    order: any;
+    order: IOrder;
     idx: number;
     filtersPage: number;
     currentUserSurname: string;
     isExpanded: boolean;
     onToggleExpand: () => void;
-    onCommentSubmit: (order: any, text: string) => void;
-    onEdit: (order: any) => void;
+
+    onCommentSubmit: (order: IOrder, text: string) => void;
+    onEdit: (order: IOrder) => void;
     commentText: string;
     setCommentText: (text: string) => void;
 }
@@ -17,11 +20,15 @@ const OrderRow: React.FC<OrderRowProps> = ({
                                                order, idx, filtersPage, currentUserSurname, isExpanded,
                                                onToggleExpand, onCommentSubmit, onEdit, commentText, setCommentText
                                            }) => {
-    const isLocked = order.manager && order.manager !== currentUserSurname && order.manager !== "null";
+
+    const isLocked = !!(order.manager && order.manager !== currentUserSurname && order.manager !== "null");
 
     return (
         <React.Fragment>
-            <tr onClick={onToggleExpand} className={`hover:bg-green-50 border-b cursor-pointer transition ${isExpanded ? 'bg-green-100/30' : ''}`}>
+            <tr
+                onClick={onToggleExpand}
+                className={`hover:bg-green-50 border-b cursor-pointer transition ${isExpanded ? 'bg-green-100/30' : ''}`}
+            >
                 <td className="p-2 border text-[11px]">{(filtersPage - 1) * 25 + idx + 1}</td>
                 <td className="p-2 border font-bold text-[11px]">{order.name || 'null'}</td>
                 <td className="p-2 border font-bold text-[11px]">{order.surname || 'null'}</td>
@@ -48,10 +55,13 @@ const OrderRow: React.FC<OrderRowProps> = ({
                             <div className="w-1/4 flex flex-col gap-3">
                                 <div className="bg-white p-5 border-2 border-red-400 rounded-2xl shadow-sm min-h-[110px]">
                                     <h4 className="text-[10px] font-bold text-gray-400 uppercase mb-2">Message:</h4>
-                                    <p className="text-gray-700 italic text-sm">"{order.msg || 'null'}"</p>
+                                    <p className="text-gray-700 italic text-sm">
+
+                                        "{ (order as any).msg || 'null' }"
+                                    </p>
                                 </div>
                                 <div className="bg-white p-3 border-2 border-gray-100 rounded-xl text-[10px] text-gray-400 uppercase">
-                                    utm: {order.utm || 'null'}
+                                    utm: { (order as any).utm || 'null' }
                                 </div>
                             </div>
 
@@ -60,7 +70,7 @@ const OrderRow: React.FC<OrderRowProps> = ({
                                 <h4 className="text-[10px] font-bold text-gray-400 uppercase mb-2 ml-2">Comments History:</h4>
                                 <div className="max-h-48 overflow-y-auto space-y-2 pr-2">
                                     {order.comments && order.comments.length > 0 ? (
-                                        order.comments.map((c: any, i: number) => (
+                                        order.comments.map((c: IComment, i: number) => (
                                             <div key={i} className="bg-white p-3 rounded-xl border border-gray-200 shadow-sm">
                                                 <p className="text-xs text-gray-800">{c.text}</p>
                                                 <div className="flex justify-between mt-2 text-[10px] font-bold text-gray-400">
@@ -77,7 +87,7 @@ const OrderRow: React.FC<OrderRowProps> = ({
                                 </div>
                             </div>
 
-
+                            
                             <div className="w-1/3 flex gap-3">
                                 <textarea
                                     placeholder="Enter comment..."

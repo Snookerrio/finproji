@@ -13,8 +13,8 @@ A modern CRM solution designed for educational centers to streamline student lea
 
 ### 🔐 Authentication & Security
 - Secure Login: Email/Password authentication protected by Bcrypt hashing.
-- Account Activation**: Token-based activation system for new managers.
-- JWT Protection**: Secure access to private routes and API endpoints.
+- Account Activation: Token-based activation system for new managers.
+- JWT Protection: Secure access to private routes and API endpoints.
 
 ### 📋 Order Management
 - Comprehensive Data Table: 15-column interactive table for detailed lead tracking.
@@ -38,7 +38,7 @@ The project includes a fully interactive API documentation page powered by Swagg
 
 ## 🧪 API Testing (Postman)
 To make testing easier, a Postman Collection is included in the project root:
-- File: `CRM.postman_collection.json`
+- File: `CRM API Full Documentation.postman_collection.json`
 - How to use:
    1. Open Postman and click Import.
    2. Drag and drop the JSON file or copy-paste its content into the Raw text tab.
@@ -68,7 +68,7 @@ To make testing easier, a Postman Collection is included in the project root:
     ```bash
     npm run dev
 
-### Frontend Setup
+### Frontend Setup (in new terminal window)
 1. Navigate to the frontend directory:
     ```bash
    cd frontend

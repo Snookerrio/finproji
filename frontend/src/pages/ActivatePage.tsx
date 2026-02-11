@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
+import { AxiosError } from 'axios';
 
 const ActivatePage: React.FC = () => {
     const { token } = useParams<{ token: string }>();
@@ -10,7 +11,8 @@ const ActivatePage: React.FC = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const handleActivate = async (e: React.FormEvent) => {
+
+    const handleActivate = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
@@ -25,9 +27,12 @@ const ActivatePage: React.FC = () => {
                 alert('Акаунт успішно активовано!');
                 navigate('/login');
             }
-        } catch (err: any) {
-            alert(err.response?.data?.message || 'Помилка активації');
+        } catch (err) {
+
+            const axiosError = err as AxiosError<{ message: string }>;
+            alert(axiosError.response?.data?.message || 'Помилка активації');
         } finally {
+            setLoading(true);
             setLoading(false);
         }
     };
@@ -35,21 +40,19 @@ const ActivatePage: React.FC = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#8bc34a] p-4">
             <div className="bg-white rounded-[50px] shadow-2xl w-full max-w-[450px] p-12 py-16">
-                <form onSubmit={handleActivate} className="space-y-8">
 
-
+                <form onSubmit={(e) => void handleActivate(e)} className="space-y-8">
                     <div>
                         <label className="block text-gray-700 font-bold mb-2 ml-2">Password</label>
                         <input
                             required
                             type="password"
-                            placeholder=""
+                            placeholder="Enter password"
                             className="w-full bg-[#f1f3f5] border-none p-4 rounded-full outline-none focus:ring-2 focus:ring-green-400 transition text-gray-600"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
-
 
                     <div>
                         <label className="block text-gray-700 font-bold mb-2 ml-2">Confirm Password</label>
@@ -63,7 +66,6 @@ const ActivatePage: React.FC = () => {
                         />
                     </div>
 
-
                     <button
                         type="submit"
                         disabled={loading}
@@ -71,7 +73,6 @@ const ActivatePage: React.FC = () => {
                     >
                         {loading ? 'Processing...' : 'ACTIVATE'}
                     </button>
-
                 </form>
             </div>
         </div>
