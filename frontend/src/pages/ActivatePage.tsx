@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import api from '../api/axios';
 import { AxiosError } from 'axios';
+
+import { AuthService } from '../services/auth.service';
+import {authValidator} from "../../../backend/src/back/validators/auth.validator.ts";
+
+
 
 const ActivatePage: React.FC = () => {
     const { token } = useParams<{ token: string }>();
@@ -11,28 +15,39 @@ const ActivatePage: React.FC = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const [validationError, setValidationError] = useState<string | null>(null);
 
     const handleActivate = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
+        setValidationError(null);
+
+
+        const passwordError = authValidator.password(password);
+        if (passwordError) {
+            setValidationError(passwordError);
+            return;
+        }
+
 
         if (password !== confirmPassword) {
-            alert("Паролі не збігаються!");
+            setValidationError("The passwords don't match!");
+            return;
+        }
+
+        if (!token) {
+            setValidationError("Token missing!");
             return;
         }
 
         setLoading(true);
         try {
-            const res = await api.post('/auth/activate', { token, password });
-            if (res.status === 200) {
-                alert('Акаунт успішно активовано!');
-                navigate('/login');
-            }
+            await AuthService.activate(token, password);
+            alert('Account successfully activated!');
+            navigate('/login');
         } catch (err) {
-
             const axiosError = err as AxiosError<{ message: string }>;
-            alert(axiosError.response?.data?.message || 'Помилка активації');
+            setValidationError(axiosError.response?.data?.message || 'Activation error');
         } finally {
-            setLoading(true);
             setLoading(false);
         }
     };
@@ -40,8 +55,7 @@ const ActivatePage: React.FC = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#8bc34a] p-4">
             <div className="bg-white rounded-[50px] shadow-2xl w-full max-w-[450px] p-12 py-16">
-
-                <form onSubmit={(e) => void handleActivate(e)} className="space-y-8">
+                <form onSubmit={(e) => void handleActivate(e)} className="space-y-6">
                     <div>
                         <label className="block text-gray-700 font-bold mb-2 ml-2">Password</label>
                         <input
@@ -65,6 +79,13 @@ const ActivatePage: React.FC = () => {
                             onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                     </div>
+
+
+                    {validationError && (
+                        <div className="bg-red-50 text-red-500 text-xs font-bold p-3 rounded-2xl text-center border border-red-100">
+                            {validationError}
+                        </div>
+                    )}
 
                     <button
                         type="submit"

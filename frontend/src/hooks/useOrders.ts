@@ -1,6 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import api from '../api/axios';
-import type { IFilters, IGroup, IOrder, IStats } from "../interfaces/order.interface.ts";
+
+import { OrderService } from '../services/order.service';
+import type {IOrder} from "../interfaces/order.interface.ts";
+import type {IStats} from "../interfaces/stats.interface.ts";
+import type {IGroup} from "../interfaces/group.interface.ts";
+import type {IFilters} from "../interfaces/filters.interface.ts";
+
 
 export const useOrders = (initialFilters: IFilters) => {
     const [orders, setOrders] = useState<IOrder[]>([]);
@@ -8,30 +13,25 @@ export const useOrders = (initialFilters: IFilters) => {
     const [total, setTotal] = useState<number>(0);
     const [groups, setGroups] = useState<IGroup[]>([]);
 
-
     const [filters, setFilters] = useState<IFilters>(initialFilters);
-
     const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const fetchData = useCallback(async (): Promise<void> => {
         try {
-            const [ordersRes, statsRes, groupsRes] = await Promise.all([
-                api.get('/orders', {
-                    params: {
-                        ...filters,
-                        limit: 25
-                    }
-                }),
-                api.get('/orders/stats'),
-                api.get('/orders/groups')
+
+            const [ordersData, statsData, groupsData] = await Promise.all([
+                OrderService.getAll(filters),
+                OrderService.getStats(),
+                OrderService.getGroups()
             ]);
 
-            setOrders(ordersRes.data.data);
-            setTotal(ordersRes.data.total);
-            setStats(statsRes.data);
-            setGroups(groupsRes.data || []);
+
+            setOrders(ordersData.data);
+            setTotal(ordersData.total);
+            setStats(statsData);
+            setGroups(groupsData || []);
         } catch (error) {
-            console.error("Помилка завантаження даних:", error);
+            console.error("Error loading data in hook:", error);
         }
     }, [filters]);
 

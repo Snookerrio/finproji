@@ -1,13 +1,14 @@
 import type { Request, Response } from 'express';
-import { OrderService } from '../services/order.service.ts';
-import Group from '../models/group.model.ts';
+
+import Group from '../models/group.model.js';
+import {OrderService} from "../services/order.service.js";
 
 export const getOrders = async (req: any, res: Response) => {
     try {
         const result = await OrderService.getAll(req.query, req.user.surname);
         res.json(result);
     } catch (error) {
-        res.status(500).json({ message: 'Помилка при отриманні заявок' });
+        res.status(500).json({ message: 'Error while receiving applications' });
     }
 };
 
@@ -47,7 +48,7 @@ export const getStatistics = async (req: Request, res: Response) => {
         const stats = await OrderService.getStats();
         res.json(stats);
     } catch (error) {
-        res.status(500).json({ message: 'Помилка статистики' });
+        res.status(500).json({ message: 'Statistics error' });
     }
 };
 
@@ -55,7 +56,7 @@ export const getGroups = async (req: Request, res: Response) => {
     try {
         res.json(await Group.find());
     } catch (error) {
-        res.status(500).json({ message: 'Помилка завантаження груп' });
+        res.status(500).json({ message: 'Error loading groups' });
     }
 };
 
@@ -65,6 +66,6 @@ export const createGroup = async (req: Request, res: Response) => {
         await newGroup.save();
         res.status(201).json(newGroup);
     } catch (e) {
-        res.status(400).json({ message: "Назва групи має бути унікальною" });
+        res.status(400).json({ message: "The group name must be unique." });
     }
 };

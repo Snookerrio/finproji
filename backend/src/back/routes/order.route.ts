@@ -7,8 +7,8 @@ import {
     getGroups,
     createGroup,
     exportToExcel
-} from '../controllers/order.controller.ts';
-import { protect } from '../middlewares/auth.middleware.ts';
+} from '../controllers/order.controller.js';
+import { protect } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 

@@ -38,7 +38,7 @@ The project includes a fully interactive API documentation page powered by Swagg
 
 ## 🧪 API Testing (Postman)
 To make testing easier, a Postman Collection is included in the project root:
-- File: `CRM API Full Documentation.postman_collection.json`
+- File: `CRM Final API.postman_collection.json`
 - How to use:
    1. Open Postman and click Import.
    2. Drag and drop the JSON file or copy-paste its content into the Raw text tab.
@@ -66,7 +66,8 @@ To make testing easier, a Postman Collection is included in the project root:
 
 3. Start the development server:
     ```bash
-    npm run dev
+     npx tsx backend/src/back/server.ts
+
 
 ### Frontend Setup (in new terminal window)
 1. Navigate to the frontend directory:

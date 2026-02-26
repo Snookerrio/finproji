@@ -1,5 +1,6 @@
 import React from 'react';
-import type { IStats } from "../../interfaces/order.interface.ts";
+import type {IStats} from "../../interfaces/stats.interface.ts";
+
 
 interface OrderStatsProps {
     stats: IStats | null;

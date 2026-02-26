@@ -19,9 +19,9 @@ const UserSchema: Schema = new Schema({
     name: { type: String, required: true },
     surname: { type: String, required: true },
     role: { type: String, enum: ['admin', 'manager'], default: 'manager' }, //
-    is_active: { type: Boolean, default: false }, //
-    is_banned: { type: Boolean, default: false }, //
-    last_login: { type: Date, default: null } //
+    is_active: { type: Boolean, default: false },
+    is_banned: { type: Boolean, default: false },
+    last_login: { type: Date, default: null }
 }, { timestamps: true });
 
 

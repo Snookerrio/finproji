@@ -1,19 +1,7 @@
 import React, { useState } from 'react';
-import api from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
-
-
-interface LoginResponse {
-    token: string;
-    user: {
-        id: string;
-        email: string;
-        name: string;
-        surname: string;
-        role: string;
-    };
-}
+import { AuthService } from '../services/auth.service';
 
 const LoginPage: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -24,16 +12,13 @@ const LoginPage: React.FC = () => {
     const handleLogin = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
         setError('');
+
         try {
 
-            const response = await api.post<LoginResponse>('/auth/login', { email, password });
-
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
+            await AuthService.login({ email, password });
 
             navigate('/orders');
         } catch (err) {
-
             const axiosError = err as AxiosError<{ message: string }>;
             setError(axiosError.response?.data?.message || 'Помилка при вході');
         }
@@ -48,7 +33,6 @@ const LoginPage: React.FC = () => {
                     </div>
                 )}
 
-                
                 <form onSubmit={(e) => void handleLogin(e)} className="space-y-6">
                     <div className="space-y-2">
                         <label className="block text-gray-700 font-medium text-sm ml-1">Email</label>

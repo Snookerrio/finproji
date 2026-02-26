@@ -3,9 +3,14 @@
   "info": {
     "title": "CRM API Full Documentation",
     "version": "1.0.0",
-    "description": "Повний опис усіх ендпоінтів CRM: Адмінка, Авторизація, Замовлення та Групи."
+    "description": "Comprehensive API documentation for the CRM system: Admin Panel, Authorization, Order Management, and Groups."
   },
-  "servers": [{ "url": "http://localhost:9000", "description": "Local server" }],
+  "servers": [
+    {
+      "url": "http://localhost:9000",
+      "description": "Local Development Server"
+    }
+  ],
   "components": {
     "securitySchemes": {
       "bearerAuth": {
@@ -18,8 +23,9 @@
   "paths": {
     "/api/auth/login": {
       "post": {
-        "tags": ["Auth"],
-        "summary": "Вхід у систему",
+        "tags": ["Authentication"],
+        "summary": "User Login",
+        "description": "Authenticates a user and returns access and refresh tokens.",
         "requestBody": {
           "required": true,
           "content": {
@@ -29,77 +35,110 @@
                 "required": ["email", "password"],
                 "properties": {
                   "email": { "type": "string", "example": "admin@gmail.com" },
-                  "password": { "type": "string", "example": "admin" }
+                  "password": { "type": "string", "example": "admin123" }
                 }
               }
             }
           }
         },
-        "responses": { "200": { "description": "Success" } }
+        "responses": {
+          "200": { "description": "Authentication successful" },
+          "401": { "description": "Invalid credentials" }
+        }
       }
     },
-    "/api/auth/activate/{token}": {
-      "patch": {
-        "tags": ["Auth"],
-        "summary": "Активація менеджера",
-        "parameters": [{ "name": "token", "in": "path", "required": true, "schema": { "type": "string" } }],
+    "/api/auth/refresh": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Refresh Access Token",
+        "description": "Generates a new access token using a valid refresh token.",
+        "responses": {
+          "200": { "description": "Token successfully refreshed" }
+        }
+      }
+    },
+    "/api/auth/activate": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Activate Manager Account",
+        "description": "Sets the initial password for a new manager using an activation token.",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": { "password": { "type": "string", "example": "newpass123" } }
+                "required": ["token", "password"],
+                "properties": {
+                  "token": { "type": "string" },
+                  "password": { "type": "string", "example": "securePass123" }
+                }
               }
             }
           }
         },
-        "responses": { "200": { "description": "Activated" } }
+        "responses": {
+          "200": { "description": "Account activated successfully" }
+        }
       }
     },
     "/api/orders": {
       "get": {
         "tags": ["Orders"],
-        "summary": "Отримати заявки з фільтрами",
+        "summary": "Get Paginated Orders",
+        "description": "Retrieves a list of orders based on filters and pagination settings.",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
-          { "name": "name", "in": "query", "schema": { "type": "string" } },
-          { "name": "course", "in": "query", "schema": { "type": "string" } },
           { "name": "status", "in": "query", "schema": { "type": "string" } },
-          { "name": "sortBy", "in": "query", "schema": { "type": "string", "default": "created_at" } },
-          { "name": "order", "in": "query", "schema": { "type": "string", "enum": ["asc", "desc"] } }
+          { "name": "course", "in": "query", "schema": { "type": "string" } },
+          { "name": "my", "in": "query", "schema": { "type": "boolean" }, "description": "Filter by current manager's orders" },
+          { "name": "sortBy", "in": "query", "schema": { "type": "string", "default": "createdAt" } },
+          { "name": "order", "in": "query", "schema": { "type": "string", "enum": ["asc", "desc"], "default": "desc" } }
         ],
-        "responses": { "200": { "description": "Success" } }
+        "responses": {
+          "200": { "description": "Successful retrieval" }
+        }
+      }
+    },
+    "/api/orders/export": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Export Orders to Excel",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Returns an .xlsx file" }
+        }
       }
     },
     "/api/orders/groups": {
       "get": {
         "tags": ["Groups"],
-        "summary": "Отримати всі групи",
+        "summary": "List All Groups",
         "security": [{ "bearerAuth": [] }],
         "responses": { "200": { "description": "Success" } }
       },
       "post": {
         "tags": ["Groups"],
-        "summary": "Створити нову групу",
+        "summary": "Create New Group",
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": { "name": { "type": "string", "example": "March-2026" } }
+                "properties": { "name": { "type": "string", "example": "April-2026" } }
               }
             }
           }
         },
-        "responses": { "201": { "description": "Created" } }
+        "responses": { "201": { "description": "Group created" } }
       }
     },
     "/api/orders/{id}": {
       "patch": {
         "tags": ["Orders"],
-        "summary": "Редагувати заявку",
+        "summary": "Update Order Details",
         "security": [{ "bearerAuth": [] }],
         "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "requestBody": {
@@ -116,13 +155,13 @@
             }
           }
         },
-        "responses": { "200": { "description": "Updated" } }
+        "responses": { "200": { "description": "Order updated" } }
       }
     },
     "/api/orders/{id}/comment": {
       "post": {
         "tags": ["Orders"],
-        "summary": "Додати коментар",
+        "summary": "Add Comment to Order",
         "security": [{ "bearerAuth": [] }],
         "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "requestBody": {
@@ -130,7 +169,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": { "text": { "type": "string", "example": "Передзвонити" } }
+                "properties": { "text": { "type": "string", "example": "Call back in 2 hours" } }
               }
             }
           }
@@ -141,13 +180,14 @@
     "/api/admin/users": {
       "get": {
         "tags": ["Admin"],
-        "summary": "Список менеджерів",
+        "summary": "List Managers",
+        "description": "Retrieve all managers and admins with their individual stats.",
         "security": [{ "bearerAuth": [] }],
         "responses": { "200": { "description": "Success" } }
       },
       "post": {
         "tags": ["Admin"],
-        "summary": "Створити менеджера",
+        "summary": "Register New Manager",
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
@@ -163,51 +203,42 @@
             }
           }
         },
-        "responses": { "201": { "description": "Created" } }
+        "responses": { "201": { "description": "Manager created" } }
       }
     },
     "/api/admin/users/{id}/ban": {
       "patch": {
         "tags": ["Admin"],
-        "summary": "Забанити менеджера",
+        "summary": "Ban Manager",
         "security": [{ "bearerAuth": [] }],
         "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
-        "responses": { "200": { "description": "Banned" } }
+        "responses": { "200": { "description": "Manager banned" } }
       }
     },
     "/api/admin/users/{id}/unban": {
       "patch": {
         "tags": ["Admin"],
-        "summary": "Розбанити менеджера",
+        "summary": "Unban Manager",
         "security": [{ "bearerAuth": [] }],
         "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
-        "responses": { "200": { "description": "Unbanned" } }
+        "responses": { "200": { "description": "Manager unbanned" } }
       }
     },
     "/api/admin/users/{id}/re-token": {
       "post": {
         "tags": ["Admin"],
-        "summary": "Перевипустити токен",
+        "summary": "Generate Activation Link",
         "security": [{ "bearerAuth": [] }],
         "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
-        "responses": { "200": { "description": "Success" } }
-      }
-    },
-    "/api/admin/users/{id}/recovery": {
-      "post": {
-        "tags": ["Admin"],
-        "summary": "Відновлення доступу",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
-        "responses": { "200": { "description": "Success" } }
+        "responses": { "200": { "description": "Token generated" } }
       }
     },
     "/api/admin/stats": {
       "get": {
         "tags": ["Admin"],
-        "summary": "Статистика адміна",
+        "summary": "Global CRM Statistics",
         "security": [{ "bearerAuth": [] }],
-        "responses": { "200": { "description": "Success" } }
+        "responses": { "200": { "description": "Statistics retrieved" } }
       }
     }
   }

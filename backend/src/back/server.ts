@@ -10,10 +10,10 @@ import { fileURLToPath } from 'url';
 dotenv.config();
 
 
-import authRoutes from './routes/auth.route.ts';
-import orderRoutes from './routes/order.route.ts';
-import adminRoutes from './routes/admin.route.ts';
-import { initAdmin } from './utils/initAdmin.util.ts';
+import authRoutes from './routes/auth.route.js';
+import orderRoutes from './routes/order.route.js';
+import adminRoutes from './routes/admin.route.js';
+import { initAdmin } from './utils/initAdmin.util.js';
 
 
 const __filename = fileURLToPath(import.meta.url);

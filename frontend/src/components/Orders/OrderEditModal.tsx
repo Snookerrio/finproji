@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { X, Plus, List } from 'lucide-react';
-import api from '../../api/axios';
-import type {IOrder} from "../../interfaces/order.interface.ts";
-
+import { OrderService } from '../../services/order.service';
+import type { IOrder } from "../../interfaces/order.interface.ts";
+import {orderValidator} from "../../../../backend/src/back/validators/order.validator.ts";
 
 interface OrderEditModalProps {
     order: IOrder;
@@ -27,29 +27,40 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
                                                            COURSE_FORMATS,
                                                            COURSE_TYPES
                                                        }) => {
-
     const [selectedOrder, setSelectedOrder] = useState<IOrder>({ ...order });
     const [isAddingGroup, setIsAddingGroup] = useState(false);
     const [newGroupName, setNewGroupName] = useState("");
 
+
+    const [errors, setErrors] = useState<{ age?: string | null; price?: string | null }>({});
+
     const handleAddGroup = async () => {
         if (!newGroupName.trim()) return;
         try {
-            const res = await api.post('/orders/groups', { name: newGroupName });
-            setGroups(prev => [...prev, res.data]);
-            setSelectedOrder({ ...selectedOrder, group: res.data.name });
+            const res = await OrderService.createGroup(newGroupName);
+            setGroups(prev => [...prev, res]);
+            setSelectedOrder({ ...selectedOrder, group: res.name });
             setNewGroupName("");
             setIsAddingGroup(false);
         } catch (error) {
-            alert("Error adding group. Maybe it already exists?");
+            alert("Error adding group");
         }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        try {
 
-            await api.patch(`/orders/${selectedOrder._id}`, selectedOrder);
+
+        const ageErr = orderValidator.age(Number(selectedOrder.age));
+        const priceErr = orderValidator.price(Number(selectedOrder.sum), Number(selectedOrder.alreadyPaid));
+
+        if (ageErr || priceErr) {
+            setErrors({ age: ageErr, price: priceErr });
+            return;
+        }
+
+        try {
+            await OrderService.update(selectedOrder._id, selectedOrder);
             onRefresh();
             onClose();
         } catch (error) {
@@ -68,7 +79,7 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
                     Profile details
                 </h2>
 
-                <form onSubmit={handleSubmit} className="space-y-8">
+                <form onSubmit={(e) => void handleSubmit(e)} className="space-y-8">
                     <div className="grid grid-cols-2 gap-x-12 gap-y-6 text-[11px] font-bold">
 
 
@@ -77,7 +88,6 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
                             <div className="flex flex-col gap-2">
                                 {isAddingGroup ? (
                                     <input
-                                        required
                                         className="w-full border-2 border-green-100 p-3 rounded-xl bg-gray-50 outline-none"
                                         value={newGroupName}
                                         onChange={e => setNewGroupName(e.target.value)}
@@ -103,7 +113,7 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => { if (isAddingGroup) handleAddGroup(); else setIsAddingGroup(false); }}
+                                        onClick={() => { if (isAddingGroup) void handleAddGroup(); else setIsAddingGroup(false); }}
                                         className={`flex-1 text-[9px] font-black rounded-lg border uppercase transition ${!isAddingGroup ? 'bg-green-600 text-white' : 'bg-gray-100'}`}
                                     >
                                         <List size={10} className="inline mr-1" /> {isAddingGroup ? 'SAVE GROUP' : 'SELECT'}
@@ -145,24 +155,25 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
                         </div>
 
 
-                        <div>
+                        <div className="space-y-1">
                             <label className="text-gray-400 uppercase ml-2">Sum</label>
                             <input
                                 type="number"
-                                className="w-full border-2 border-gray-100 p-3 rounded-xl bg-gray-100 font-bold text-green-700 outline-none"
+                                className={`w-full border-2 p-3 rounded-xl bg-gray-100 font-bold text-green-700 outline-none ${errors.price ? 'border-red-400' : 'border-gray-100'}`}
                                 value={selectedOrder.sum || 0}
                                 onChange={e => setSelectedOrder({ ...selectedOrder, sum: Number(e.target.value) })}
                             />
                         </div>
 
-                        <div>
+                        <div className="space-y-1">
                             <label className="text-gray-400 uppercase ml-2">Already paid</label>
                             <input
                                 type="number"
-                                className="w-full border-2 border-gray-100 p-3 rounded-xl bg-gray-100 font-bold outline-none"
+                                className={`w-full border-2 p-3 rounded-xl bg-gray-100 font-bold outline-none ${errors.price ? 'border-red-400' : 'border-gray-100'}`}
                                 value={selectedOrder.alreadyPaid || 0}
                                 onChange={e => setSelectedOrder({ ...selectedOrder, alreadyPaid: Number(e.target.value) })}
                             />
+                            {errors.price && <p className="text-red-500 text-[9px] ml-2 italic">{errors.price}</p>}
                         </div>
 
 
@@ -221,14 +232,21 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
                             </select>
                         </div>
 
-                        <div>
+
+                        <div className="space-y-1">
                             <label className="text-gray-400 uppercase ml-2">Age</label>
                             <input
                                 type="number"
-                                className="w-full border-2 border-gray-100 p-3 rounded-xl bg-gray-100 font-bold outline-none"
-                                value={selectedOrder.age || 0}
-                                onChange={e => setSelectedOrder({ ...selectedOrder, age: Number(e.target.value) })}
+                                className={`w-full border-2 p-3 rounded-xl bg-gray-100 font-bold outline-none ${errors.age ? 'border-red-400' : 'border-gray-100'}`}
+                                value={selectedOrder.age === 0 ? '' : selectedOrder.age}
+                                onChange={e => {
+                                    const val = Math.abs(parseInt(e.target.value, 10));
+                                    setSelectedOrder({ ...selectedOrder, age: isNaN(val) ? 0 : val });
+
+                                    if (errors.age) setErrors({...errors, age: null});
+                                }}
                             />
+                            {errors.age && <p className="text-red-500 text-[9px] ml-2 italic">{errors.age}</p>}
                         </div>
                     </div>
 

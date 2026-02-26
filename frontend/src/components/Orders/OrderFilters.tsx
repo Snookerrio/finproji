@@ -1,6 +1,8 @@
 import React from 'react';
 import { RotateCcw, FileSpreadsheet } from 'lucide-react';
-import type {IFilters} from "../../interfaces/order.interface.ts";
+import type {IGroup} from "../../interfaces/group.interface.ts";
+import type {IFilters} from "../../interfaces/filters.interface.ts";
+
 
 
 interface OrderFiltersProps {
@@ -8,7 +10,8 @@ interface OrderFiltersProps {
     setFilters: (f: IFilters) => void;
     handleReset: () => void;
     handleExportExcel: () => void;
-    groups: { name: string }[];
+
+    groups: IGroup[];
     COURSES: string[];
     COURSE_FORMATS: string[];
     COURSE_TYPES: string[];
@@ -28,7 +31,7 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({
                                                    }) => {
 
 
-    const updateFilter = (key: keyof IFilters, value: any) => {
+    const updateFilter = (key: keyof IFilters, value: string | boolean | number) => {
         setFilters({ ...filters, [key]: value, page: 1 });
     };
 
@@ -85,6 +88,7 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({
                         /> My
                     </label>
                     <button
+                        type="button"
                         onClick={handleReset}
                         title="Reset filters"
                         className="bg-[#4caf50] text-white p-1 rounded hover:bg-green-600 transition"
@@ -92,6 +96,7 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({
                         <RotateCcw size={16}/>
                     </button>
                     <button
+                        type="button"
                         onClick={handleExportExcel}
                         title="Export to Excel"
                         className="bg-[#4caf50] text-white p-1 rounded hover:bg-green-600 transition"
@@ -101,7 +106,7 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({
                 </div>
             </div>
 
-            
+
             <div className="flex flex-wrap gap-2">
                 <select
                     className="p-1 border rounded text-xs bg-white flex-1"

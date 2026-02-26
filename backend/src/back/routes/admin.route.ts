@@ -6,8 +6,8 @@ import {
     banUser,
     unbanUser,
     getStats
-} from '../controllers/admin.controller.ts';
-import { protect, adminOnly } from '../middlewares/auth.middleware.ts';
+} from '../controllers/admin.controller.js';
+import { protect, adminOnly } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 

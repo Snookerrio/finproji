@@ -2,10 +2,10 @@
   "name": "finproji",
   "version": "1.0.0",
   "type": "module",
-  "main": "src/back/server.ts",
+  "main": "backend/server.ts",
   "scripts": {
-    "dev": "nodemon -e ts,json --exec \"node --experimental-strip-types\" src/back/server.ts",
-    "start": "node dist/back/server.js",
+    "dev": "nodemon -e ts,json --exec \"node --experimental-strip-types\" backend/src/back/server.ts",
+    "start": "node dist/server.js",
     "build": "tsc"
   },
   "author": "",
