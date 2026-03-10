@@ -13,22 +13,36 @@ const LoginPage: React.FC = () => {
         e.preventDefault();
         setError('');
 
+
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!emailRegex.test(email)) {
+            setError('Please enter a valid email address (e.g. example@mail.com)');
+            return;
+        }
+
+
+        if (password.length < 5) {
+            setError('Password must be at least 6 characters long');
+            return;
+        }
+
         try {
-
             await AuthService.login({ email, password });
-
             navigate('/orders');
         } catch (err) {
             const axiosError = err as AxiosError<{ message: string }>;
-            setError(axiosError.response?.data?.message || 'Помилка при вході');
+
+            setError(axiosError.response?.data?.message || 'Invalid email or password');
         }
     };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#7cb342]">
             <div className="bg-white p-10 rounded-lg shadow-2xl w-full max-w-[400px]">
+
                 {error && (
-                    <div className="bg-red-50 text-red-500 p-2 rounded mb-4 text-[10px] text-center font-bold">
+                    <div className="bg-red-50 text-red-600 p-3 rounded mb-4 text-[11px] text-center font-bold border border-red-200 animate-pulse">
                         {error}
                     </div>
                 )}
@@ -39,7 +53,11 @@ const LoginPage: React.FC = () => {
                         <input
                             type="email"
                             placeholder="Email"
-                            className="w-full p-3 bg-[#f1f1f1] border-none rounded-lg outline-none focus:ring-2 focus:ring-[#7cb342] transition text-sm text-gray-600"
+
+                            className={`w-full p-3 bg-[#f1f1f1] border-none rounded-lg outline-none transition text-sm text-gray-600 
+                                ${error.toLowerCase().includes('email')
+                                ? 'ring-2 ring-red-400'
+                                : 'focus:ring-2 focus:ring-[#7cb342]'}`}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
@@ -51,7 +69,11 @@ const LoginPage: React.FC = () => {
                         <input
                             type="password"
                             placeholder="Password"
-                            className="w-full p-3 bg-[#f1f1f1] border-none rounded-lg outline-none focus:ring-2 focus:ring-[#7cb342] transition text-sm text-gray-600"
+
+                            className={`w-full p-3 bg-[#f1f1f1] border-none rounded-lg outline-none transition text-sm text-gray-600 
+                                ${error.toLowerCase().includes('password')
+                                ? 'ring-2 ring-red-400'
+                                : 'focus:ring-2 focus:ring-[#7cb342]'}`}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required

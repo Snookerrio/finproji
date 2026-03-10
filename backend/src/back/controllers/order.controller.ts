@@ -1,7 +1,6 @@
-import type { Request, Response } from 'express';
-
+import { Request, Response } from 'express';
+import { OrderService } from '../services/order.service.js';
 import Group from '../models/group.model.js';
-import {OrderService} from "../services/order.service.js";
 
 export const getOrders = async (req: any, res: Response) => {
     try {
@@ -14,13 +13,30 @@ export const getOrders = async (req: any, res: Response) => {
 
 export const exportToExcel = async (req: any, res: Response) => {
     try {
+
         const workbook = await OrderService.generateExcel(req.query, req.user.surname);
-        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        res.setHeader('Content-Disposition', 'attachment; filename=orders_export.xlsx');
+
+
+        res.setHeader(
+            'Content-Type',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        );
+        res.setHeader(
+            'Content-Disposition',
+            'attachment; filename=orders.xlsx'
+        );
+
+
         await workbook.xlsx.write(res);
+
+
         res.end();
-    } catch (error) {
-        res.status(500).json({ message: 'Excel export failed' });
+    } catch (error: any) {
+        console.error('❌ CONTROLLER EXPORT ERROR:', error);
+        res.status(500).json({
+            message: 'Excel export failed',
+            error: error.message
+        });
     }
 };
 
@@ -54,7 +70,8 @@ export const getStatistics = async (req: Request, res: Response) => {
 
 export const getGroups = async (req: Request, res: Response) => {
     try {
-        res.json(await Group.find());
+        const groups = await Group.find();
+        res.json(groups);
     } catch (error) {
         res.status(500).json({ message: 'Error loading groups' });
     }

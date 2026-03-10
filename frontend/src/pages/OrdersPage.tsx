@@ -1,4 +1,4 @@
-import React, { useEffect, useState,  useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Settings, LogOut, ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -23,15 +23,15 @@ const OrdersPage: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
 
-
     const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
     const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
-    const [commentText, setCommentText] = useState("");
 
+
+    const [commentTexts, setCommentTexts] = useState<Record<string, string>>({});
 
     const initialFilters = useMemo((): IFilters => ({
         page: Number(searchParams.get('page')) || 1,
-        sortBy: searchParams.get('sortBy') || 'createdAt',
+        sortBy: searchParams.get('sortBy') || 'id',
         order: (searchParams.get('order') as 'asc' | 'desc') || 'desc',
         name: searchParams.get('name') || '',
         surname: searchParams.get('surname') || '',
@@ -48,12 +48,10 @@ const OrdersPage: React.FC = () => {
         my: searchParams.get('my') === 'true'
     }), [searchParams]);
 
-
     const { orders, total, groups, setGroups, filters, setFilters, fetchData } = useOrders(initialFilters);
 
     const limit = 25;
     const totalPages = Math.ceil(total / limit) || 1;
-
 
     useEffect(() => {
         const params: Record<string, string> = {};
@@ -65,18 +63,16 @@ const OrdersPage: React.FC = () => {
         setSearchParams(params);
     }, [filters, setSearchParams]);
 
-
     const storedUser: IUser | null = AuthService.getCurrentUser();
     const fullName = storedUser ? `${storedUser.name} ${storedUser.surname}` : "User";
     const userRole = storedUser?.role || "manager";
     const currentUserSurname = storedUser?.surname || "Unknown";
 
-
     const handleSort = (column: string) => {
         const isAsc = filters.sortBy === column && filters.order === 'asc';
         setFilters({
             ...filters,
-            sortBy: column,
+            sortBy: 'id',
             order: isAsc ? 'desc' : 'asc',
             page: 1
         });
@@ -100,14 +96,15 @@ const OrdersPage: React.FC = () => {
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `orders_${new Date().toISOString().split('T')[0]}.xlsx`);
+            const dateStr = new Date().toISOString().split('T')[0];
+            link.setAttribute('download', `crm_orders_${dateStr}.xlsx`);
             document.body.appendChild(link);
             link.click();
             link.remove();
             window.URL.revokeObjectURL(url);
         } catch (error) {
             console.error("Excel export failed", error);
-            alert("Excel export failed");
+            alert("Помилка експорту Excel. Перевірте консоль розробника.");
         }
     };
 
@@ -115,7 +112,7 @@ const OrdersPage: React.FC = () => {
         if (!text.trim()) return;
         try {
             await OrderService.addComment(order._id, text);
-            setCommentText("");
+            setCommentTexts(prev => ({ ...prev, [order._id]: "" }));
             await fetchData();
         } catch (error) {
             console.error("Error adding comment", error);
@@ -123,11 +120,9 @@ const OrdersPage: React.FC = () => {
         }
     };
 
-
     const getPaginationItems = () => {
         const items: (number | string)[] = [];
         const siblingCount = 1;
-
         if (totalPages <= 7) {
             for (let i = 1; i <= totalPages; i++) items.push(i);
         } else {
@@ -135,7 +130,6 @@ const OrdersPage: React.FC = () => {
             const rightSiblingIndex = Math.min(filters.page + siblingCount, totalPages);
             const showLeftDots = leftSiblingIndex > 2;
             const showRightDots = rightSiblingIndex < totalPages - 2;
-
             if (!showLeftDots && showRightDots) {
                 for (let i = 1; i <= 5; i++) items.push(i);
                 items.push('...');
@@ -184,7 +178,7 @@ const OrdersPage: React.FC = () => {
                     <table className="w-full text-left border-collapse text-[11px] min-w-[1700px]">
                         <thead className="bg-[#8bc34a] text-white uppercase font-bold">
                         <tr>
-                            <th className="p-2 border border-white/20 cursor-pointer hover:bg-green-600 transition text-center" onClick={() => handleSort('createdAt')}>id {renderSortIcon('createdAt')}</th>
+                            <th className="p-2 border border-white/20 cursor-pointer hover:bg-green-600 transition text-center" onClick={() => handleSort('id')}>id {renderSortIcon('id')}</th>
                             <th className="p-2 border border-white/20 cursor-pointer hover:bg-green-600 transition" onClick={() => handleSort('name')}>name {renderSortIcon('name')}</th>
                             <th className="p-2 border border-white/20 cursor-pointer hover:bg-green-600 transition" onClick={() => handleSort('surname')}>surname {renderSortIcon('surname')}</th>
                             <th className="p-2 border border-white/20 cursor-pointer hover:bg-green-600 transition" onClick={() => handleSort('email')}>email {renderSortIcon('email')}</th>
@@ -202,29 +196,27 @@ const OrdersPage: React.FC = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {orders.map((order, idx) => {
+                        {orders.map((order) => {
 
-                            const displayId = total - ((filters.page - 1) * limit) - idx;
                             return (
                                 <OrderRow
                                     key={order._id}
                                     order={order}
-                                    idx={displayId}
+                                    idx={order.id}
                                     filtersPage={filters.page}
                                     currentUserSurname={currentUserSurname}
                                     isExpanded={expandedOrderId === order._id}
                                     onToggleExpand={() => setExpandedOrderId(expandedOrderId === order._id ? null : order._id)}
                                     onCommentSubmit={handleCommentSubmit}
                                     onEdit={setSelectedOrder}
-                                    commentText={commentText}
-                                    setCommentText={setCommentText}
+                                    commentText={commentTexts[order._id] || ""}
+                                    setCommentText={(text) => setCommentTexts(prev => ({ ...prev, [order._id]: text }))}
                                 />
                             );
                         })}
                         </tbody>
                     </table>
                 </div>
-
 
                 <div className="mt-8 mb-10 flex justify-center items-center gap-2">
                     <button
@@ -234,7 +226,6 @@ const OrdersPage: React.FC = () => {
                     >
                         <ChevronLeft size={20} />
                     </button>
-
                     {getPaginationItems().map((item, index) => {
                         if (item === '...') {
                             return <span key={index} className="w-10 h-10 flex items-center justify-center text-[#8bc34a] font-bold">...</span>;
@@ -253,7 +244,6 @@ const OrdersPage: React.FC = () => {
                             </button>
                         );
                     })}
-
                     <button
                         onClick={() => setFilters({ ...filters, page: filters.page + 1 })}
                         disabled={filters.page === totalPages}

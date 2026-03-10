@@ -15,22 +15,16 @@ const router = Router();
 router.use(protect);
 
 
-router.get('/', getOrders);
-
-
 router.get('/export', exportToExcel);
-
-
+router.get('/stats', getStatistics);
 router.get('/groups', getGroups);
 router.post('/groups', createGroup);
 
 
-router.get('/stats', getStatistics);
+router.get('/', getOrders);
 
 
 router.patch('/:id', updateOrder);
-
-
 router.post('/:id/comment', addComment);
 
 export default router;

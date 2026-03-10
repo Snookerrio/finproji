@@ -3,11 +3,13 @@ import ExcelJS from 'exceljs';
 
 export const OrderService = {
 
-
     buildQuery: (filters: any, userSurname: string) => {
         const query: any = {};
-        const { my, name, surname, email, phone, age, course, status, group, course_format, course_type, start_date, end_date } = filters;
-
+        const {
+            my, name, surname, email, phone, age, course,
+            status, group, course_format, course_type,
+            start_date, end_date
+        } = filters;
 
         if (my === 'true') query.manager = userSurname;
 
@@ -15,6 +17,7 @@ export const OrderService = {
         if (surname) query.surname = { $regex: surname, $options: 'i' };
         if (email) query.email = { $regex: email, $options: 'i' };
         if (phone) query.phone = { $regex: phone, $options: 'i' };
+
         if (age) query.age = Number(age);
         if (course) query.course = course;
         if (course_format) query.course_format = course_format;
@@ -24,12 +27,12 @@ export const OrderService = {
         if (group) query.group = group === 'null' ? null : group;
 
         if (start_date || end_date) {
-            query.created_at = {};
-            if (start_date) query.created_at.$gte = new Date(start_date);
+            query.createdAt = {};
+            if (start_date) query.createdAt.$gte = new Date(start_date);
             if (end_date) {
                 const end = new Date(end_date);
                 end.setHours(23, 59, 59, 999);
-                query.created_at.$lte = end;
+                query.createdAt.$lte = end;
             }
         }
         return query;
@@ -38,9 +41,7 @@ export const OrderService = {
 
     getAll: async (filters: any, userSurname: string) => {
         const query = OrderService.buildQuery(filters, userSurname);
-
-
-        const { page = 1, sortBy = 'createdAt', order = 'desc' } = filters;
+        const { page = 1, sortBy = 'id', order = 'desc' } = filters;
         const limit = 25;
 
         const data = await Order.find(query)
@@ -58,23 +59,30 @@ export const OrderService = {
         const order = await Order.findById(id);
         if (!order) throw new Error('Application not found');
 
-        const hasNoManager = !order.manager || order.manager === 'null';
         const isOwner = order.manager === user.surname;
         const isAdmin = user.role === 'admin';
+        const hasNoManager = !order.manager || order.manager === 'null' || order.manager === 'NULL';
 
-        if (!hasNoManager && !isOwner && !isAdmin) {
-            const error: any = new Error('You cannot edit someone else application.');
-            error.status = 403;
-            throw error;
+
+        if (updateData.status === 'New') {
+            updateData.manager = null;
+            updateData.manager_id = null;
         }
 
+        else if (hasNoManager) {
+            updateData.manager = user.surname;
+            updateData.manager_id = user._id;
 
-        updateData.manager = user.surname;
-        updateData.manager_id = user._id || user.id;
 
+            if (!updateData.status || updateData.status === 'New' || !order.status || order.status === 'New') {
+                updateData.status = 'In work';
+            }
+        }
 
-        if (hasNoManager || !order.status || order.status === 'New') {
-            updateData.status = 'In work';
+        else if (!isOwner && !isAdmin) {
+            const error: any = new Error('Forbidden: You cannot edit this application');
+            error.status = 403;
+            throw error;
         }
 
         return Order.findByIdAndUpdate(id, updateData, { new: true });
@@ -85,19 +93,9 @@ export const OrderService = {
         const order = await Order.findById(id);
         if (!order) throw new Error('Application not found');
 
-        const canEdit = !order.manager || order.manager === 'null' || order.manager === user.surname || user.role === 'admin';
-        if (!canEdit) {
-            const error: any = new Error('You cannot comment on someone else application.');
-            error.status = 403;
-            throw error;
-        }
-
         if (!order.manager || order.manager === 'null') {
             order.manager = user.surname;
-            order.manager_id = user._id || user.id;
-        }
-
-        if (!order.status || order.status === 'New' || order.status === 'null') {
+            order.manager_id = user._id;
             order.status = 'In work';
         }
 
@@ -123,59 +121,61 @@ export const OrderService = {
             Order.countDocuments({ status: 'New' })
         ]);
 
-        return {
-            total,
-            inWork,
-            allNull,
-            agree,
-            disagree,
-            dubbing,
-            new: newOrders
-        };
+        return { total, inWork, allNull, agree, disagree, dubbing, new: newOrders };
     },
 
 
     generateExcel: async (filters: any, userSurname: string) => {
-        const query = OrderService.buildQuery(filters, userSurname);
+        try {
+            const query = OrderService.buildQuery(filters, userSurname);
+            const orders = await Order.find(query).sort({ createdAt: -1 }).lean();
 
-        const orders = await Order.find(query).sort({ createdAt: -1 });
 
-        const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet('Orders');
+            const WorkbookClass: any = (ExcelJS as any).Workbook || (ExcelJS as any).default?.Workbook;
 
-        worksheet.columns = [
-            { header: '№', key: 'display_id', width: 8 },
-            { header: 'Name', key: 'name', width: 20 },
-            { header: 'Surname', key: 'surname', width: 20 },
-            { header: 'Email', key: 'email', width: 25 },
-            { header: 'Phone', key: 'phone', width: 20 },
-            { header: 'Course', key: 'course', width: 15 },
-            { header: 'Status', key: 'status', width: 15 },
-            { header: 'Manager', key: 'manager', width: 15 },
-            { header: 'Created At', key: 'created_at', width: 20 }
-        ];
+            if (!WorkbookClass) {
+                throw new Error("Could not find ExcelJS Workbook constructor");
+            }
 
-        orders.forEach((order, index) => {
-            worksheet.addRow({
+            const workbook = new WorkbookClass();
+            const worksheet = workbook.addWorksheet('Orders');
 
-                display_id: orders.length - index,
-                name: order.name,
-                surname: order.surname,
-                email: order.email,
-                phone: order.phone,
-                course: order.course,
-                status: order.status,
-                manager: order.manager,
-                created_at: (order as any).createdAt ? new Date((order as any).createdAt).toLocaleString() : ''
+            worksheet.columns = [
+                { header: '№', key: 'display_id', width: 8 },
+                { header: 'Name', key: 'name', width: 20 },
+                { header: 'Surname', key: 'surname', width: 20 },
+                { header: 'Email', key: 'email', width: 25 },
+                { header: 'Phone', key: 'phone', width: 20 },
+                { header: 'Course', key: 'course', width: 15 },
+                { header: 'Status', key: 'status', width: 15 },
+                { header: 'Manager', key: 'manager', width: 15 },
+                { header: 'Date', key: 'createdAt', width: 20 }
+            ];
+
+            orders.forEach((order: any, index: number) => {
+                worksheet.addRow({
+                    display_id: orders.length - index,
+                    name: order.name || '—',
+                    surname: order.surname || '—',
+                    email: order.email || '—',
+                    phone: order.phone || '—',
+                    course: order.course || '—',
+                    status: order.status || 'New',
+                    manager: order.manager || '—',
+                    createdAt: order.createdAt ? new Date(order.createdAt).toLocaleDateString() : '—'
+                });
             });
-        });
 
+            // @ts-ignore
+            worksheet.getRow(1).eachCell((cell) => {
+                cell.font = { bold: true, color: { argb: 'FFFFFF' } };
+                cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '4CAF50' } };
+            });
 
-        worksheet.getRow(1).eachCell((cell) => {
-            cell.font = { bold: true, color: { argb: 'FFFFFF' } };
-            cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '4CAF50' } };
-        });
-
-        return workbook;
+            return workbook;
+        } catch (error) {
+            console.error('❌ EXCEL SERVICE ERROR:', error);
+            throw error;
+        }
     }
 };

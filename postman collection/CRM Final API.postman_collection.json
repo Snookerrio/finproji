@@ -51,13 +51,101 @@
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Login",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"email\": \"admin@gmail.com\", \"password\": \"admin\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/auth/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "592"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"250-HMzag7uIiEMgumvsLUri5P68U/I\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 10 Mar 2026 06:49:30 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5N2I5ODM3YTQ4ZTcyN2Y3NGVkMGI0YiIsInJvbGUiOiJhZG1pbiIsInN1cm5hbWUiOiJBZG1pbnljaCIsImlhdCI6MTc3MzEyNTM3MCwiZXhwIjoxNzczMTI2MjcwfQ.CJESKDG2uWkhXMaRl3xSI-snhaLJdRDO3W9O8PlWeis\",\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5N2I5ODM3YTQ4ZTcyN2Y3NGVkMGI0YiIsInJvbGUiOiJhZG1pbiIsInN1cm5hbWUiOiJBZG1pbnljaCIsImlhdCI6MTc3MzEyNTM3MCwiZXhwIjoxNzczNzMwMTcwfQ.TCGTvlBTwfu3oulg0hy_0-YGYOEUhMExEITo1VdKsP0\",\n    \"user\": {\n        \"id\": \"697b9837a48e727f74ed0b4b\",\n        \"email\": \"admin@gmail.com\",\n        \"name\": \"Admin\",\n        \"surname\": \"Adminych\",\n        \"role\": \"admin\"\n    }\n}"
+            }
+          ]
         },
         {
           "name": "Refresh Token",
           "request": {
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "refreshToken={{refreshToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
               "raw": "{{base_url}}/auth/refresh",
               "host": [
@@ -78,7 +166,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\"token\": \"...\", \"password\": \"...\"}",
+              "raw": "{\"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWZjNjg5NTAxY2YwMWZkOWIyN2JhNiIsInR5cGUiOiJhY3RpdmF0ZSIsImlhdCI6MTc3MzEyNzU4OSwiZXhwIjoxNzczMTI5Mzg5fQ.9H9QADQZ2ziFuBE6wosSKH8p9-qR1FiwV8VVWEeOJVk\", \"password\": \"sdqwe134\"}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -96,7 +184,77 @@
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Activate Manager",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWZjNjg5NTAxY2YwMWZkOWIyN2JhNiIsInR5cGUiOiJhY3RpdmF0ZSIsImlhdCI6MTc3MzEyNzU4OSwiZXhwIjoxNzczMTI5Mzg5fQ.9H9QADQZ2ziFuBE6wosSKH8p9-qR1FiwV8VVWEeOJVk\", \"password\": \"sdqwe134\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/auth/activate",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "activate"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "44"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"2c-SRQG+7Llc87EUgXvBy7CawKGaKQ\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 10 Mar 2026 07:27:25 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Password successfully updated!\"\n}"
+            }
+          ]
         }
       ]
     },
@@ -109,7 +267,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/orders?page=1&status=New&surname=Ivanov",
+              "raw": "{{base_url}}/orders?page=3&status=New&surname=Ivanov",
               "host": [
                 "{{base_url}}"
               ],
@@ -119,7 +277,7 @@
               "query": [
                 {
                   "key": "page",
-                  "value": "1"
+                  "value": "3"
                 },
                 {
                   "key": "status",
@@ -132,7 +290,81 @@
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Get Orders (Filters)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/orders?page=3&status=New&surname=Ivanov",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "3"
+                    },
+                    {
+                      "key": "status",
+                      "value": "New"
+                    },
+                    {
+                      "key": "surname",
+                      "value": "Ivanov"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "21"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"15-Ays4UPN4FNRA+wvza2gfkQyq5QY\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 10 Mar 2026 06:50:09 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [],\n    \"total\": 0\n}"
+            }
+          ]
         },
         {
           "name": "Get Groups",
@@ -150,7 +382,68 @@
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Get Groups",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/orders/groups",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "orders",
+                    "groups"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "68"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"44-RcMDVyt6jRQFuBw6wCiRbSAIUUM\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 10 Mar 2026 07:00:43 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n    {\n        \"_id\": \"69afc190501cf01fd9b27b96\",\n        \"name\": \"September-2026\",\n        \"__v\": 0\n    }\n]"
+            }
+          ]
         },
         {
           "name": "Create Group",
@@ -159,7 +452,12 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\"name\": \"September-2025\"}"
+              "raw": "{\"name\": \"September-2026\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "url": {
               "raw": "{{base_url}}/orders/groups",
@@ -172,7 +470,77 @@
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Create Group",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"name\": \"September-2026\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/orders/groups",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "orders",
+                    "groups"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "66"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"42-UGlHLg6a9CoNarLcWlTYHB+daVM\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 10 Mar 2026 07:00:32 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"name\": \"September-2026\",\n    \"_id\": \"69afc190501cf01fd9b27b96\",\n    \"__v\": 0\n}"
+            }
+          ]
         },
         {
           "name": "Order Stats",
@@ -190,13 +558,83 @@
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Order Stats",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/orders/stats",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "orders",
+                    "stats"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "82"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"52-pDaYrVVC+G0W21IXRnZBmEP3Xzc\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 10 Mar 2026 06:50:42 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"total\": 500,\n    \"inWork\": 11,\n    \"allNull\": 479,\n    \"agree\": 0,\n    \"disagree\": 2,\n    \"dubbing\": 0,\n    \"new\": 8\n}"
+            }
+          ]
         },
         {
           "name": "Update Order",
           "request": {
             "method": "PATCH",
             "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\": \"In work\",\r\n    \"course\": \"FS\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
               "raw": "{{base_url}}/orders/:id",
               "host": [
@@ -206,14 +644,107 @@
                 "orders",
                 ":id"
               ],
+              "query": [
+                {
+                  "key": "",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                }
+              ],
               "variable": [
                 {
-                  "key": "id"
+                  "key": "id",
+                  "value": "69780bad0d372c4fb0ccfd50"
                 }
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Update Order",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"status\": \"In work\",\r\n    \"course\": \"FS\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/orders/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "key": "",
+                      "value": "",
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "69780bad0d372c4fb0ccfd50"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "592"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"250-gaL4xswOD00AAgGOc7sy4u9vk48\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 10 Mar 2026 06:59:08 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"alreadyPaid\": null,\n    \"group\": null,\n    \"manager_id\": null,\n    \"_id\": \"69780bad0d372c4fb0ccfd50\",\n    \"name\": \"Inesa\",\n    \"surname\": \"бонато\",\n    \"email\": \"piotrek@szkolkajazdy.pl\",\n    \"phone\": \"8(906) 955-6\",\n    \"age\": 23,\n    \"course\": \"FS\",\n    \"course_format\": \"static\",\n    \"course_type\": \"minimal\",\n    \"sum\": null,\n    \"already_paid\": null,\n    \"created_at\": \"2021-11-02T10:14:58Z\",\n    \"utm\": \"\",\n    \"msg\": null,\n    \"status\": \"In work\",\n    \"id\": 4,\n    \"updatedAt\": \"2026-03-10T06:59:08.961Z\",\n    \"__v\": 1,\n    \"comments\": [\n        {\n            \"text\": \"Передзвонити завтра о 12:00\",\n            \"author\": \"Adminych\",\n            \"date\": \"2026-03-10T06:53:57.856Z\",\n            \"_id\": \"69afc005501cf01fd9b27b7c\"\n        }\n    ],\n    \"manager\": \"Adminych\"\n}"
+            }
+          ]
         },
         {
           "name": "Add Comment",
@@ -222,7 +753,12 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\"text\": \"Передзвонити завтра о 12:00\"}"
+              "raw": "{\"text\": \"Передзвонити завтра о 12:00\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "url": {
               "raw": "{{base_url}}/orders/:id/comment",
@@ -236,12 +772,90 @@
               ],
               "variable": [
                 {
-                  "key": "id"
+                  "key": "id",
+                  "value": "69780bad0d372c4fb0ccfd50"
                 }
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Add Comment",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"text\": \"Передзвонити завтра о 12:00\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/orders/:id/comment",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":id",
+                    "comment"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "69780bad0d372c4fb0ccfd50"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "576"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"240-a5hqbw6m5Y11ori+1JklCh8vruk\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 10 Mar 2026 06:53:57 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"alreadyPaid\": null,\n    \"group\": null,\n    \"manager\": \"Adminych\",\n    \"_id\": \"69780bad0d372c4fb0ccfd50\",\n    \"name\": \"Inesa\",\n    \"surname\": \"бонато\",\n    \"email\": \"piotrek@szkolkajazdy.pl\",\n    \"phone\": \"8(906) 955-6\",\n    \"age\": 23,\n    \"course\": \"JSCX\",\n    \"course_format\": \"static\",\n    \"course_type\": \"minimal\",\n    \"sum\": null,\n    \"already_paid\": null,\n    \"created_at\": \"2021-11-02T10:14:58Z\",\n    \"utm\": \"\",\n    \"msg\": null,\n    \"status\": \"In work\",\n    \"id\": 4,\n    \"updatedAt\": \"2026-03-10T06:53:57.860Z\",\n    \"comments\": [\n        {\n            \"text\": \"Передзвонити завтра о 12:00\",\n            \"author\": \"Adminych\",\n            \"date\": \"2026-03-10T06:53:57.856Z\",\n            \"_id\": \"69afc005501cf01fd9b27b7c\"\n        }\n    ],\n    \"__v\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Export Excel",
@@ -259,7 +873,68 @@
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Export Excel",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/orders/export",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "orders",
+                    "export"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                },
+                {
+                  "key": "Content-Disposition",
+                  "value": "attachment; filename=orders.xlsx"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 10 Mar 2026 06:52:34 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "PK\u0003\u0004\n\u0000\u0000\u0000\b\u0000�6j\\���\tY\u0001\u0000\u0000�\u0004\u0000\u0000\u0013\u0000\u0000\u0000[Content_Types].xml��Mn�0\u0010��=E�-J\f]TUE¢��\u0016��\u0000�xB,\u001c���w\u0012(�* �`\u0013+�7�{��\u0019O��I�\u0018H;��Q6\u0014\t��)m\u0017������\"�\bV�q\u0016s�C\u0012��n<�y���-墎�?IIe�\rP�\n<Z�T.4\u0010�6,��r\t\u000b����,��hc\u001a[\u000fQ��X����eˏ�A\u0002\u001a\u0012��^زr\u0001�\u001b]B�\\[���\u001e\b\u0019wv\u001a���\u0001\u000b�\n    <Ih+�\u0001��w�L�\n�\u0019��\u0006\r���ȍ\u000b�/��e�\u0013)]U�\u0012�+W\r�d�\u0003��\u001a16&�֬\u0001m\u0007��NL�[F7\u000er���\u0011�}��z}�Φ\u0007Hqg�n=�δ�\\C@�\u0011\u0003\u001f��\u0007��}�]_I��i�\rS�m����<�\u0011\r��]����;�l�!�ˣ=\u0012���b;+��\u0004[v?��\u001bPK\u0003\u0004\n\u0000\u0000\u0000\u0000\u0000�6j\\\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0006\u0000\u0000\u0000_rels/PK\u0003\u0004\n\u0000\u0000\u0000\b\u0000�6j\\�I��\u0000\u0000\u0000K\u0002\u0000\u0000\u000b\u0000\u0000\u0000_rels/.rels���N�0\f@�|E���nH\b��� ��&4>�$n\u001b���ă�@\f�i\u0007�q��g���<��R�\u001c\f,�\u001a\u0014\u0005�·����iq\u000f*\u000b\u0006�#\u00072p�\f��f�L#J�ɽ�Y\u0015H�\u0006z���u�=M�+�\u0014�O�iB)���v������t�ɀ愩��@ں%��1�5ln[o��a� gZ��(dL\u001d��y�W�*P��]V׻�=��HС���h\u0011S�N��Z�u\u001c�]\t�όKB���\u001c���#wY\tc�2�'7�|\u0000PK\u0003\u0004\n\u0000\u0000\u0000\u0000\u0000�6j\\\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0003\u0000\u0000\u0000xl/PK\u0003\u0004\n\u0000\u0000\u0000\u0000\u0000�6j\\\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\t\u0000\u0000\u0000xl/_rels/PK\u0003\u0004\n\u0000\u0000\u0000\b\u0000�6j\\�$�V�\u0000\u0000\u0000�\u0002\u0000\u0000\u001a\u0000\u0000\u0000xl/_rels/workbook.xml.rels���j�0\u0010D��\n��ZvZJ)�s)�\\[�\u0003���LlIh7m��U\u001bH\u001c\b�\u0007�Ĭؙ�H���8�OL�\u0007��*J\u0010�M���\u0014|4��g\u0010��[=\u0004�\n&$��w�7\u001c4�\u001dr}$�M<)p��EJ2\u000eGME���M\u001bҨ9��ɨ�^w(We�$��\u0003�\u000bO��\n��V �)��C��\u0006_�9���J�$���/\u001a�:d\u0005G]d\u001f���WK�s��s��<\u000e�[\f\u000f�V�tB��)?���\u0016��0_!��!�\u0019�4�E�ǩ\u0019y���\u001fPK\u0003\u0004\n\u0000\u0000\u0000\u0000\u0000�6j\\\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u000e\u0000\u0000\u0000xl/worksheets/PK\u0003\u0004\n\u0000\u0000\u0000\b\u0000�6j\\9��\u0004�I\u0000\u0000��\u0002\u0000\u0018\u0000\u0000\u0000xl/worksheets/sheet1.xml��_��Fv���S\b��Q\u0005�s0\u001aÑɨ!�\u0006\u0016�^��-�F\rKj��g��O�U��J�sxO�}ٵ�y��4��\u001f#��O��_�����?|���ӯ߽Kxx�͇_�����_��ݻ��o埖w�|����\u001f�����\u000f߽��\u000f_����ǟ����~��Ç��<\u0015���w�~����?~�������/��ۇ_�ȏ�>�����~��_~����\u000f�M���m��0}�������U�������\u001f��p����~����[��\u001f~~��������߾�^���R�����o�����~����|������E�}�����������积�_ix����P�_>~��ӗO?~��S����w^�]�}���?����\u001b<����\u000f?~��_�\u001f��!������.���_����Ï��������\u001f���?}}�G\u001a�}��o_�������\u001f~~B߽{���������\u001f���/�?\u0005�ݻq|���?���������������������\u000f_���ӿ������/�~����u{}�^߿��{�o\u0018�\u001b��\u001bF����a|�'L�\r��\u001b�����a}�\u0013��eU�Q�￾��>��7�kX_~{�|�?�'I?���;>}��k�����-O������??��ۿ?Wo����d_q�Wt�\u0015W~Eo_��+\u0006��¯\u0018�+\u001e�\u0015�}�_�\u0015�}�ίX^^��S�/)w��������v��Y!�#K�ƫ����@��|4\u0010�\u0011����\u000e4������A�B,�?~\u0010\u001cE�^e��`1\u0010���^e���\u000e4�\r�̆��\u0002�\r�\u000f�Qs\u0019Tf\nn\n�Ae6��T�݁&�1���2�\u0013A\u001e�\u001f\u0004�˨2SpS��jl�*3Uvw��l�d6�� �<\u001d?\b\u0002�L*3\u00057\u0005��p�?N*3Uvw��l�d6��`��Y��Ye��`��؜Uf���@��\u0012�li������\u0007�usQ�)�)X��\u0003����T�݁&�5���2�Kc^�?��V������|&���T�݁&��\u0010�\u0005?������e�C�R�M�M�b(Egߋ��ʻGmz1�H-���\u0019'�ɚ�������~.��dz���Q�^�\rR��#��dz�\u000f$�$-�s��#�ʻGmz!MH�\u0013\u0016􄤦�\u0017I��n�\u0016I\u001f��\u0005��ݣ6��0�f\f\u000b\u001aCR����WI7I���Iz�|��Q�^H\u001dRs�\u0005�!\u001dg�\u001dN꒴\u0007I7I��8\u0019N� d�ݣ6��D�f\u0011\u000bZDR\u0013�WI7I���I��|��Q�^H'R�\u0005}\"\u001dg�\u001d�k�F!�&iIR*��\nYy��M/$\u0016��łf��4\u001f\u00156I��t��XJ�I���w���B���c,�\u0018�L�\u0017LOZ����%I�H�4d�ݣ�Vp�5��\u001a\u000b�Fg��t;�H{�\u001f,]þ\u0017f��~.\u001e{�t\r���Gmz!��k,�\u001a�Y]�0=�\u001a�n�\u0016C9=�\u001a���Q�^l\u001d���B\u000b\u0011Ǚy��a��\u0019:bz�N��t�N�G�\u0005���F\u0017r���ƌ��\u001dg�=^5:�\u001a�n��N.Lt�5d�ݣ6��kt�5ft�n��Iאt��tr����!+�\u001e��\\�k�1�ktj�~��*�&i�����!߻{Ԧ\u0017r���ƌ��M�ؓ�!�&i���=�\u001a���Q�^�5��\u001a3�Fw���8��kH�IZ,E���k�ʻGmz!��k��\u001a�qf��|O������R�\u0002 ]CV�=j�\u000b�F�\\cF��3��{�5$�$-�Rz�5d�ݣv\u000fE�5��\u001a3�F��\u000f�\u001c��u\rI7I����B����{Ԧ\u0017r���ƌ�ћ}J�\u001a�t\rI7I��x���5d�ݣ6��k��5ft��83\u001fh\u000b�\\אt��\u0018Jw\tz�\u001a���Q�^l�Ss���?�\rPz\u0007��\u0002��@\u0019���^��۠��\u001a}�5��\u001a\u0013�F��\u000f\u0003�']C�M��K��k�ʻGmz!��kL�\u001a�qf>�F/]C�M�b(�%�k�ʻGmz!��kL�\u001a�$ӓ�!�&i1�ӓ�!+�\u001e��\\�o�1�k�Ǚ���\u001a�t\rI7I��t͕�!+�\u001e��\\�o�1�k�Ǚ����Kאt���r]���!+�\u001e��\\�o�1�k��5�s{�\u001a�n�\u0016Cy�\"]CV�=j�\u001e�\\ch�1�k\f�5�s\u0007�\u001a�n�\u0016Kq�\u000e�5d�ݣ6��k\f�5&t����\u0001=w��!�&i\u0019�k\f�5d�ݣ6��k\f�5&t��83\u001f�s\u0007�\u001a�n�\u0016K)=�\u001a���Q�^�5��\u001a#��p���ly��!�&i\u0019�� ]CV�=jӋ�袹�H��8��i/� ]C�M�b)�� ]CV�=j�\u000b���\\cD�\u0018Fy�Iאt��XJǞt\rYy��M/�\u001aCs�\u0011]c8��G�C5Hאt��\f�5\u0006�\u001a���Q�^�5��\u001a#�� �1Hאt��\u0018J?2\u0018�k�ʻGmz!�\u0018�k��\u001a�qf>�\u001d�A�����e��\u001a�t\rYy��M/�\u001aCs\r�'\u000f�<�Iאt��XJ#W����{��f/�\u001acs\r<���83�#�2Jאt��X���Q����{Ԧ\u0017r���\u0006·�h\\\u0003�{�t\rI7I����t\rYy��M/�\u001acs\rt�<��9�']C�M�b)�']CV�=j�\u000b���\\\u0003�\u0003��83���e��!�&i1��5d�ݣ6��k��5�\u001eT\u001e�3s�K_F�\u001a�n��Q�k��5d�ݣ6��O��k���<\u001eg��q�Q�����e��1Jא�w���B�16��{�y��ȕ�!�&i1�G�t\rYy��M/�\u001acs\r\\���qf�w`.�t\rI7I�(�5F�\u001a���Q�^�5��\u001a8\u001fΣY�@�\u001d�kH�IZF��1Jא�w���B�16���\u0016y43s�jHאt��XJ3\u0016�\u001a���Q����kL�5����qf�w�/�t\rI7I�$�5&�\u001a���Q�^�5��\u001a��,O�9Mxg~��!�&i1��PM�5d�ݣ6��kL�5pc��o�\r����$]C�b?�ғ�!+�\u001e��\\cj��{k�����kH�IZ��Rz�5d�ݣ6��kL�5p_w��k�yO������PNO����{Ԧ\u0017r���\u0006�� Off�w\t&�\u001a�n�\u0016K�AI�5d�ݣ6��\u0003��k����t���>��$]C�M�b)���3�\u001f4�\u0016טB�15������83�=B�I������RJO����{Ԧ\u0017r���\u0006��1O�\u001c��5$�$-�Rz�5d�ݣ6��kL�5�7�y:��qw�e��!�&i���\u001a�5d�ݣ�\u0019q!ט�k�����қ�kH�IZ,�G�Iא�w���B�17��_��ٸ\u0006ޡ��kH�IZf��j��!+�\u001e��\\cn���\u0016ȳ�\t�K0�u\rI7I��t�Iא�w���B�17���6�٬k�ly��!�&i1��\u0012��5d�ݣ6��k��5�!y\u001e�ȕ�!�&i1��-��5d�ݣ6��k��5p�Y�ͺ\u0006�\\�\u001a�n�\u0016C��f�\u001a���Q�^�5��\u001a���\n        <O2=�\u001a�n��Y�k�ʻGmz���6�����ٸ\u0006����5$�$-�Rz����oq�9�\u001ass\r�Wγ|\u000e�,]C�M�b?��\u001a�5d�ݣ6��k��5�\u000e^��k���,]C�M�2Kט�k�ʻG���C��4���[^�3s���e��!�&i1����t\rYy��M/�\u001aKs\r|�r^Լ�\"�U�MҲH�X�k�ʻGmz!�X�k�\u0019&/Ǚ9����Hאt��,r]c��!+�\u001e��\\ci��ϣ�K/ӓ�!�&iY��\"]CV�=j�\u000b���\\\u0003���83�'f\\\u0016�\u001a�n��E�k,�5d�ݣ6��k,�5p�@^�3s2�E������P~0�t\rYy��M/�\u001aKs\rl(�\u001733�u�E������R�jHא�w���B��4��{�y9���IA�E������P��Hא�w���b�4�k�4/Ǚ9>��Hאt��XJǞ�j��5��k,�5pl��83�'�]\u0016�\u001a�n��E��\"]CV�=j{��\\cm��I^�k�Uc��!�&i�\u0014��V�\u001a���Q�^�5��\u001a8F�j:��]�U������Pn�\"]CV�=j�\u000b���\\\u0003?+��5�\u000e�*]C�MҲ�u�U����{Ԧ\u0017r����\u0003��j\\\u0003ﱬ�5$�$-�Rz�5d�ݣ6��k��5\u001e�5���\u001c��|Y�kH�IZ,��t\rYy��M/�\u001aks�\u0007t��83�'�_V�\u001a�n�\u0016C��']CV�=j�\u000b���\\�\u0001]c=���)��U������R\u001a��5d�ݣ6��k��5\u001e�5V3�k�t\rI7I��\\JO����{Ԧ\u0017r����\u0003��z��c���*]C�M�b(�']CV�=j�\u000b���\\�z�\u001dg�|Ր�!�&i1��{�5d�ݣ��/�̯��\u0003w�3?\u000f�\u0000-�\u00045�4.\u0016���{���+M�����!���y�\u0003��{�\u000f���$G��O�b�I����,��\u0018r�5�{h\u0006B��k!@[|��n�'q��$G��O\u0016�]\f9�Z�=�\\���൐�r\u0016����I\\\u0000�m,���n��a�1���ah9R׿\u0007��\u000e�Orԍ�$.�9G��O\u0016�]\f9���=�-G���`\u0004\u0005o�Z|��n\u0001(q\u0001�9�.����b�1�\b�aj9R'�\u0007�*�H�A��ƛ�\u00050�d{�����.�\u001cc-\u0001\u001f�#�\u0004|0���)���\u0016�7����N�A��.��\u0018r�5\u0007|XZ��\u001d���\u000b��\u0003J�i\\\u0000��=\u0002e��ŐcHc�_~ˑ�\u0004>�:Gi2\u001ao\u001a\u0017����\u0019]|w1t׎�L�N�swr�̛\u0016��+��_iP�J�r�)�Wz��Ҥ��]ʃm�Sˑ��\u001f������^�T�J��Wz�ˇ_�׺��Ү�M>\u0013lX�:��ܱ�4��GܧWz��Ҵ���寴-�o�+���ֹ<غ��.�w�i��͹/��寴/�����&�����\u0016�o�a\u001elb޺�����4����+}�_id�J'�}�^�43[7�`;��ϼ�~�����Q��+-�_�i�JS�W������m}̓��[g�;��F�<\u000f���+��_�n��V��J�W\u001a����y��y�q�s�s�\u0012\u001cO���J��Wڜ���\\���J��WZ����y��y�v�s�s�\u001c\u001c/��J��W\u001a�����b\u001e��g^iz��������y�}�M�p�^^�+��_i}�J�s�9G�3��?S��\u0014k��Z\u0007��:�'�0\u001c�\u0007��6~�xӸX���u\u001ft]|w1�\u0018��\u000b��^�ɴ\u000eGm�$�\r]�M�b1�\u001fuGt]|w1�\u0018��\u0015�����4\u0011��\u0018�$;�_5�4.��gtot]|w1�\u0018��\u001f����ɴ\u0013��j��;�k�i\\\u0000ӼGwI��w\u0017C�1�i��{ꔞLcq��{I�W�ƛ�%�v�I�K��w\u0017C�1�i=�{ꙞL�q����\u001ao\u001a\u0017����\u0019�:�Őc�gZ�����'�l�\u001e�t�t�7�K�-ԓ��.�\u001cc>�����G=����;�k�i\\\u0000s��gt;u\u0017C�1�i\u001d�{ꨞL\u0003r\\N�$�S]�M�\u0002��ắ�.��\u0018r��L��So�dZ��~\n�]]�M�t���;��⻋m��&�uY��z2M�q��%�>�\u001ao\u001a\u0017��~���.�\u001cc>�����o=�z���q��}Fw]��w\u0017C�1�i��{꼞L��\u001c�����\u001a\u0017�Or�>�\u001b��\u0018r��L���S\u000f�dZ��6�K�]�5�4.\u0016��k�3�\u0015��!ǘϴn�=ucO�y9�\u001fu?v�7�K�-ٓ�ɮ��.�\u001cc>����ԗ=�6�=�tgv�7���|�Lwg��w\u0017C�1�i\u001d�{�О��9� ���.�\u001a\u0017�|@j�ѝ�]\fAƄ�5k�Y{���3ݮ]�M�b��\u0001��F�lw1�\u0018\u0013�ֶ�����t9?�Q\u000b��ܮq\u0001L\u0013qݼ]\u0017�]\f9Ƅ�5p敏{2��Or�B�{�k\\\u0000��B������\u0018��Z+��Z�'���'����ƛ��b\u001e׺��.��\u0018r�\tMk��SS�dz�c7�K�m�5�4.\u0016�\u0004R�v��w\u0017C�1�i��{j\u001b:� u�w�7�K�Mޓ���.� cF�:����=����\u0010��{�k�i\\\u0000s��ht�w\u0017C�1�i=�{���L�t�\t���k�i\\\u0000s��ht�w\u0017C�1�i��{���L���\u001c���\u0006�\u001a\u0017�t'W����w\u0017C�1�i}�{�\u0003�L�tj��t'x�\u001d\u0005���b\u000eR\u001b��\u0007�b\b2f4�%|O-���N[\u0001\f��[�n�a��|�$e\u0007��[�cuJ�MN\u0013�\u000e�Z{����'�N�؆�Di�>Q���\u0014�^��}�:E�&����O�W|O��\u0013�V�y��+ei�Z�Diy�,�Z��\u001a�\u001de�&��5�O�s|O��m���%���\u001ao\u001a\u0017�yN�\u001b��⻋!Ș۴&�=5�O��:\ro�F^�M�t'��[��⻋!ǘ۴v�=��O��:��I���ƛ�\u00050\u001f�ZmtWy\u0017C�1�i��{j,�l\u001fv�t���\u001ao\u001a\u0017�|@j��\r�]\fA�ܦ����|�-��$�f^�M�b1��ѭ�u���\u0010dLnZ�����'۝��\u0014��F��׸$�t>����b\b2f7��|O��m�~rDj����5.I��O�\u0001�.��\u0018���MkB�S\u0013�4��\u001a݆^�M�\u0002�O��mt/z\u0017C�1�i��{jG�L���k�^��\u001d�5.I��O�)�.��\u0018r��MkL�Sc�d�����/�gJR����\u0017��<�쁢�^�[Ի�F\u0019kR�Z�����'h\u0017O�\u0003�a<\u001d��\u0013f\t��,-����'ݰ�ŐeLmZ���z�'۴����{|OQZ>P���\u0014�ފ���'ݽ��\u0010e�nZ\u0003��\u001a�'���䰴�1Q��ϔ��4�m'{�z�V��W\n�M�\u0013kg�Z?����'��\u001d;x^�'\n�r��\u000b��0�3\u0003��\u0003�i�Hi��sb��S�o�S�d��c\u000f�\u000br��\u0000_(M�WJS>�\u0019��i\u000e�\u001c�o��X��������>���x\"� �c�\n\t_�L�@׫9��\u001d����Y��w���L�w����4����\u0016'�\n\\��*\u0004pZ���z��'\u0007���0��L1癚����d{���jd���ƛ���ˏ��&�r~e��I{���LM{�_6'�H\u001eox\\�/���+�i8�*-�i\u001db��c��q�&��b�35���iN����$S�U�xӸ\u0000� ��\u0000��M�3��gn想��l�y\\�� �ӥl`�i\\\u0000����{d��Őd�{��=8?�ɶ��u�\u000b򁒴|�(-�(K�e;�/<�i��oR�9�>sS\u001f���d���e\\6��j�i\\\u0000�5|��#��.� c�37���IN�\u0013=ߵ�����\n�ʵ!�i�����zig�K;\u001e�$c�37�A\u001b��v�狎�i�xӸ\u0000�CR/��⻋!Ș���v�CN�A=��\t8\u001f�zmG�b��yR��,��\u0018�����\\\u0007o��d������'Aڷӽ6�t��r�R���zu��\u0010e�t�f:x�0'ӹ���%�����q\u0001�9�mu|鶜/�o\u0012�9&:s\u0013\u001d\u001cA9�.��.�u��=J��#q�����rd���\u0010dLr�&9x+<'����ڭ-G�M�b��iR[�,���\u0006��$gi��w\nr����6�����+p6ox?�][��΢-gі�a�2f9K�\u001c����mt����\u0000�cR�M�\u0002���k;���b\b2&8K\u0013\u001c<\u0013�d{��Y�r|L�\u00159��\u0005NK���rю�h��0d\u0019s��9\u000e\u000e�\\\u000b\u001d�+M�\u0016�{M�M�\u0002�\u000fJ�8���b\b2�8KS\u001c�cs-t\b��\n-Zq$�4.\u0016�\u001c�Zqd���\u0010dLq��8��\"�B2H���ڢ\u0015G�\u0002��݋V\u001cY|w1$\u0019S��)\u000e�\u0007s-tW\u0018Z�08�Sî�9H�}�`�\u0004-Zpd���\u0010dLp�&8�a2�Bw��#R\u000b�ě�\u00050�\u0006Z��5Y|w1�\u0018ӛ��\r��\\\u000b�\u001c��H�i\\\u0000s��nd��Őc�n�f7��<�B*G-7\u0012o\u001a\u0017����\u001bY|w��q�����\u0006��\\\u000b\u001d΀4�\\�?\\5�4.�i�j���w\u0017C�1�Y���z��\u000eA�- �@\u000b�4�r|�r���?���Uۍ�!˘ݬ�n��r-��q�\f�U��H�i\\,�m\u0003�6\u001bY|w1�\u00183���\r��0�B��\u000f�m-6\u0012o\u001a\u0017�4�Y���⻋!ǘجMl�G��\u0016Rǣ�\u001a�7���'ǣ�\u001aY|w1�\u0018�y\r�08�B*G��\u001c�7���'9j���w\u0017C�1�Y���\u000f�s-��qܴsU�p�xӸ\u0000�q��F\u0016�]\f9ƤfmR���ϵ��JK���\u001a�7�\u000b~8\u0005��F\u0016�]\fAƬfmV�\u000fOȵ�\u001a��j$�4.\u0016�\flm5���b�1f5k�\u001a|HE��\u000e�\u0004�B~�Z#�q\u0001�#[k�,���\u0004�=����� Qkj!\u0011$p\fR�M�\u0002\u0018�\u0004�A�⻋!Ȑ�<��\u0016$jM-$��+6\u001ao\u001a\u0017�\u001c�t\u001a]|w1\u0004\u0019r��߂D����7,�m�I��i4.��R\u0003�s�N�b�1�4�/��s|�n���K��'9J�ѸXL�\u001ax7�(��Őc�i�_~�\u0011��\u0016z�8�!���\u001c��h\\,>�Q:�.��\u0018r\f9���o9���B/\u001fG\r�,>�Q:����\u001c���⻋!ǐ�<���#:M-t�8ڲ\u000b���R�q\u0001�\u0017\u001a)5���b\b2$5�/�\u0005�RS\u000b�\u0013�t\u001a�7�\u000b`�3\u000e�s�N�b�1�4�/��NS\u000b\u001d.��-\u00008\u0007)�F�\u0002���R���.� CR���[�(5����Ļ�\u0016��(�F�\u0002�\u0007�t\u001a]|w��1Ŝ&=�\u001c�i�q�Ows-�\u001c%�4.��xLZid��ŐcLiRj9��$�\u0005\u0017��\u001ao\u001a\u0017�\u001f\u0001s��h<\f9ƌ&u-G2�d���{�,>�Q\u001b���b��$m4���b�1f4�\u0019\r��ε�:\u001e��H�i\\4~\u0004�9j��0�\u00183�Ԍf!�I�G.�4I+�ě�\u00050]h�V\u001aY|w1\u0004\u0019S�Ԕf!�IZi�V\u001a�7���'\u0003[+�,��\u0018r�)MjJ���$�c~�瓴�H�i\\,��g�n\u000eR+��!ȘҤ�4\u0018T��^>��%Z|��V\u001a�\u000b`��h���w\u0017C�1�IMi�\f�k!5���H�i\\\u0000�=Ȥ�F\u0016�]\f9ƌ&5�A�˵�\u001c�Zi$�4.��\u0014�V\u001aY|w�\r��)Mה\u0006W\u000fr-��q�|\u0010�9G�7���|����⻋!ǘ�tMip�:�B��M��:�4\u0012o\u001a\u0017�Or�J#��.�\u001ccJ�5��Mt�\u0016�+\r\u001f�Zi$�4.��B�i���w\u0017C�1����f�\\\u000bݏ\t�u�i��xӸ\u0000��Q+�,��\u0018r�)Mה\u0006g6�\u0016:���O��F�M�\u0002�\u000fH�4���b\b2�4]S\u001a�}�k��w�e�N;�ě���3�v\u001aY|w1\u0004\u0019s��9\r�\u0007ϵ���t�i$�4.�9H�4���b\b2�4]s\u001a\\�ϵ�!H�fk��xӸ��S�Zjd���\u0010dLj�&5�S�\\\u000b��>|��R#�q\u0001�9j���w\u0017C�1�����\\s-t�l>\u001e��H�i\\,�>�v\u001aY|w�ͱ�9Mߜ\u0006\u001a�k!�c��F�M�b1��k���w\u0017C�1����O�s-$���N#�q\u0001L��N#��.�\u001ccN�7�����Z��]��Y��F�M�b1�*\t��Aj��0\u0004\u0019���I\r.h�Z���xcE��F�M�\u0002��⽖\u001aY|w1�\u0018���I\r>�$�Bw��\u001c��`G5�x\u0017sC�\u001d�,?9Gj���x\u0018��iMߴ\u0006�-�k��w%���H�i\\\u0000�l��Z#��.� cZ�7���\u0013�\u0016Rc[[�ě�\u00050�mm5���b�1f5}�\u001a�C�k���э�^K�ě�\u00050_����⻋!ǘ��Mj��y�\u0016:\fl\u000eR[�ě��b�_�k���w\u0017C�1����3\fs-t\b�6\u0005\u0000�'� �^�ȱ\u0017��'Yj���x�f9��fhf�\u000f|̵���M�~\u0006m6\u0012o\u001a\u0017�y\"9h���w\u0017C�1�\u0019���\u0013Js-t7\u001b��\f�l$�4.\u0016��8h���w\u0017C�1�\u0019���L1�Bj�3h��xӸ\u0000� ���⻋!Ș�\f�l�9˹\u0016\u00123�A��ě��Ⓛ��F\u0016�]\f9��fhf�ϳε��e1��\u001a�7�\u000b`��\fZkd��ŐcLk��5�[�\\\u000b\u001d\u00066ݲ\u0018��H�i\\\u0000���Z#��.� cZ34�����\u0016:\u0004I{t\u0007�5\u0012o\u001a\u0017�Y�\u0007�5���b\b2�5C�\u001al��k����{\u0012\u0017�Or�^#q��\u00110稽�Ðc�k��5ئ\"�B��=_j��H�i\\\u0000�)R{�,��\u0018��y�м\u0006���Z�\u0010$>��� �r��\u00050\u0007��F\u0016�]l�\u001ccR36��ge�Z�\u0010$M\"Gm5\u0012o\u001a\u0017�p:E��jd���\u0010d�j�f5��'�B�I$�\"Gm5\u0012o\u001a\u0017�t�\u001e���⻋!ǘՌ�j�^c���9��\u001e�\nv@E�]\u0019�cW\u0006�\u0014���Q{��!ʘ׌�k���\u0016�_��b3Z��\u0006�ȱ\u0001*r|r��|�\u001c�ڌZm<\fQ��flj���r-t��<�\r?\u0019ߖ�\u0003Ǒ�\u0003�-?\u0019�ZoF�7\u001e�,cz36��^}�\u0016:|W��\u000b\u001c{}!�^_ȱ�\u0017p�R\u001bΨ\r�Ðe�p�f8ئ1�B��B�m1u1G�\u001d��c�*�O\u000eK�8�v\u001c\u000fC�1�\u0019���n�\\\u000b\u001d&#|��\u001c��\"�\u0016�ȱű�'�K�9��\u001c\u000fC�1�\u0019����Sr-t����\u0000��\u001d�Ӳ\u0003pZv\u0018�\u0012ΨUgԪ�a�2�:cS\u001d왛k��w��A�iÀ��,pCN\u001b\u0006Fm;���Qێ�m�S�v�f;؟8�B���+��\u001d���\"���ȱ�1p�I�Τ}��\u0010e�w��;�5;�B�y:��\u0019�a[�+r\u001a��i�Oz!g��3i��0D\u0019S��)\u000f6(ϵ�����\f���\u00159>:\u001b8~|��/�V�I+��!ʘ�L��w͵����\u0012��tP_��5\u001c8]�'�<�V�I+��!ʘ�L��a�k!\u0015�1\u0016�\u0002\\��,\u001d8��'��3i㙴�x\u0018��\u0019�4���r-t�����<�-�\u0011n8u/��S��x&m<\u001e�,c�3M�\u0017�\\\u000b�?�o�\u0019N���y�[�C|�ǥV�I+��!˘�L��E8�B��J�t�|\u0011��/��E�p��6i噴�x\u0018��)ϴ���r-t��4M��dBd��c�pܥP,?��[\n            <Q�V�VJ�M�3ŤgZ�gҹ\u0016���L�H\u000b�&�\"�Qn9�r���IK���S\u0016�\u0017�\u001c����\\[r-$��]\u0002�[�S�c�tK}V��\b�����]\fQƬgN�2�k�������b�g}EN�ԁ�-u�9Jm=��\u001e\u000fC�1뙻��\u000e�\u0016:|W��[N=<��-u�tK}��c1��FNc|~���1����9�B2M���W�<�-�A�\u001f;0k��x\u0018������\u0007��Z�����\u0003\u0006�oį�y�[΃\\�Ϭ�g���a�2f>s3\u001f�\u0011�k!\u0015�\u0011\u0013|��\u00158.an��ޥ�'Qj��x\u0018������\u0007�y�Z��]��c9�p�y�[�#\\�Ϭ�g���a�2&>s\u0013\u001f\\_ȵ�}Fć��\u0012\n                <l��y�[�#\\{Ϭ�g���a�2�=s�\u001e�y�k��w�\u000b������/��e\\����$K���a�2f=s�\u001e\\\u0002̵�:[\u001a)�_E]��\b��G�^陵�̎��\u001e囜g�9�Ҝ\u0007��s-$�4�\u001e�EN#\u001c8�p�9�E;Ϣ���\u0010e�y��<���k��w�\u0011n8�~�\"�\u0011\u000e�F���\u0003�EKϢ��ÐeLz�&=xjϵ�:,;\u0013\u0005�p�4�\b7���K=�^��0D\u00193��\u0019\u000f�=ɵ���7Q�\b��G��<��RϢ�g���a�2&\n                    <K\u0013\u001e�cs-t��<�\r��m�y�[�#ܮ\u0005Q��x\u0016m<\u001e�,cƳ4��-U�\u0016:|\u001c�\u00076�:{_��\u0010������΢�g���a�2�\n                        <KS\u001eܩ�k!1M7�Ƿ_��\u0010����6�E\u001bϢ���\u0010e�x�f\n                            <xX�Z�p\u0011�����x��\u0002�\u000bۆ�L��!��g���a�2�\n                                <KS\u001e\u001cC�\u0016r����=NM��i\u0017\u0011p�E$?�\u00110G����\u0010e�x�f\n                                    <x�˵��r5QТ\u0019pZ�\u0004N\u000b���\u001f\u0001s��,�x�m�kLy֦<���ZH�-\r>\u0019��]�\r9�\u0005^��U+Ϫ���\u0010eLy֦\n                                        <8aɵ������\u00059-?\u0002��G��h8_yV�<�V\u001e\u000fC�1�Y�����Z��]i�\u0001p\u001a��i�\u0003�1���o��v�U;��!˘��yp\"�k!y\\ZN\u001b���&\u0003�y�થg�ҳj��0d\u0019���I\u000fN�s-t���K3�t\u0019\u0007N�q�t\u00197��|��g���a�2&=k�\u001e��\\\u000b\u001d�+�.��L\u001d8�ԁ�L��,���Zz<\fYƤgm҃7&r-t\u0018c|\\\u001ak�̀W�\u0019pCN3�U[Ϫ�g���a�2f=k�\u001e�ߕk!���\u0012�}��=o\u0016\u0004��q���U[Ϫ��Ðe�z�f=xo1�B���\u000e��������6\u0004\u0003�\r����6�g���a�2�=k�\u001e���k�����\u001b�c�W�\n                                            <U���꫎RkϪ�iw���\bY���oQ���B��\u0000��+r�u�\u001co]ZNK�\u0016S��1J\u0017C�!�y~��oE멅�ߕn\u0003[�gKx?n�ܐ�\b�s��z\u0000s�o���!d=�/���h=�����oz,�q��\u00159J\u000fr�\u001e�Iz,>�RJ��!ʐ�<������\\\u000b\u001dn�P��Yp��\u00159:\u000fp�gX���\u001a\u000e�����b�2�<�/�E��S\u000b\u001d�+·��� �\u0011n9�p��\r0g)��Őe�y�_~�\u0012��\u0016z�8zj��=�\u0001��y�[�#\\*��'QJ�q1D\u0019R��ߢD婅�\b7Ƃ\u001b&��y�\u001b��\b\u000b|<\u001f��x\u0000s�o1��!d<�/�E��S\u000b�g�|\t7BtE�\u001c��r��\u000e�����b�2$<�/�E��S\u000b\u001d�+޸D�#�r\u001e��\b��\u0003�����b�2$<�/�e��S\u000b�?\u000e�&,�q��\u00159�p�q�a���(��\u0000�(�$<)&<�EI\u001e�ai9n��\"�!\u000e����e�Ɠ��x\u0018��\u0019OJ-K2�d���C��)�\u001c�i �{\u001a��f\r���6\u001e\u000fC�1�I]˒�'\u0019%�\u001f�#�1\u000e�Ƹ�\u0003\u001aW����ʓ��x\u0018��)Ojʃ�\\\u000b�'w�cR�\u00074�+r\u001e��\u0018���\u0001�Yj��0d\u0019s�Ԝ\u0007�\u001d�\u0016�����\u001cL\u0014<�-�!n9\u000fq�\n                                                <I+O���a�2�<�)\u000f�Hr-t?,9��DA����mK�x�\u0012>�&�I+O���a�2�<�)\u000fN�r-t����\u00059�p�y�[�#|�Yj�I�y<\fYƜ'5���v��\u000eߕgDf��v\u0018��y�[�C|�gK�\u0014\bI�\u001c�\u0011\u0001wӌiOjڃ��\\\u000b�?�z�X>�]`�<�-�Q.\u001fd\u0000��L�=\u001e�,cړ���\u000e�Z��]陂�y�[Σ�r\u001e��\u0017?��������6�.�=]�\u001e���k��w�Q\u000e�F9p�q���q�i���x\u0018��yO׼\u0007o��Z��k.\u0016\u000f�\u0015������6��?�\u00110G����\u0010eL{��=x�0�B��J\ni8?]\u0003�OC\u001c8\r�N��#`�Rk��!˘�tM{�Fm��^>\u000e��^,\u001e�BzEN�q�t\u001d7��D���N[��!ʘ�t�z0�\\\u000b\u001d�+�Ձ�\u0010�����S�r֞NkO���ÐeL{��=�Ԓk��w�!n9��\u0001�U3�jf�ɕG{O���Ðe�{��=���k!u�1ڂ\u001b\t���\"n9_���?\u0002�(��x\u0018��iO״\u0007W\u0010s-��4�B\u000f\u0015D�#�pz����G�\u001c�^��0D\u0019s��9\u000f�K�Z��]y�[�#�r\u001e��\b��c1\u001b$p2��M��Ŭ�kփ�\u0000r-t����\u00058�\u0006F�����n`��z:m=��\u001e\u000f�,�����zp�E���\u001f�k�\u000f���\n\u001c�)l�q7�����y|d\u0002�#����1����zN���)��\u00017�]��0\u0007N�\\~�#`:0�w\u0017C�1���ඨ\\\u000b\u001d�+\rr�4ȁ� \u0007N���^EYj���x\u0018��yO߼\u0007���Z��]i׆��(<䴉\u00158mb��rO�ŧ���a�2&>}\u0013\u001f<.r-t��|´�$\u00128I$p�H�y\u0019��\u0013�\u0015#|\u000e+p7͘��M}p\u0014�Z��q�o��\u0001�銜�\u0005\u0003�{��^�����|<\fQ�̧o�'�\\\u000b�k�1\u0017��tE�c�r\u001e��|zm>\u0016�\\�ߤ>}L}��>xqɵ���ѳ_,\u001e�Qx��\u0019\u001b��\u0019\u001b��͍^�O����\u0010eL}��>8'ɵ��r���\u0010�����<�e�\u001e�O���=\u001e�,c��7���_���ߕZ�#��\u001e�t/\u00188�\u000b<\u0002�,��x�f9��gh�s�\\\u000b\u001d�+-�\u0000�;E��N\u0011p�S4��A/�\fz��ÐeL{��=(q�\u0016z�8�^\u001a<��,�t���wf\u0019�W�AkϠ���\u0010eL{��=�˹\u0016:|W�S\u0004�\u0014\u00128)$pRH�O\u000eK�=��\u001e\u000fC�1�\u0019��ཉ\\\u000b\u001d�+)$pRHऐ�I!\u0007�=�֞Ak��!˘�\fM{�W��\u000eߕǸ���^���\u00128M/\r?�R��\fz��ÐeLz�&=x1�B��J\n\t�\u0014\u00128)$pRH���۠�g���a�2f=C�\u001e���k���C۾X<�f\"�4�\u0004N�K�y�>h�\u0019�z��!ʘ�\fMz�y���ߕ7\u0013\u0001��%p�]\u0002�٥�'����A[��!˘�\f�zp�%�BB \r\u001e�J��y�[�#|ч���AK��!ʘ�\fMzpm+�B/\u001f�?�7x�mUW�<�-�\u0011n\u0016{xr��g���a\u001b�\u0018s��9\u000f.#�ZH\u001c�\u0006���ꊜ����\u001an8\u001f��V�Q+��!ʘ�Myp�6�B*J�,��ꊜ�\u0010\u0001�;D��D��g���a�2�\n                                                    <cS\u001e\\�ϵ�}��oJ\r\u001fq[�\u00159MӁ�4�~>]wF�<�V\u001e\u000fC�1�\u0019��ঊ\\\u000b�M�\u000fKc,���\n\u001cw]m�i5w�;�Fm<�6\u001e\u000fC�1�\u0019�����\\\u000b\u001d�+�CA�C�r\u001e��\u0010�;�Fm<�6\u001e\u000fC�1�\u0019��ඨ\\\u000b�\u000fK�,h�H�oC�#�r\u001e�M\u000f`�R\u000b��!ʘ��Mx0�\\\u000b�?�O�FX��m���m�~��|\n                                                        <y���g���a�2&\n                                                            <c\u0013\u001e\u001ca�\u0016\u0012�h�H�^���\u0000'�\u0019�*Ϩ}gԾ�a�2�;c�\u001d<��Z�p{��4��݆�|\u00078�Ψ}gԾ3j��0D\u0019��\u000e^7r-��q���⑞݆�|\u00078�Ψ}gԾ3j��r����|\u0007/ѹ\u0016\u0012Q\u001a<�ۀ��\u0000'ߙ��:�rҾ3i��0D\u0019��\u000e��r-t�.t���\u0011�.��i6\u0004�fC���3iᙴ�x\u0018��\t�Ԅ\u0007gѹ\u0016:|W��\u0003�!\u000e��8p\u001a���6iᙴ�x\u0018��\t�Ԅ\u0007�%�B��[�.��\"\u000e�.���\"n8_y&m<�6\u001e\u000fC�1㙚�\b�Z��]�|i9-�\u0003�%q�$>�5�I\u001bϤ��Ðe�x�f\n                                                                <x�!�B�_s���Q�����\r8\u000fq��9Jm<\u001e�(c�35���;�\u0016��#��\u001a|�{q�G���iL�x&m<�6\u001e\u000fC�1㙚��m�\\\u000b��C\u0006���6\u0017\u0000��\u0005��D��g���a�2f\n                                                                    <S3\u001e�C�k��\b�(\r懷\u0001�s��|��Mz\u0000s��x<\fQƌgjƃ7�s-��4�\u001f�\u0006��\u000fY�\u000fo���<\u0002�(��x�F9ǌgnƃK,�\u0016:|W�>\u0004�F8p\u001a��i��Zyf�<�V\u001e\u000fC�1噛��rV��^>�\u001e�n��\u001b\u0004��\b\u0007N#|ֻ�fm<�6\u001e\u000fC�1㙛���a��\u000eߕ\u0016q��]K�'�\u0001�!�k��\tx��3k��0d\u00193��\u0019\u000f.H�Z��]i]\u00028�8p2q�d���6k㙵�x\u0018��\u0019�܌\u0007\u0017�s-t��4!\u0002NsK�4M\u0007N�t�OƸ6�Y\u001b��!˘���xp�E����\u0018<�\u0006A�t�\r8�l�\u001f�\b�����a�2f\n                                                                        <s3\u001eܾ�k!\u0015�\u0011\"j�G��<��Oyfm<�ݻ�!ʘ���xp�T��\u000e#�'Dƈ��+rZz\u0004N�e���6k噵�x\u0018��)�ܔ\u0007/��\u0016:|WZ{�\u001cOgW�<�-�!�Wyf�<�v\u001e\u000fC�1癛��f�\\\u000b��Z���>b�n[\u001a>Q�W�\n                                                                            <O_u��yf�<\u001e�Q.1�Y���a�k��w����'\u000f����D\u001d8M�\u0017��m�γh��0d\u0019s��9\u000ff�k��w��r�RB�\u001ex?�����E/�,Zz\u0016-=\u001e�,cҳ4���]��\u000eߕ.=��Ł�\u0018\u0007Nc���RKϢ��ÐeLz�&=xiɵ���\u00187�/=�~\u001e��\u0018��<���EK��!˘�,Mz��͵�]�ivi��On\u0003�C�p~rۢWy\u0016�<�v\u001e\u000fC�1�Y����/�B���C�r\u001e��\u0010�����ضh�Y��x\u0018��I�Ҥ\u0007gڹ\u0016�W�\u000bl1?�\r8�p�y��_�,Zz\u0016-=\u001e�(cҳ4�A�˵����]\r���m�y�\u001b�On[�2Ϣ�g���a�2�\n                                                                                <Ks\u001e�cs-t��<�-�\u0011n9�p�y���\u0017�?.�y\u0016�<\u001e�,cγ4���\u0012�\u0016z�8�Ž�\u0013n\u0002�\"�\u0011n9��U\u001f��y\u0016�<\u001e�Q�1�Y���_�k���;i�c���\u0000��i�[�[��|�\\���y<\fYƜgm΃w\u0016s-$.<\u0016�.�+r�A\u0004�v\u0010\u0019~\u0012�V�U+��!ʘ�My��r-���r�\u0005xEN����>`�y��ZyV�<\u001e�,cʳ6����\\\u000b\u001d�+\u001f���\u000f\u001f����6\u0001��&V�<�V�U+��!˘�Myp\u001d&�B�_s�x���\u0001�\u001b���ƥ��G�\u001c�V\u001e\u000fC�1�Y����W��\u000e�\u0005���\u0013n��\"��\t�8a?�v\u0018�ZyV�<\u001e�,cʳ6����\\\u000b�'D4�\\�\u0011��\u0004pZ�\u0000Nk\u0013���㪕g���a�2�\n                                                                                    <kS\u001e\\�ε�P\u001e�q��\u00158o\u0012\u0004N\u001b\fV�<�V�U+��!ʘ�Myp\u0003@��^>�����+�<�s�W�\n                                                                                        <!�\u000f�^��Zy<\fYƔgmʃ��s-�.<FYp\u001aE��!�y>����Zy�w\u0017�(����<��V\u000e��\u0016:|W<,��� G�\u0001N�\u0004-'\u0013���\u0004�Y�\u0018�\f)���o�Pyj����k�ż�h��\u0017�\r9·�>E)�\u00070G�\u0016�\u0019\u001eB����[9T�Z�\u001f�\u0016��t�'�p�\u001c�\u000f�\u0004�QJ�q1D\u00192����\u000e\nO�s?(qw��|�\u0001N�r���r�\rY|���\u001d\u0017C�!�y~yM\u0012u��y�4Z��lx\u001b����\u001br�WZNSt����\u001d\u0017C�!�y~yM\u0012m��QI��G��X>ѓ--��ɖ��$)e\u00070'�\u0016�\u0019\u001eB����$�N�s�*�\u0003R�Ϣ4\u000fz�Kچ��9�g<�9J);.�(C����\u001a%�N�s��\u001c��\u0019\u000e��\u0019ߏ\n�\u001c\u0015�r�3\u0004�����b�2$;�/�Q���:2�#�q\u000f�\u0015ߏk\u0012�qM��(��\u0000�(��:�C�u�_^�Dթu|\u0003\u0007L�\n,�i+5r�]i��DH��~��b�d��N��\u000eN�s�s�4\u001c�\u0017�4�%�4.��LZsd��ŐcLs�MsPCr�s?dxn��H\\5�4.�9G�8���b�1�8��8h���y�4�#],>�Q�M�\u0002�f@I��,��\u0018b��M�O\u0005&�:�#��;)��j�i\\\u0000s��nd��Őc�n��n�FN�u\u000e�\u001ao�[~���\u00050M#�v\u001bY|w1�\u0018s�ts\u001b�a�k�C��C2�4#\u0007N�Ȥ��h�\b���n�aH2�6��6x�5�:��\r\u001f�J\u001e�\u001ao\u001a\u0017��^Z�^#��.�\u0018c^�n^�'�\\��\u000f(>\u001e�8\\5�4.\u0016��ݤ�F\u0016�]\f1Ɯ&ݜ\u0006\u0017\rr�s8E�uFY�U�M�b��ᨅF\u0016�]\f9Ƅ&݄\u0006סr�s�#A7$�+Fc�L��GN7$��s��h�6\u001a\u000f�(���t7��%�\\�\u001c�*M!\r�9Jx?�!p�C����i���x\u0018��IMw�\u001a\\iε��$IR\u0003��X\u0000��Y�:k9{M����^�a�2�5��kpQ?�:�\u0001���,��!��i|\u0003��m�I�Zm:�6\u001e�$cj���\u0006�O�Z��c.\u0016��)\r��\u0017v\u001brZp�\u001f�\b���r�aH2&7�MnpON�uT�f�\u0017�\r���w���w��\u001f\u0001s�Zo<\fI�����\r�~ʵ��Ҭ��Ҿ�O���R�6\u00070G����\u0010e�o����F�\\�|\u001a��\u0019|��Y��f\u0007�i��p��wZq:�8\u001e�$c���\u0014\u0007w/�Z�p\u001b��\u001b\f���\u0001r>SZ�gJ��\u0014�֜Nk��!ʘ�t7������QgJ��B�\u000e�S�\u0003��O�#`NR���!ɘ�tk˂����,>\u001b��c�G�\u001br>QꕛN{�|��b�d\u001f�����-�\\�\u001c�*�,\u00079��\t9-'\u0002��D�y\u000fK�=�מ�a�2�9}j�FQ\u001a\u000f�'d ��m95:\u0000��h�I��sz�9\u001e�(c���<\u0007��k��O;9(���\u000fI���\u0006N��p�|��sz�9\u001e�$c���<\u0007\u0013�k��W�(�|@%���I\u0019��2�Ztz-:�ݻ�!ʘ��CS\u0015���\u0000ݤ4�,I#2�c�\r9M�z���k���x\u0018���N\u0013\u001d�!X�u\u000eg2\u0012\u001d��W��`CN3�^oR���Zt<\fQ�D���\u000enRɵ��T�G�\u00058oR3|�߂\"�S夣Ԧ�k��0D\u00193��f:�S�\\��=���\u0011\u0019�\u0017�����{�z-:�\u0016\u001d\u000fC�1��o��_5�:��7�\u0010��\u0019\u000f�+r>UZΧ�E\u001f��tzm:\u001e�(c�ӯ�U(ʣ\r�\u000e\f��\u0007w��8=؀�D�X~r�Ѧ�k��Mr���p3\u001d<��Z��i�G���n �3%p:S\u001a΋c�6�A���!ʘ�\f7���g�u��6|�\u001b!W�4�4���O��Q9h�\u0019��x\u0018����p3\u001d<�r�s��6�\u0002�_�\u0000�uF�{z\b��\n                                                                                        <?\u001f���w�.�(c�3�T\u0007��\\��?�\u0016�\r��\u0007���\u0007���x�+��6\u001d���Őd�t����1�:�(h~\u000e\u001c\u001f!��~\"fx��b���֪3h��0D\u0019S��:hu��9DA�\r��\u00118�_3��\u000b��'Qj�\u0019��x\u0018����pS\u001d���k��O�5\u001d�g�<xE�g��$��[>c\u001a0'�M�Ðd�t����M�\\����\u0019�\u0005_������f�\u0004�Ij��0$\u00193��f:x�,�:�(�Li9�)-�3��5\u000f^���,��6�A���!ʘ�\f7������9D�gJ��Li9�)W\u0013%��W\u001d�V�A���m�cLuƛ����\\�\u001c���9pZ\u001f\u0003N�hxO��,�(G�:�V\u001d\u000fC�1�\u0019o��K\t�ֹG���.�/�{�+r�\u0011(p��\u001b�K\u0011�V�Q���!ʘ���\u0005:�:/�������\u0001��k���ڨ7���tFm:\u001e�$c�3�L\u0007W\ns�s��$��i*\u0004��B�ɿ\r�I�UgԪ�a�2�:�MupQ6�:��2|�<���\u0003��m9�o��Q�ΨU��\u0010eLuƛ�`T��9|U�)\u0004��\n\u0001��B�i�qԫ:�V�Q���!ʘ�7��]\u0013�֑\u0003�p~F\u000bp\u001e��ux�vԮ3jב��]\fQ�\\g��\u000enPɵ��\u0002�W��$E�c9�ؐ�R��'�J�:�v\u001d\u000fC�1�\u0019o���.r�s���k'�|\u0001��/���\u0005\\�PgԮ3j��0D\u0019s���:��,�:�����r\u001eߖ����/�>Uj�\u0019��x�F9�\\g��\u000e��˵������\u000brZ�\u0001N�:�I\u001b\r�\u0001>iי��x\u0018����ts\u001d� �k��\u0000����\u000bn��\"��7p��\u0018�\u0007�UgҪ�aH2�:�Mup+n�u�F\r�-_pS�\u00159�o�4�\r筀�v�I���!ʘ�L7����k��T��4\u0018�%��i~\u000e��熟$�UgҪ�aH2�:�Mu�ɵ�˧���ɚ\u0010�(��P�\u0017�t�|ҋ:�6�I���!ɘ�L7���k���$���i�t�\u00128�^���ΤEgҢ�aH2&:�Mt�k\u001d���\u0018����nTZN}_�����=gҞ�aH2�9�ܜ���-n�F��\u000b�\u0006�� �y\u001e�EgҢ3i��0D\u0019\u0013��&:8�ɵ�ᨠ\u001b\u0019�/�(tE�\u0013!�y\"$;����Qj��0D\u0019\u0013��&:8;ε�����c�/8Q�\"牐�<\u0011�OD�(��LZt<l��c�3�D\u0007E$�:�\u0001N�h�P\u0004N\u0013!�4\u0011���ά=g֞�aH2�9��sP�r�#<�b>S\u001a����\r9'�L�\u00110'�=�Ðd�s��\\�Z��U���'\u001b}��t�\u0004NgJ���=kϙ��x\u0018��y�|�\u001c�%�k��W�R?k\r�N'J�t����ά=G�q��!ɘ��7���_��q����\u000b��A�'J�yx�\u0007\u0012��s�w\u0017C�1ϙ��3a�u�\u001cN�z\n��-�\u001d�\u001br2F�y\u001e4kϙ��x\u0018��y�|�\u001c���k�{�|�4��\u001b����\u0018��1\u001a~r�֞3k��0$\u0019�yn�_J�x\bnx� �\u0005\u001d�y�/pZ�1�$J�9��\u001c\u000fC�1ϙo��+&��9(#%i4�w�\u0002��m9\u000fo�+�Ykά5�ÐdLs����V�u\u000e_��4\u001a���~\u001eߖ���\u000f^����Zs<l�\\b��<���s���i����\u0001����\u000b��\u0005N�E/�,Zs\u0016�9\u001e�$c���vTQ��W:t�6x�]�W�4\u000f\u0002N� �O�Ԛ�h��0$\u0019Ӝ�;�M�k\u001dq�6x�M�W��\r�\u0016�\u0017�smі�h��0$\u0019���f9��\"�:bnn��{x��釡�釡��\u001f\u0001s��r<\fI�,g\u0019N��s���4��[x����ou����^��9Im9\u001e�$c���\u0006�d9�\u0012���+��\"�\u001b熟��\u001f�\b��Ԗ�aH2f9Kk\u000fJ��\u0018��$M�P��\u000b�ϓv5�����ҋ��E[��!ɘ�,�;(Y�2�(hB\t�O����r>Qj˱\u0018WP��|�0��9K�s��t��k�×�_�Z��ր�L��G���(Uy\u0004�ǥ\u0016\u001d\u000fC�1�YZ{P\u0012��>\u0019��\\MR���I\u0019\r�qX\u0014�OF���E{��m�k�sև�?&�:�$�s\f^y�4p�snx�#�X�\u0003|՞�j��0$\u0019�5��(ȵ�=I:U\u001a��E늜N�����w��9��\u001c���Őd�s����r�s?��j��+\u001e5W�\u001d��\u001e�o���Ԣ�j��0D\u0019\u0013��&:�9�y~4̈́\f^�3(p��\u0018���b9�Z[���s<\fA�<gm�s(H�T5Z�6x�MiW�W~v��=o�6��Ԛ�j��0\u0004\u0019Ӝ�=]������M-���{\u001f8M�\r�y���\u0013c՚�j��0$\u0019Ӝ�=s��4���\u001bc1�\u001c@�t���\u001e�\u0016�O\u000eIm9��\u001c\u000fC�1�Y�s\b(H+!\u0014���#\b�t���\u001e�\u0006\u0017�ON�z%g�+9\u001e� c�����P�f!\u0007u�b��g�+p��Y����UoX[��Zp<\fI�\u0004gm\u001b�(I�7��h��?&\u0001Η\u001b�7�b^,�{���U���M��C�o�_^��!�Z��M�7��x��\"��\r��MZ�r\u001a܀1I����!ɐ�<����$���(\u0002ƱE��\u001b�{��k9]n\u0000s�Ro\\|\u000b��/?}�������?������?���_���Ï5��S������������4\u0017��O_�~��������\u001f>|~����돟>}��?����?\u001f����o>}��������O�~��O��~~���ӛ������\t�|��c}���Er�g\u001c������O������ӿ��q��ǯ����?���������_>�����\u0017|��O���~�?�PK\u0003\u0004\n\u0000\u0000\u0000\b\u0000�6j\\��_��\u001d\u0000\u0000\tv\u0000\u0000\u0014\u0000\u0000\u0000xl/sharedStrings.xml�]Ys\u001cǑ~�_���Ê\r4�>֒\f��-ٲ��V�뷚���c��\u0000�'��(z)�,9�]�rx�mm�\u0004,���\u0017f���fVϐ0*{�-ӈ�������ˣ���0Mv\u0016�(E��p���+;<\u001b�Ȣ\u0017����/��Wvʊe!K�p�����Oϗe�\u0003���/\\��j�/W��㘧���9���$/RV�_��j9/8\u000b˘�*M����^M�Ȯ��:�^�b�zpe���~Ϳ�~\u0014Xޕ\u0017�/ŋ�W/����_�^|�*����g,�?�^\u0017\u0019��\u000fa���?�a5�?���R}mŪ����,c\u0011/.�\u0003V)/X~�<^>Z}��ly~�������G/�PY,?P����\u0011�����\\���+������M\u0018�\u0003�����-���.OVo�o-O.?��k�\b_,ϗ��|^�N�y\n��Z���ɩ�-\u001f,�V7��\u0012_��ܕ��+0\u001b����7�w��{��fg�9|�\u001el�9��|�|������{��b_/�B(��<�\u0011\u001e�?/����\tLól_\u0011��\u0010,۹�2P���ӟ�E�]�0�'q4���\u001f$��օ��E�\u0018�8O������GY�W����\u0006�\u0016~�z\u001b�r\f[��O������*C�O�\u0004\u001e�\u001b��h�\u0018�wFH�a�U��\u001cd��\u0019u xX0/�p�.q��q�˟_+*��I�D\u001d�܂a���7,�k�=J�W�RR-\u0015��\u0015�m�vp�`��W�(_�����]x�\u0010\u0006���:\u000fO\u001fv����O[V���\u001e��\ry����qX��s\u0015�\u0000\n\u0011&�\u0003�\u0010�u\u0003�Iy�\u0007�\u0014u�\u0016t�+��\u0004qD�Tuw�ƣP�+�m9^���\u0005?) �\u000b��1l*\u0006_<\u0015���\u0004�ol�*���\n)_�uN\u0001\u0011xr\n��&��74B�\u0006�}N\u0000�T��{�J?^c�Y��}\"?�'�Zt��aToj_�hCj�'��-�\b��:K)���V�7�ȓ<l�F�ް8\u0014�{�2�7\u0012\u00166e�\u0016;ײ�\u0010b\u001c�3�\r�'��\t���:Uj��g�Nޢ�\"gА�Ƿ�\u0013\u0007���\u000e��\r)7�\u0019'xp(���\u0016\u000ePD\u0015zԤ<W�\u000fB��\u0000�c}C̪\\����&c�����'q�\u0018&�X.\bE�����\u0016��(���K��۰�\u0007�\u0016�\u0017\u0010)N�#i���Ԅ3�����pW��}\u0015Zf�jX���x\u0019ųi����\u0019t\b�#Z\\᭕aZ�\u0016;o[���S\u000bt�']�\"R(E�$���\nt`7~��<�b�\u0010걣u��zDQ04\u0015p�\u000fw���ˑ*`H��}j�\u000b�f\u001cS�,���\u0014�\u0019�2�Z�g���i�\u000e���\u0017���\u0004���\u0005O�b]~2���b�K\u001d�0m�R�\u001b|$���<��\u0005����3\u0003����`\u0019�o�\u0012�1�D��|�l\u001a�/o\u001d\u001e�\u0000eG\u000f�᳝��P �Z�\njZ��RgU�Bkw��y���\u001e��\n渊x�3U�\u001e>�xIC�\u0000vӣ�o�<����r\u0002���@�/X&���@�,*�ⷾ���~��h(z�ن<\u001d�M\u00197������nц�Қ|!�C�\u0004� \u0018u�U��Βi�\bD�̦�g�������E?�}�fS\u0006��\u0007=Eq�n�c��^\u001b�y]���L�P|�\u0015�j���i�L�C�\u0002��.5~��)�\f�\u0002把#\u0019�\u0007��\u0017\u001eH�E�p\u0006܎$80��w���\u001b�N�뇣�\u0018����$,{pC�-S'��)7���<i\u000b�_�j�d�\u0007��Й�L��W�Oº\tkf\u0004��u]���諪t�s���Ln�ct�\b��S$}�/q�R<��G�S���\n�v�E\u000e%\tڷ�</����$�\u0000/��|\u0015���QoR�N�?�vM��,�u�\u000f�\u0012�O\u0004v`���\u001f�*)���J���\u000f\u000e�P���<�J�>�\u0004�T̴�P$C��嘆i�\u0001��1\u000e��3G\\��O=�?����u�Fj7���Q:�\u001f�/���կ0\u000e\u0004{�\u001e\b�z�g]\u001eЂ%\u001c�@�g\u0005+�\u0011\u0004��Y�G�{\u0005KG�L+j����\u0005�s;���*,V\u0002�\u0013 ��Z�_�\u0014Z\\W�\u0017p\u0010�nx{\r�B~H\nɷ\u0003�yn�ԝ]\u0015�?��\u0011�n�gDGj�\u0015�x3�i�Hx\t3p����`����\u0010�埔O�\\�ߵ_�\u001a�i\u0019G�$ٛ�㣊\u001d�lf\u0006���\u0015�\u0001���\u00068���`η��;��e�oE�w.?�\u00131\u0016E\u0013��M򢜳�c}�\u0005\u0003�ήʂ��_t�vz�Og4��f$�M�?\u0015 N��\u0004�ELe\u001d~\u0013\u0004�=@��\u0001geh1�+1aQ=`\u001b|��\u001d�1��\u000f`J��\u0018N��>�\u0007NH:/�xB\u0010�y�T��Wy�\u001f���\u000e\f�D�z��?�x$�\u00175�G�p�\u0012\r\u0010%C�wU�u�-\u0004�YY�6eM�]SL\u00174Ţf�g�nc�3�umXY�\u0001n����#\u0019\u0006�m敖��+fь'M6�\u0017\u0007��*.҃z�2<�\u0007�6\u0012G\u001d��{ޮV�H�~H���H�<+�ʣY��ؔ\u001d�M�Q�f�g��5�]+Н�/#�4���I��\f�69\u0003��\b�$��t�W�\u0002(\u000e�>��y~4`\u0004\u001d��\u000e\b��Kg<��7��)���\"\u001f�i`�<�%��,BJP�\f\u0013�Y8��\\\u001bA�\u0010\u000e\u0004���\u0015\u001f�*�X\u000bY\u001d��a�ϳ�\u0003*Y�h�\b{��w�?E�1/�p�Qk�\u0015e��a}\u0000>�0)�\\�8c�\u0015�E&\u0003\u001eJλ�a�\u000e�\u0015\u0015]#^�b�Y��\u0001=#fpo\u0013��\u000e{\n�����$y��_�\n(�\u0003JH\u0013~�E�Ir��v��\u0011��]�\u0005ߕ.\u001f�\f\u001d��*��#�χh!2\b�\"�\u0006\t��{\u001b\u001a�J�P��\u001d�EZ���#ܠ����a3\u001f0%\u00138�\u001d8��|-����\fT��#1\u0011�|2`\u0014�D:a���\u0007x���\u0018����%|�\u001b�z��\u0004���\f'�d���󂅙��\u0007�iwS7�\n\b{{&]�S*���␗<\u001b�Y\u001c0���\u0013��@\n\u0010\f!�L�\u0012\u0005�*�/X\u0016qp�y?\u0016!3�m��>��\u001eB\u001ad(�\\r��]�@�R.fL\u000b�0�Y?\u00197@���'U\u0006�U'�0\t�e����\u0000��G��|\u0000�\u0010D�\u001c�T��Gۨ�(y%�,\u001cb�\u0010���$��B\u000e\u0006d�X��V��V�\u0001\u001b���ܶ�\u0013{y��(\u001fu�\u0010�G+�8\u0006�\u001e�F�\u0016�C�P����:�\u0002�m6E��G0|D\u0014�`�\u000f���,>Z�Q\u0013�����p\b��\u001b�����`\u0006��\u0018J�U~���ՠ�\u0015x��\u001e��#��\"\u001f�p\b\u0012z\b\u0014\u0004\u001fʓ�`����4.�w_I]xB�1κR�@�X\u0012\u0016��7[��\u000b��ڔ��\u0010�\"��]8�VE�3��)������!����(�\u001a�9?l\u000e\u0007���\f� ��\u000b.\u0019:�\u000f$�|҂�2��iF�B\u0011��\u0010[b���\u001e�R}��OR�\u0016n�3\u001cTp7�yU����\u0012������\u0016�@��m�\u001d�����'I�\u0005s=�1�3��p��g��0\u0002[\rz=�\u0002\u0014He�!�A��y\u0016&\u0018\u0002�>��8\u0000cP@y\u0006��\u0003\n&\u001b��u\u0016Ղ��r/\u0000$�\u001c�8�㮓\u0006\f�� �1o�v}`�Q;e\r���\"\u0002f̹�4:�!��[#���Z>e9N��򟗟���Uz\u0003hT�/@�\u0013>f\u0005��n��\u0017e\u0005e-�D\u0012R�G�\u0016�/\r�\bV�Ch�4�\u001e�&�H0\u0011H��,\u0005t�����0���8d\u0019����O�׉a>�\fv՜�}y�� XdHc�$Z,��\u001c@\u0012\u0001�\\�%<�GO�I)�>�Fy1b\u0003v\u0010��nS����Usy\b��Â�L\u001e�\u0005W��\u0015�k\u0002�\u0013C�z�Sm��k�H# I���Z\u0018rr\tOM�W\u0019��`�y�R1\u001f\u0002�f�0K�\f:IS\u000e�%JiD���\u0010�\u000e�s�K�Y\u0018���\u0014!\u0013e\u001d6ՠ�\u0015:=�Iy\"_�5g\u001d\u0016\u0012cvwe\u001c�$j�6�ف\u0018�\u0006��\\�K\u0000�]��\u0004ERF��l\u0010'wA�}\u0000N��R�n�FFaS�����J�5`\u0004�AȰlB�Q���m�YA\u0001V\n68�-s\n`bT=�M���%ޓ�U\u0007�C\u000f\\\u0003\u0017\\;�J�9�\r�F�r\b�Q�p�\u0018�J�g��\"\u0003I\u0018\u0010{�X;�n\u001eӷ\u0004X\"\"�/�~Y�QQM\u00103�l̦Q\\ԑZ�q�,�����$�43\u0011\r�B\fz9\u0006\u0005�XG���Q��m�\u0004�d�H�e/Ms�:�\u000e�C�[\u0002ԕkᩨ������*\r\f#�s��z!����\u0006)/\b��\u001b\u0004;\\�=��\"!y��lhT��)��\u0016`\u0012��X|\n�K�G(�8\u0005O��\u0007�6J\u0016^��m\u0010%i�\u001cŋr��\u0013��ק'��ń\u0015�\u0000m�t\u0003��\n�ަ�Q\u0013���l<X\"���C\u0019\u00079��\u0003b�e]2��ڨ�g�h�t��\r\f�Pv\u0004l�\u001d��S�\u0018�T4�k�6|��,ր�w�\t�7\t���\u001ahU�U�H\u0016`��{�����<�;iG\u001d�(�v�����$�\u0007tTr��#FF�W\r/ �0�n]��@�c�$`1z\u000eK��\u000e��\n\u000f\u0003OB)�Zޗ�}���R�/��\u001c5ڸ�.c��I�\u001c�1\u000b\b���T��Q�;ɯ\f|b�E���kYԁ̆H�\u0011���so�u�@�I\u001e%����\u0010+\u0019�\u000e����\u0000�`��#���p،E��|\u0015ZUG�#���\u000b��Ɖ�M����l�5����\u0012�\u001b�������\"�\u001a`W�K.��\u0011!\u00011\f�\rO�&�*\u0014A�xҕ\u0016��@�\u0016����\u0010��Y\u0016�D|JW���4��GR*�\t\u0012b�\u0001�%�h�%O�\r���y�cֳA�lc\u001d�P=\u000f��[��\u0010�qs(�CD\u0006C?�M0�2\u001c�%c�m$i�W\u001f�EP��\f�1\nd�% \u0016�e\u000eO\u0010]V7�I�&�6����/����B�<�+��S�-��^4u�%J�3^�\u0013�+sK�F��gs�W\u0005\u001f��1\n\u001b8D��G\u0004�~��,�rſ��E_���,���Q~�O�\u0014�\u0004�M�瓧��\u001d�X@�\u0002olO��\u0001����\u0006��l*�t�>\rY3z�6�ͼ���PN\f��\u001a���MiO�:�K����8{�C��w\b�i�O��0�\u0007\u0015~�\b��)�ciB���J^֓|\u0000!�Vض�詌����YwԂ��I�\u0000B-\tG\u0000�W%iO$����\u000bj���\u0007e��L\u0004\u00011�ꦴC�*\u0007�3�\"\u0003�·�\b�C\u001e8�����:���\u000e;\u0002^���4;�k\u0001,�\u0018\u001c�0m4\u0010T4@��6�;e��ųD\f(GiӜ>�FH��*����\u0006v=*D_�\u0015�\u0019e���\u0000��J\u000e��\u0000��\u0001�ϣ\bt#\u001c�� /���P���#x֯�Q\"�\u001d�D�lwª��u\u0015�\u0002�=\u0007!՞��8�&����D���\u0015\u001eMI�\nqZKf��Fu\u0011�>��R�R!������Jl\r6ĝ���\u001d����O\u001d\f[\u0018\u0006a�>�䉾��-h���M(c�>\u000e8v���ʗ�bT%�rC�\b����w�`�W�E�6�\u0018R;�cƉ�[Y2\u0011�\u0018�6\u0018�v�\n|���\u000e����\u0006\u000f��\n(B���0Y�io\u0016)��\u0016�ٌ'\u0003�:8yӡʎ/\rA���a^\f�\u0002\u0018�7-*l�\\�\u001b�����i]�!���\u001a\u001ead��.\u0004��W\u001b�L��EL\u001d\u000e���~�Su�R<;\u0014\u0005V\n>%;\u0018���\u0016\u0015��t%MQ�wZ\u0016�e��F��e%�\u0001�>Y��Su�\u001f��c_��\ni��ou�\u0016\u0016��C���V݅{�'�;��\u0003&�ޚ��4\u0002K���\b�x{勤N�M�G�w��\"�\u001aT�\u0010%gE�WF��tIA\u0002�cs�G����P\f��b͔�S\u0011���x�\u0013�>�%���4u]�-2\u0006>L��ڶ�5��q����{O}��-��\u0004�c�-(�u��\u0011P���\u0000k�-�p\u001dC \u0019�*�|!�[F\u001a'�\u000f<���I���\u0010�a��k�\u0016��G�C�\"&��*�!d\u0007\u0000�x\u0017\u0011�DS���V���;i\u0014��[a\u0004X�G����$O�N\u0003H�QU�VԄg\u0019\u000bE3�\t��h�x�o��Q�$��? \b�l\u0011\u0000ʠ�\u000eOx��p���S\u0007}8�\\{�(��\u001a@��\u0004YO��:j���ұ�\u001c�M%L\u0017:���_��S׽�g�\u0004��NEU��\u0012�<g�b+�\u001dF`2}*A��S\u0001&'I�,n�}L���Ѭ��\u001eY�.o��ld�\u0016<i�[��\u000b\\�OV\u0002,��HZ�Yu�\u0001�\u0016J�f��%����p��c��Y?x���le{'SQ�t<.�\u001fS�V\u0011U'� #:=���;j�v�\b��\u000b�H\"�Q�\u001a ks@f�H�=n\u0017\u001a(��Q������T*\u000b�0\u0003�Q��|\nc�����mL+�\u0014����\u0011O��\u0007X\u001aZ�#�J\u0011p\rË\u000fM�g8\u000bC$D�@\u0006���\u001b��� SLX\u0003 ���\u0019�dq4��Ρr\u00132�t����ʘ�q;�c�~���\u0004\f���Q�{\u001d}\u000b\u000fd��\u0010?\n�w����*}\"\u0017ƣY��5҃,���g���:D�7�VulcT�{Ӻm0���֝K�:VV|-��t%\u0012\"��R��`\u0016��������)\u000b�Pi����\u000bV�D4@��q�J7��d1�\u00114di�c��W�\"��(\u001f�[\u00070lg\u000b�'\n#\u000fC'޶�,3P����k8��3;\te\u000eA\u0016�M^\u0015#Q4�Z�}�\u001cً�z�Elv(R6\u0003\nT�-�\u0005�i\u0007�W�\u0003��\u0013>'�\u0000�#��\u001c�-5�\\��\u0000\u0007z�T2\n�>ᄃː����ٮ�Fe��2ח,�{eXI�!Dr���U��_���H^<��I\u001e��\u001b-Ǳy�����:\u0004��\"�a���F\u0005h�Dd[�Ơ\u0002v�8Rg�A�C��$\u0016\u001d�k8)�r�|+�.\u001b\u000b�-D�W�\n�\u0004�\u0017y(��ڄe�䋽\u0003p\tG����$\u0004j��}�v^��!ŕ���\u0003��0=���6N�Q���(��i����OdˏS���\"\u0007\u0017�p{�\b������fmy���\u0000}B�0��;��6��{{%���|\u000b�X�`����^�'�M�����4wc�m\u0010�Hv��y�\u0017<k�ވ\u0011ϋH4)\u000f\u0017<�T\\�Lkl8�\u001e\b�8�Np}4E#���\u0016�ʎ�O尊_=�\u000bݹT\r�s��@\rkgm\u001aF:��\u001c�qr�\u001a�_w�VnG*�\u0002܈�\u001ex��Mgn�\u0005qڲ.�<�X\u00176���\u000b\r/��I���$�!j�_&��~�g\f\u0014_���\u0018miT&�m\u0005��T��t\u0013[��I�\f�\u0005D+�J��\u0000F�܈u��z�U^��댥�[D�G���\u0006C�%lޒ\u0017�7���?[�!�[��Gu6�n�A�^{(k�0Px���̀<N�ZŐ0��=\u0013���\"�S$W���l��gϽ2�w\u0011l꾦|\u0019��Q���\u0015���\fz�\u0004��\u001c�~�L=aܘh���$іA\u0004\u001f�s��>�\u0003Y6���F�/�����Gs|�\n�� �i\u0013��̏�o:�t���|��\u000fJ�ˌN�\u001d��1�x��9�&΋��O�5�����Ş˔7��|�\u0014�cܕ�\u0000�G�\u0001/0�����C��\u0000}zK&V�\u001a�\u0019�yқr�\u0014\u0006�M�FyT�\"Q�/,ˏ�a3�}=�� ���\u0006^�?;�\u001dC��hy�oҺ�\u001a\u000e�$�tH�eoS�ˑ��A�\b���\u0019��\u001c�������w7M\n\u0015<\u001d�8���,�F���;]_�ꨶ��f$�{\u000f�-)�a�Ѭl\u0001�R&�J�Z\u001c�\t/�x�\u0014�#�_���m)��HF����Q\u0002�'�\n\u0017\u001a�\u0011q��C\u0012z\u001e9�I3$ۃջ�m\u0010\u0015�7q\u001c��}��i\f��A�\u0010\u001ds�:u�JJ\u0005\u001c���|K����\u0015�\u0019�\u0011�E��F�'Of�XdK݇9�M��Wkc��\"�{��r��\u001f*h��I�S+I�ٜM�\u0001u\u0016�\u00165��D��R�l�/j�<h�i21ee3����a\u00119u��g��ݹ�\u0004v�m�c07C�\u001c��6G'��o��\u0015�\u0002[}wMg����|H�\u0018KwljLIh\u001e�f9�忉B]�\u0006\u000e2�5�\u0007,�&�#\\�5��*��eZ\"�\u0010��<\u001dp�\u0011#�$V�~2���\b}���\u0003R�Y(���\u000e�\u0014�1Qi|��Y���7\u001d�l\"\u000b�BYg�E=\u0012�!eeX2\u001b�D�\n�\u0002\u001d\"\u0015cp^@ĵ�`c>`\t��y\u0004���ŝ��_�,�ʘ�c^\f�+t�M�\"�\u0012�\u0002�;t�\u001fŦ��9�z�\u001c^\u0018Ċ�\u000e���n;�{�3\r\u000b�\u0006u\u0003m�\u0000\u0011�h\u001b\u0000_h�M��\u0016U\u000e��.����Ԡk��W�-m��\u0012���\u0012��۴�3\u001f/pMמ�i�\u001f\f�\r±y�/�Pu�\u000b\u0016�T�\u000f�\u000b�خ7���\u001eߧ��H�oS�Y)R��g�\u0014�a7A_�\u0000[�X\u001e1Ώ\n\fʉ�/�t�\u001b�D\u0019w)T�P�I �5�WNʎX\u0001c$y\u0016\u0001&�\u001d�\"Z�s�*��П�=gڬ�c\n���q��c����\u0002\u000f���\u0003\u0006�<�����lS\u001b~Nk��M���\"��\u0014\u0006���*gM�\u001b�R\u0010u�W��Or�K�/�b����Xo�\r\\�\u0013\u0010��:\\\u0019��j�\u001bz`���Kd�٦(0Vbݧ��\u0000�a\u001f�&��oC\u0019�o��l@��r�ʴ���ܯ6�\u0000T�hӨQ�ԣu\u0007\u0014۶�_\u0015\r�����WC�\t\u0001�S�Q�-��\u001f��\b-�i��:\u001fH���\u0010�h~��\u0014\u0004B�k���,�\u000e\f���o�Į���e\u001eR�,D�p-����D[6yw\u0013�Q�VDZ:N��ې��CA�$Z^\u0015�9\u0013�����\u0007�O�C]\u000e�\u0007��M��;���d�s3u00l-z 3x�j�a��,��u\u000b��������غq�1�\u001a\u0016l���5�2�p��i�\"�r�\u001b-\u0001�����>^W�$d�V&�dr��\u0010uD����(I4�Q_��,�\"��R$��\u001d��66/òv\u0018���\u001e�\u001b�h/�b\u0014ش|+�f�W�ֵ\u000f\u000f���W�ouF\u0000��xە�\u0001\u0010�%c���\u00103�[�FV\u001a���\u0014�\u000eX��Do-��t�tj7!�\u0016L�=�e��sy\u0013��.h\u001dÂ\u0016�l@������d\u000f�Mz�s�6�/�$��Z�Ջ�\u000fPK\u0003\u0004\n\u0000\u0000\u0000\u0000\u0000�6j\\\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\t\u0000\u0000\u0000xl/theme/PK\u0003\u0004\n\u0000\u0000\u0000\b\u0000�6j\\v�0�!\u0006\u0000\u0000\u0019\u001f\u0000\u0000\u0013\u0000\u0000\u0000xl/theme/theme1.xml�YMo�6\u0018��W\u0010���R'�SĎ�nm� q;�HK�Ć\u0012\u0005�N���\u001e\u0007\f\u0018�\r�\f�m�a[�\u0016إ�5�:l\u001dп�Wև)�j�&�P 98\"�<�\u0017��%i_�q\u001c2tH��<�X��5\u000b���\u001e���u8�Ҷ�T8�0�\u0011�XS\"�\u001b�\u001f]�\u001b* !A@��\u0006�X�R�mK\u0017����c\u0012��1\u0017!V0\u0014��\t|\u0004bCf7j�5;�4�P�C�zo<�.A�D���r�}\u0006\u001f���\u0019��}w�S�h�>�/���\u0004:Ĭc�.�\u001f\rɱ�\u0010�R���U��Y6��9��*�F\u001d��rjN�\u000e\u001a)U���[\u001f�֯mϵ42-\u0006h�����s�)\u0004�.�]_��\u0006�z�����g��^ͩ�\u0016(���2e���:�eJS���)��Zk�Q��4�c��뭕)�FY[�\f����\u0016(),`4:X&$�=_�9h��-3�\r�v�!\u001a��R0�\u0011�ʌ\f�#.\u0006�H�\u001e+\u001a!5��\u0018����p$(�i�\u001b\u0004k��9W.�%\n�t\u0005�U��$�P>s̛�?�y�\u001c�y����ǿ�<yr��\u0017\u0013�\u0016�|����/���3����_?��� u�\u001f?��o_U ��|�ͳ?_<{��\u0017��Ԅ�\u0012x��4$\u0012�%Gh����I\u0005\u0019�3R�\u0001�%\n\u000e\u0000jB�UPBޝbf\u0004vI9�\u000f\u0004�\u000b#���Q���@L\u00145!o\u0007a\t��9�ra��v�N�i\u0012�\u0015��D\u0007�a|hT�[X��$�ܦF����L�e���'\u0011Q(y�\u000f\b1�\u001eRZ��\u000eu\u0005�|��C����\u00033�#efݢ!,��h#�z)B;\u000fP�3��mrX�B�`f\u0014JX)�7�D��l5\u000e�\u000e��U`4t*�RूE�\t��\u0011)��{bZ2�6�6e΀\u001d6\r�P��\u0011z\u0007s�C��A/�al��F�\u000e�X\u001e@�b�˕�\u000e^��d\f\u000b���@�:c�ߧ~`N���D\u0018k��r�N�\u0018�(�\u0004ʽ<��[;;���/;�Bg߂��XQ���\u0012��v�m<�v\tT�e\u0013�l�M�m\u0015�>Z�֬m�ȞJ\n�\u000f�c�ؾ�2rG��^���\u0000f�ьW�\u001a�\u0000\u001es�e�/�l�\u0004W�R\u0015�\u00078\u0006]�T�/s��D1�pe��\u0015�Wc\n��&��2\u000bx�v���7K��BR:�eI]3\u0011����󫬧ؕu֝\n��i:m=�P[\b'_k��\u001a�\u0005�E�\u0011/Y�LH�X�{��5}�\u0002�\u0011Ӽ�k�����і��{�\u0010w�P{,Z\u0018�����4\u001c\u000b�8�Xc8��c\u0018�L�4(���c�*�u��]�~�\"��5�����XH��e�\u0012g�/z\"͑��J�rQ�\u0018�Ъ�4����\u0016{i��xL\\U5���|���\u000f�#4b\u0013����V�z\u001e��m4��oeYY.�\u0016�N�+\u000b�8�YA���H\t頰#\u001d�F�U>��O�\u000b�ɹ�)��]8\u00137�ٳ\u000b\u0007\u0005�Q��\u001d�\u000b\u0015ph]q@݁��E�\u0011�CP:�i�%_�'6�C�ݥR���\u0007j��HPh�*\u0010�������\u001b�]7\u0017�����2�\u001eF䐰aR�kI0,\u0014��'�J�\\ZH�X�#�\u0001\u001c�Z／�յζ����C�T��o�j����Q�~�y�N����p�A�\u0007�\u0000T�L;'\u000f�\u001ed\u0006*�\u0012\br�J;+�br\u0004��u?\u0013a����]�\t\u0017~z��߬���J�\u0013�\u0010~���ۆ����R:\\�q��\u001e�\u0005�p\t��lJ�0̞vE���{���ɴ�d�)6\b\u0016�1��q��\u000bQ�~��\u001f\u0019�2=I(\nns\u0015n��6���X�_p6�i���<�2��?ed\u00190o��ر��Q\\ɓ�(��|�(����\u0014Eu|j\u0014�����$�J�^��\u001e���%��PK\u0003\u0004\n\u0000\u0000\u0000\b\u0000�6j\\\u0019.23�\u0002\u0000\u0000�\u0006\u0000\u0000\r\u0000\u0000\u0000xl/styles.xml�U]o�0\u0014}߯���:\t�\u0001\"T\u0005\u001a�R7M*��j\u0012'���6\u001dl��u\u0012HP׭�x��\u001e�{���G\u0016�\u0007)�33�k���*Ĉ�\\\u0017\\U)��͂)F�QUP�\u0015K�Y|�����(��#c\u000e\u0001��)~t��\u0013b�G&���5S0Sj#�\u0003�T�ֆ���$)H\u001c�\u0013\")W�e���-$���}\u001d�Z���\u001d\u0017�\u001d\u001b.�d>���6t'@�!\u001a�\u001c\u001d���O\u0015\u001a�E\u0011�s��.�\u0015�\u0012]�<g/��Ȍмg\u0002��1E\t\t�v��E���(�{�R�uz��'����O��tQ�E��6�A)�a\u00028�\\\u001c�3\u0015>\u0019�F\bk\u0001ɡ\u0015\r��\u0005�&G�S��\n�3܃�����ȩ��v)Κ� �\u0019,Ds!��G�\u0005�\u000b�\u0016ǌ��A��=� Y�\u0001ji��DW�\u001e�8y{�Ղ\u0017^E��ŏ�7Y\u00126$��3e3�Rv�\u0014p\u0007N��=o��B��A��գ\u001f����t\u000evx�(8����\u00178et\u0006��L�\u0007Q��\u0017܇\u0012��̤�+R\f7�7�d���liZ��\u000f�Z�\u0001m�.Zt(���eG}v�J6�u-���6�\u00079�1%��AC.�qF�?�)�쯻\u0018���\\8���\n�,\u000e}\u0017�Y���e\u0015�(XI��mϓ)��O��{\u0019����g���޾�g ��\u001a���kF�7<�?oW\u001fg��,\u000e��j\u001a�G,\tf�j\u0013$��j��fa\u001c�\r\u001e��x���\u0003H�V@��\u0016ۉ�\u0014\u000f�V~�?�=�>�'�M\u0012�A6\n�`<��`:\u0019%A�D�f2^�&Y2О���\u000bI\u0014�⓹�\t�إ��\u0010�M\u0002�/� �� �\u0017i�\u001bPK\u0003\u0004\n\u0000\u0000\u0000\u0000\u0000�6j\\\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\t\u0000\u0000\u0000docProps/PK\u0003\u0004\n\u0000\u0000\u0000\b\u0000�6j\\L\u001f��\u0001\u0000\u0000#\u0003\u0000\u0000\u0010\u0000\u0000\u0000docProps/app.xml�RAn�0\u0010��\u0015\u0002�1�\b\n�bP8-rh\u0010\u0003v��ZYD(��n\u0004��/%Ê������`4Z��=t��1�\r�\u0012�E)\n�&���+��q�U\u0014��kp�c%�H�VR�\u0014\"&�HEv�T��9��$�b\u0007��k�7MH\u001dp\u001e�^���\u0006�y�г�.�\u001b�\u0007F_c}\u0015'Cqr\\����u0C>z�\u001dc���[��\u001a������\u0014(4\\|?\u0018tJΗ*\u001bmѼ&�G]*9\u001f�ր�u6�\r8B%�\bu�0�l\u00036�V=�z4\u001cRA�O�ڵ(~\u0003�\u0010�\u0012=$\u000b��Iv\u001aF�\"qҿBz�\u0016�Iɉ\u001c�\\;���^��\f.�r\n��eĝe���l �?\u0012/��\fb��1չ2\u001f���{\u001d�\b>\u001fPN�\u0001<�q�N��/�\u0014w�\u000e\u0018�\u0017�$ն��u~��\u0005&B���\r�u\u000b~��Y�q1����y��Y���r���S���/PK\u0003\u0004\n\u0000\u0000\u0000\b\u0000�6j\\��O�_\u0001\u0000\u0000�\u0002\u0000\u0000\u0011\u0000\u0000\u0000docProps/core.xml�R�N�0\u0010��\u0015�\u0006*\u0014��\u0004�'*!Q\u0004�f�mk�ؖ�%���<���'n;;��}8�\u001f�2�\u0001�V3�D1\t@q-�����j\u0011ޓ�!S��Z��4�ȼ�ɹɸ��b�\u0001�\u0012\\���˸��-��(u|\u000b\u0015s�W(O���\u0018zh7�0�c\u001b��8��\n�\t�����\u0019\u001d�`)�hi���\f\u0004�PB\u0005\n\u001dM����\b�rW\u000b:�LYIl\f\\�\u001e�Q}pr\u0014�u\u001d�i'��'�c��ڍ\u001aJծ�\u0003)r�3n���ś�)]����Z\u001e%�Pt�!���}\u0003�>=\u0002\u001f\u000bp�J��N=y����ASk+�g/P{)��Ѷ�\u0013�d\u000e���k\t�9���ʇ��3�\b�N�~�G�=}|Z-H1�'�0N�$^���n����m�\u0017�'�jx�ߎG�a��Y�\u0002PK\u0003\u0004\n\u0000\u0000\u0000\b\u0000�6j\\�\u0014�lY\u0001\u0000\u0000q\u0002\u0000\u0000\u000f\u0000\u0000\u0000xl/workbook.xml��Mo�0\f���\u0015Q�\u0016\u0018l\u0015-ҴM�q�v\u000f�K#�$����-t�ąK\u001c;���N�����\u0000!*gK��3J�\n'�ݕ���}�DIL�J�����!�U��<���:�'�ocI��|�X\u0014\r\u0018\u001e�΃œ�\u0005�\u0013�aǢ\u000f�el\u0000��l�esf���B(�=\fW�J��\u0013�\u0001�.�\u0000�'T\u001f\u001b��@3�\u001e��a���p�#b��J�\u001eJ�\u0011�zg]�[�]��ǁ��\u001b�Q\"���4F�U�M�y����r�������\t�������D�ޤJ K�5�;¿@h�K�4:��lJY��\u0012�@$Լ��\u000bU\rt|��,�sJ�d��\t���\u0019�]n�.^-�׵�Έ�\u0015}\u0006���\u0007$t\u000f**�\u0007�(\u0014^\u000bk9�(l�\b�\u0005��L�Y��d��\u0018DV�PK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\b\u0000�6j\\���\tY\u0001\u0000\u0000�\u0004\u0000\u0000\u0013\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000[Content_Types].xmlPK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\u0000\u0000�6j\\\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0006\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u0000�\u0001\u0000\u0000_rels/PK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\b\u0000�6j\\�I��\u0000\u0000\u0000K\u0002\u0000\u0000\u000b\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000�\u0001\u0000\u0000_rels/.relsPK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\u0000\u0000�6j\\\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0003\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u0000�\u0002\u0000\u0000xl/PK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\u0000\u0000�6j\\\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\t\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u0000�\u0002\u0000\u0000xl/_rels/PK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\b\u0000�6j\\�$�V�\u0000\u0000\u0000�\u0002\u0000\u0000\u001a\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\b\u0003\u0000\u0000xl/_rels/workbook.xml.relsPK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\u0000\u0000�6j\\\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u000e\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u0000)\u0004\u0000\u0000xl/worksheets/PK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\b\u0000�6j\\9��\u0004�I\u0000\u0000��\u0002\u0000\u0018\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000U\u0004\u0000\u0000xl/worksheets/sheet1.xmlPK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\b\u0000�6j\\��_��\u001d\u0000\u0000\tv\u0000\u0000\u0014\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000@N\u0000\u0000xl/sharedStrings.xmlPK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\u0000\u0000�6j\\\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\t\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u00008l\u0000\u0000xl/theme/PK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\b\u0000�6j\\v�0�!\u0006\u0000\u0000\u0019\u001f\u0000\u0000\u0013\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000_l\u0000\u0000xl/theme/theme1.xmlPK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\b\u0000�6j\\\u0019.23�\u0002\u0000\u0000�\u0006\u0000\u0000\r\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000�r\u0000\u0000xl/styles.xmlPK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\u0000\u0000�6j\\\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\t\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u0000�u\u0000\u0000docProps/PK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\b\u0000�6j\\L\u001f��\u0001\u0000\u0000#\u0003\u0000\u0000\u0010\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000�u\u0000\u0000docProps/app.xmlPK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\b\u0000�6j\\��O�_\u0001\u0000\u0000�\u0002\u0000\u0000\u0011\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000iw\u0000\u0000docProps/core.xmlPK\u0001\u0002\u0014\u0000\n\u0000\u0000\u0000\b\u0000�6j\\�\u0014�lY\u0001\u0000\u0000q\u0002\u0000\u0000\u000f\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000�x\u0000\u0000xl/workbook.xmlPK\u0005\u0006\u0000\u0000\u0000\u0000\u0010\u0000\u0010\u0000�\u0003\u0000\u0000}z\u0000\u0000\u0000\u0000"
+            }
+          ]
         }
       ]
     },
@@ -288,7 +963,74 @@
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Get Managers List",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/admin/users?page=1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "users"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1677"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"68d-meDq2s4hHoTPKrGNDqdVqSVwdp8\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 10 Mar 2026 06:51:17 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"users\": [\n        {\n            \"_id\": \"697b9837a48e727f74ed0b4b\",\n            \"email\": \"admin@gmail.com\",\n            \"__v\": 0,\n            \"createdAt\": \"2026-01-29T17:26:15.067Z\",\n            \"is_active\": true,\n            \"is_banned\": false,\n            \"last_login\": \"2026-03-10T06:49:30.660Z\",\n            \"name\": \"Admin\",\n            \"role\": \"admin\",\n            \"surname\": \"Adminych\",\n            \"updatedAt\": \"2026-03-10T06:49:30.660Z\",\n            \"stats\": {\n                \"total\": 13,\n                \"agree\": 0,\n                \"inWork\": 9,\n                \"disagree\": 0,\n                \"new\": 4\n            }\n        },\n        {\n            \"_id\": \"699b4e9975596e22da4015c4\",\n            \"email\": \"opin1@gmail.com\",\n            \"name\": \"qq\",\n            \"surname\": \"qq\",\n            \"role\": \"manager\",\n            \"is_active\": true,\n            \"is_banned\": false,\n            \"last_login\": \"2026-02-22T18:45:38.295Z\",\n            \"createdAt\": \"2026-02-22T18:44:41.328Z\",\n            \"updatedAt\": \"2026-02-26T18:00:27.941Z\",\n            \"__v\": 0,\n            \"stats\": {\n                \"total\": 0,\n                \"agree\": 0,\n                \"inWork\": 0,\n                \"disagree\": 0,\n                \"new\": 0\n            }\n        },\n        {\n            \"_id\": \"699b473021d5034db0581e63\",\n            \"email\": \"manager1@gmail.com\",\n            \"name\": \"Yura\",\n            \"surname\": \"popov\",\n            \"role\": \"manager\",\n            \"is_active\": true,\n            \"is_banned\": false,\n            \"last_login\": null,\n            \"createdAt\": \"2026-02-22T18:13:04.776Z\",\n            \"updatedAt\": \"2026-02-22T18:13:39.412Z\",\n            \"__v\": 0,\n            \"stats\": {\n                \"total\": 0,\n                \"agree\": 0,\n                \"inWork\": 0,\n                \"disagree\": 0,\n                \"new\": 0\n            }\n        },\n        {\n            \"_id\": \"699b39c5fa2b67dc5f7d36d4\",\n            \"email\": \"opin@gmail.com\",\n            \"name\": \"oleg\",\n            \"surname\": \"lol\",\n            \"role\": \"manager\",\n            \"is_active\": true,\n            \"is_banned\": false,\n            \"last_login\": null,\n            \"createdAt\": \"2026-02-22T17:15:49.052Z\",\n            \"updatedAt\": \"2026-02-22T17:46:13.328Z\",\n            \"__v\": 0,\n            \"stats\": {\n                \"total\": 0,\n                \"agree\": 0,\n                \"inWork\": 0,\n                \"disagree\": 0,\n                \"new\": 0\n            }\n        },\n        {\n            \"_id\": \"698e24527620aac2162e3674\",\n            \"email\": \"demchyshyn.v7@gmail.com\",\n            \"name\": \"Vitalii\",\n            \"surname\": \"Demchyshyn\",\n            \"role\": \"manager\",\n            \"is_active\": true,\n            \"is_banned\": false,\n            \"last_login\": \"2026-02-12T19:11:36.302Z\",\n            \"createdAt\": \"2026-02-12T19:04:50.898Z\",\n            \"updatedAt\": \"2026-02-18T16:07:25.751Z\",\n            \"__v\": 0,\n            \"stats\": {\n                \"total\": 0,\n                \"agree\": 0,\n                \"inWork\": 0,\n                \"disagree\": 0,\n                \"new\": 0\n            }\n        }\n    ],\n    \"totalPages\": 3,\n    \"currentPage\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Create New Manager",
@@ -297,7 +1039,12 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\"email\": \"ivan@gmail.com\", \"name\": \"Ivan\", \"surname\": \"Ivanov\"}"
+              "raw": "{\"email\": \"ivan.ivanov@gmail.com\", \"name\": \"Ivannnnn\", \"surname\": \"Ivanov\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "url": {
               "raw": "{{base_url}}/admin/users",
@@ -310,7 +1057,77 @@
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Create New Manager",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"email\": \"ivan.ivanov@gmail.com\", \"name\": \"Ivannnnn\", \"surname\": \"Ivanov\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "users"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "260"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"104-EyYh3pNGYndbYXYhae27m38PBJE\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 10 Mar 2026 07:21:45 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"email\": \"ivan.ivanov@gmail.com\",\n    \"name\": \"Ivannnnn\",\n    \"surname\": \"Ivanov\",\n    \"role\": \"manager\",\n    \"is_active\": false,\n    \"is_banned\": false,\n    \"last_login\": null,\n    \"_id\": \"69afc689501cf01fd9b27ba6\",\n    \"createdAt\": \"2026-03-10T07:21:45.258Z\",\n    \"updatedAt\": \"2026-03-10T07:21:45.258Z\",\n    \"__v\": 0\n}"
+            }
+          ]
         },
         {
           "name": "Generate Re-Token",
@@ -330,12 +1147,82 @@
               ],
               "variable": [
                 {
-                  "key": "id"
+                  "key": "id",
+                  "value": "69afc689501cf01fd9b27ba6"
                 }
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Generate Re-Token",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/admin/users/:id/re-token",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "users",
+                    ":id",
+                    "re-token"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "69afc689501cf01fd9b27ba6"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "207"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"cf-C7gWuF/njA/jdDkpbT3CTTPL8SU\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 10 Mar 2026 07:23:40 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWZjNjg5NTAxY2YwMWZkOWIyN2JhNiIsInR5cGUiOiJhY3RpdmF0ZSIsImlhdCI6MTc3MzEyNzQyMCwiZXhwIjoxNzczMTI5MjIwfQ.FLEEKlp_uoKI6EkiTOZfQutFCxyhYfoK1FBO0wG1n7o\"\n}"
+            }
+          ]
         },
         {
           "name": "Recovery Token",
@@ -355,12 +1242,82 @@
               ],
               "variable": [
                 {
-                  "key": "id"
+                  "key": "id",
+                  "value": "69afc689501cf01fd9b27ba6"
                 }
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Recovery Token",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/admin/users/:id/recovery",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "users",
+                    ":id",
+                    "recovery"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "69afc689501cf01fd9b27ba6"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "207"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"cf-4hTNmY5H1aMm7RqQWdVIMcZjXCM\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 10 Mar 2026 07:23:26 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWZjNjg5NTAxY2YwMWZkOWIyN2JhNiIsInR5cGUiOiJhY3RpdmF0ZSIsImlhdCI6MTc3MzEyNzQwNiwiZXhwIjoxNzczMTI5MjA2fQ.ux6dZDhKQSWK3BGiE7iPLgy5CCxTrDL3iGii646IG3A\"\n}"
+            }
+          ]
         },
         {
           "name": "Ban User",
@@ -380,12 +1337,82 @@
               ],
               "variable": [
                 {
-                  "key": "id"
+                  "key": "id",
+                  "value": "69afc689501cf01fd9b27ba6"
                 }
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Ban User",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/admin/users/:id/ban",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "users",
+                    ":id",
+                    "ban"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "69afc689501cf01fd9b27ba6"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "26"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"1a-kT9xstnkpeXeNfCIwKkW4wGSKFs\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 10 Mar 2026 07:22:53 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"User blocked\"\n}"
+            }
+          ]
         },
         {
           "name": "Unban User",
@@ -405,12 +1432,82 @@
               ],
               "variable": [
                 {
-                  "key": "id"
+                  "key": "id",
+                  "value": "69afc689501cf01fd9b27ba6"
                 }
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Unban User",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/admin/users/:id/unban",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "users",
+                    ":id",
+                    "unban"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "69afc689501cf01fd9b27ba6"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "28"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"1c-p3sJUPIgu6KdqbyvhTMhn44+wsc\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 10 Mar 2026 07:23:09 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"User unblocked\"\n}"
+            }
+          ]
         },
         {
           "name": "Global CRM Stats",
@@ -428,7 +1525,68 @@
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Global CRM Stats",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/admin/stats",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "stats"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "85"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"55-SxTGjwEnzZ+Qfz6RxKCfUrRf8qI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 10 Mar 2026 06:51:26 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"total\": 500,\n    \"inWork\": 11,\n    \"nullStatus\": 479,\n    \"agree\": 0,\n    \"disagree\": 2,\n    \"dubbing\": 0,\n    \"new\": 8\n}"
+            }
+          ]
         }
       ]
     }
@@ -443,10 +1601,38 @@
       }
     ]
   },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
   "variable": [
     {
       "key": "base_url",
-      "value": "http://localhost:9000/api"
+      "value": "http://localhost:5000/api"
+    },
+    {
+      "key": "refreshToken",
+      "value": ""
     }
   ]
 }

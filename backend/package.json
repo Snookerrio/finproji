@@ -4,9 +4,9 @@
   "type": "module",
   "main": "backend/server.ts",
   "scripts": {
-    "dev": "nodemon -e ts,json --exec \"node --experimental-strip-types\" backend/src/back/server.ts",
+    "dev": "../node_modules/.bin/nodemon -e ts,json --exec \"node --experimental-strip-types\" backend/src/back/server.ts",
     "start": "node dist/server.js",
-    "build": "tsc"
+    "build": "../node_modules/.bin/tsc"
   },
   "author": "",
   "license": "ISC",

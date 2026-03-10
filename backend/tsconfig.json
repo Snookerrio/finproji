@@ -11,7 +11,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "skipLibCheck": true,
-    "baseUrl": ".",
+    "baseUrl": "..",
     "paths": {
       "*": ["node_modules/*"]
     }
@@ -24,7 +24,7 @@
     "backend/src/back/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
+    "../node_modules",
     "dist",
     "frontend"
   ]

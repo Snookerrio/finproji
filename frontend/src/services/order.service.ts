@@ -27,11 +27,23 @@ export const OrderService = {
     },
 
     async exportExcel(filters: IFilters): Promise<Blob> {
-        const { data } = await api.get('/orders/export', {
-            params: filters,
-            responseType: 'blob'
-        });
-        return data;
+        try {
+
+            const response = await api.get('/orders/export', {
+                params: filters,
+                responseType: 'blob',
+
+                headers: {
+                    'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                }
+            });
+
+
+            return response.data;
+        } catch (error) {
+            console.error("Детальна помилка експорту:", error);
+            throw error;
+        }
     },
 
 

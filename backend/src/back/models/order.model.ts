@@ -1,6 +1,9 @@
 import mongoose from 'mongoose';
 
 const OrderSchema = new mongoose.Schema({
+
+    id: { type: Number, unique: true },
+
     name: { type: String, default: null },
     surname: { type: String, default: null },
     email: { type: String, default: null },
@@ -29,27 +32,34 @@ const OrderSchema = new mongoose.Schema({
     sum: { type: Number, default: null },
     alreadyPaid: { type: Number, default: null },
     group: { type: String, default: null },
-
     manager: { type: String, default: null },
-
     manager_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         default: null
     },
-
     utm: { type: String, default: null },
     msg: { type: String, default: null },
-
     comments: [{
         text: String,
         author: String,
         date: { type: Date, default: Date.now }
     }]
 }, {
-    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
+
+    timestamps: true
 });
 
+
+OrderSchema.pre('save', async function(next) {
+    if (this.isNew) {
+
+        const lastOrder = await mongoose.model('Order').findOne({}, {}, { sort: { 'id': -1 } });
+
+        this.id = lastOrder && lastOrder.id ? lastOrder.id + 1 : 1;
+    }
+    next();
+});
 
 const Order = mongoose.models.Order || mongoose.model('Order', OrderSchema);
 

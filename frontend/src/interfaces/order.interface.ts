@@ -21,6 +21,7 @@ export interface IOrder {
     created_at: string;
     utm?: string;
     msg?: string;
+    id:number;
 }
 
 
