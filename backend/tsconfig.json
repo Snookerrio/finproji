@@ -5,26 +5,23 @@
     "moduleResolution": "NodeNext",
     "outDir": "./dist",
     "rootDir": "./",
-    "allowImportingTsExtensions": false,
-    "noEmit": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "strict": false,
     "skipLibCheck": true,
-    "baseUrl": "..",
-    "paths": {
-      "*": ["node_modules/*"]
-    }
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": ["./node_modules/@types"]
   },
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node"
   },
   "include": [
-    "backend/src/back/**/*.ts"
+    "backend/src/back/**/*.ts",
+    "backend/.env"
   ],
   "exclude": [
-    "../node_modules",
+    "node_modules",
     "dist",
     "frontend"
   ]
