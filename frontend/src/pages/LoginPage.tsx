@@ -14,16 +14,15 @@ const LoginPage: React.FC = () => {
         setError('');
 
 
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-        if (!emailRegex.test(email)) {
-            setError('Please enter a valid email address (e.g. example@mail.com)');
+        if (!email.trim() || !password.trim()) {
+            setError('Please fill in all fields');
             return;
         }
 
 
-        if (password.length < 5) {
-            setError('Password must be at least 6 characters long');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setError('Please enter a valid email address');
             return;
         }
 
@@ -32,7 +31,6 @@ const LoginPage: React.FC = () => {
             navigate('/orders');
         } catch (err) {
             const axiosError = err as AxiosError<{ message: string }>;
-
             setError(axiosError.response?.data?.message || 'Invalid email or password');
         }
     };
@@ -53,14 +51,12 @@ const LoginPage: React.FC = () => {
                         <input
                             type="email"
                             placeholder="Email"
-
                             className={`w-full p-3 bg-[#f1f1f1] border-none rounded-lg outline-none transition text-sm text-gray-600 
                                 ${error.toLowerCase().includes('email')
                                 ? 'ring-2 ring-red-400'
                                 : 'focus:ring-2 focus:ring-[#7cb342]'}`}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            required
                         />
                     </div>
 
@@ -69,14 +65,12 @@ const LoginPage: React.FC = () => {
                         <input
                             type="password"
                             placeholder="Password"
-
                             className={`w-full p-3 bg-[#f1f1f1] border-none rounded-lg outline-none transition text-sm text-gray-600 
-                                ${error.toLowerCase().includes('password')
+                                ${error.toLowerCase().includes('password') || error.includes('fields')
                                 ? 'ring-2 ring-red-400'
                                 : 'focus:ring-2 focus:ring-[#7cb342]'}`}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            required
                         />
                     </div>
 

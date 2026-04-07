@@ -3,14 +3,13 @@ import { AuthService } from '../services/auth.service.js';
 
 export const login = async (req: Request, res: Response) => {
     try {
-
         const result = await AuthService.login(req.body);
         res.json(result);
     } catch (error: any) {
+
         res.status(401).json({ message: error.message });
     }
 };
-
 
 export const refresh = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -34,10 +33,16 @@ export const activateManager = async (req: Request, res: Response): Promise<void
         const result = await AuthService.activate(token, password);
         res.json(result);
     } catch (error: any) {
+
         if (error.name === 'TokenExpiredError') {
-            res.status(401).json({ message: 'Link has expired. (30 хв)' });
+            res.status(401).json({ message: 'Link has expired. (30 min)' });
             return;
         }
-        res.status(500).json({ message: 'Error: ' + error.message });
+
+
+        const status = error.status || 400;
+
+        console.error("❌ Auth Controller Error:", error.message);
+        res.status(status).json({ message: error.message });
     }
 };

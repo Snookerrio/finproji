@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
+// @ts-ignore
 import jwt from 'jsonwebtoken';
 
 interface AuthRequest extends Request {

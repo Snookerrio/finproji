@@ -1,7 +1,9 @@
 import Order from '../models/order.model.js';
+// @ts-ignore
 import ExcelJS from 'exceljs';
 
 export const OrderService = {
+
 
     buildQuery: (filters: any, userSurname: string) => {
         const query: any = {};
@@ -41,21 +43,32 @@ export const OrderService = {
 
     getAll: async (filters: any, userSurname: string) => {
         const query = OrderService.buildQuery(filters, userSurname);
-        const { page = 1, sortBy = 'id', order = 'desc' } = filters;
-        const limit = 25;
 
+
+        const {
+            page = 1,
+            sortBy = 'createdAt',
+            order = 'desc',
+            limit = 25
+        } = filters;
+
+
+        const sortField = sortBy === 'id' ? '_id' : sortBy;
+        const sortOrder = order.toString().toLowerCase() === 'asc' ? 1 : -1;
+
+        // @ts-ignore
         const data = await Order.find(query)
-            .sort({ [sortBy]: order === 'asc' ? 1 : -1 })
-            .skip((Number(page) - 1) * limit)
-            .limit(limit);
+            .sort({ [sortField]: sortOrder as any })
+            .skip((Number(page) - 1) * Number(limit))
+            .limit(Number(limit));
 
         const total = await Order.countDocuments(query);
 
         return { data, total };
     },
 
-
     update: async (id: string, updateData: any, user: any) => {
+        // @ts-ignore
         const order = await Order.findById(id);
         if (!order) throw new Error('Application not found');
 
@@ -63,33 +76,30 @@ export const OrderService = {
         const isAdmin = user.role === 'admin';
         const hasNoManager = !order.manager || order.manager === 'null' || order.manager === 'NULL';
 
-
         if (updateData.status === 'New') {
             updateData.manager = null;
             updateData.manager_id = null;
         }
-
         else if (hasNoManager) {
             updateData.manager = user.surname;
             updateData.manager_id = user._id;
-
 
             if (!updateData.status || updateData.status === 'New' || !order.status || order.status === 'New') {
                 updateData.status = 'In work';
             }
         }
-
         else if (!isOwner && !isAdmin) {
             const error: any = new Error('Forbidden: You cannot edit this application');
             error.status = 403;
             throw error;
         }
 
+        // @ts-ignore
         return Order.findByIdAndUpdate(id, updateData, { new: true });
     },
 
-
     addComment: async (id: string, text: string, user: any) => {
+        // @ts-ignore
         const order = await Order.findById(id);
         if (!order) throw new Error('Application not found');
 
@@ -109,7 +119,6 @@ export const OrderService = {
         return order.save();
     },
 
-
     getStats: async () => {
         const [total, inWork, allNull, agree, disagree, dubbing, newOrders] = await Promise.all([
             Order.countDocuments(),
@@ -128,11 +137,18 @@ export const OrderService = {
     generateExcel: async (filters: any, userSurname: string) => {
         try {
             const query = OrderService.buildQuery(filters, userSurname);
-            const orders = await Order.find(query).sort({ createdAt: -1 }).lean();
 
+
+            const { sortBy = 'createdAt', order = 'desc' } = filters;
+            const sortField = sortBy === 'id' ? '_id' : sortBy;
+            const sortOrder = order.toString().toLowerCase() === 'asc' ? 1 : -1;
+
+            // @ts-ignore
+            const orders = await Order.find(query)
+                .sort({ [sortField]: sortOrder as any })
+                .lean();
 
             const WorkbookClass: any = (ExcelJS as any).Workbook || (ExcelJS as any).default?.Workbook;
-
             if (!WorkbookClass) {
                 throw new Error("Could not find ExcelJS Workbook constructor");
             }
@@ -154,7 +170,7 @@ export const OrderService = {
 
             orders.forEach((order: any, index: number) => {
                 worksheet.addRow({
-                    display_id: orders.length - index,
+                    display_id: index + 1,
                     name: order.name || '—',
                     surname: order.surname || '—',
                     email: order.email || '—',
@@ -166,7 +182,7 @@ export const OrderService = {
                 });
             });
 
-            // @ts-ignore
+
             worksheet.getRow(1).eachCell((cell) => {
                 cell.font = { bold: true, color: { argb: 'FFFFFF' } };
                 cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '4CAF50' } };

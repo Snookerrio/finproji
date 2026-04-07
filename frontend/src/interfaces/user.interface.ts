@@ -2,7 +2,7 @@ export interface IUserStats {
     total: number;
     agree: number;
     inWork: number;
-    disagree: number; // Додаємо це поле
+    disagree: number;
     new: number;
 }
 

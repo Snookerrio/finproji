@@ -14,18 +14,20 @@ export const getAllManagers = async (req: Request, res: Response) => {
 
 export const createManager = async (req: Request, res: Response) => {
     try {
+
         const newManager = await AdminService.createManager(req.body);
         res.status(201).json(newManager);
     } catch (error: any) {
-        const status = error.message === 'User already exists' ? 400 : 500;
+
+        const status = error.message.includes('exists') ? 400 : 500;
         res.status(status).json({ message: error.message });
     }
 };
 
-
 export const createActivationToken = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
+        // @ts-ignore
         const user = await User.findById(id);
 
         if (!user) {
@@ -34,12 +36,10 @@ export const createActivationToken = async (req: Request, res: Response) => {
         }
 
         let token;
-
         if (user.is_active) {
-            token = AdminService.generateRecoveryToken(id);
+            token = await AdminService.generateRecoveryToken(id);
         } else {
-
-            token = AdminService.generateActivationToken(id);
+            token = await AdminService.generateActivationToken(id);
         }
 
         res.json({ token });

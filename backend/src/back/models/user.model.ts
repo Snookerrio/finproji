@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+// @ts-ignore
 import bcrypt from 'bcrypt';
 
 export interface IUser extends Document {
@@ -10,6 +11,7 @@ export interface IUser extends Document {
     is_active: boolean;
     is_banned: boolean;
     last_login: Date | null;
+    action_token: string | null;
     comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -18,10 +20,11 @@ const UserSchema: Schema = new Schema({
     password: { type: String, required: false },
     name: { type: String, required: true },
     surname: { type: String, required: true },
-    role: { type: String, enum: ['admin', 'manager'], default: 'manager' }, //
+    role: { type: String, enum: ['admin', 'manager'], default: 'manager' },
     is_active: { type: Boolean, default: false },
     is_banned: { type: Boolean, default: false },
-    last_login: { type: Date, default: null }
+    last_login: { type: Date, default: null },
+    action_token: { type: String, default: null }
 }, { timestamps: true });
 
 
@@ -32,7 +35,6 @@ UserSchema.pre<IUser>('save', async function(next) {
     }
 
     try {
-
         const salt = await bcrypt.genSalt(10);
         this.password = await bcrypt.hash(this.password, salt);
         next();
@@ -43,7 +45,6 @@ UserSchema.pre<IUser>('save', async function(next) {
 
 UserSchema.methods.comparePassword = async function(candidatePassword: string): Promise<boolean> {
     if (!this.password) return false;
-
     return await bcrypt.compare(candidatePassword, this.password);
 };
 

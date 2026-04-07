@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
+import { Eye, EyeOff } from 'lucide-react';
 
 import { AuthService } from '../services/auth.service';
-import {authValidator} from "../../../backend/src/back/validators/auth.validator.ts";
-
-
+import { authValidator } from "../../../backend/src/back/validators/auth.validator.ts";
 
 const ActivatePage: React.FC = () => {
     const { token } = useParams<{ token: string }>();
@@ -15,19 +14,21 @@ const ActivatePage: React.FC = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
     const [validationError, setValidationError] = useState<string | null>(null);
 
     const handleActivate = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
         setValidationError(null);
 
-
         const passwordError = authValidator.password(password);
         if (passwordError) {
             setValidationError(passwordError);
             return;
         }
-
 
         if (password !== confirmPassword) {
             setValidationError("The passwords don't match!");
@@ -54,32 +55,70 @@ const ActivatePage: React.FC = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#8bc34a] p-4">
+
+            <style>
+                {`
+                    input::-ms-reveal,
+                    input::-ms-clear {
+                        display: none;
+                    }
+                    input::-webkit-contacts-auto-fill-button,
+                    input::-webkit-credentials-auto-fill-button {
+                        visibility: hidden;
+                        display: none !important;
+                        pointer-events: none;
+                        position: absolute;
+                        right: 0;
+                    }
+                `}
+            </style>
+
             <div className="bg-white rounded-[50px] shadow-2xl w-full max-w-[450px] p-12 py-16">
                 <form onSubmit={(e) => void handleActivate(e)} className="space-y-6">
+
+
                     <div>
                         <label className="block text-gray-700 font-bold mb-2 ml-2">Password</label>
-                        <input
-                            required
-                            type="password"
-                            placeholder="Enter password"
-                            className="w-full bg-[#f1f3f5] border-none p-4 rounded-full outline-none focus:ring-2 focus:ring-green-400 transition text-gray-600"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
+                        <div className="relative">
+                            <input
+                                required
+                                type={showPassword ? "text" : "password"}
+                                placeholder="Enter password"
+                                className="w-full bg-[#f1f3f5] border-none p-4 pr-12 rounded-full outline-none focus:ring-2 focus:ring-green-400 transition text-gray-600"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none flex items-center justify-center"
+                            >
+                                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                            </button>
+                        </div>
                     </div>
+
 
                     <div>
                         <label className="block text-gray-700 font-bold mb-2 ml-2">Confirm Password</label>
-                        <input
-                            required
-                            type="password"
-                            placeholder="Confirm Password"
-                            className="w-full bg-[#f1f3f5] border-none p-4 rounded-full outline-none focus:ring-2 focus:ring-green-400 transition text-gray-600"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                        />
+                        <div className="relative">
+                            <input
+                                required
+                                type={showConfirmPassword ? "text" : "password"}
+                                placeholder="Confirm Password"
+                                className="w-full bg-[#f1f3f5] border-none p-4 pr-12 rounded-full outline-none focus:ring-2 focus:ring-green-400 transition text-gray-600"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none flex items-center justify-center"
+                            >
+                                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                            </button>
+                        </div>
                     </div>
-
 
                     {validationError && (
                         <div className="bg-red-50 text-red-500 text-xs font-bold p-3 rounded-2xl text-center border border-red-100">

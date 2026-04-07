@@ -1,4 +1,5 @@
 import User from '../models/user.model.js';
+// @ts-ignore
 import bcrypt from 'bcrypt';
 
 
@@ -11,6 +12,7 @@ export const initAdmin = async () => {
 
 
 
+        // @ts-ignore
         await User.findOneAndUpdate(
             { email: adminEmail },
             {

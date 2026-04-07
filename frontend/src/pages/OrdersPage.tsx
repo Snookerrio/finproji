@@ -25,13 +25,12 @@ const OrdersPage: React.FC = () => {
 
     const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
     const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
-
-
     const [commentTexts, setCommentTexts] = useState<Record<string, string>>({});
+
 
     const initialFilters = useMemo((): IFilters => ({
         page: Number(searchParams.get('page')) || 1,
-        sortBy: searchParams.get('sortBy') || 'id',
+        sortBy: searchParams.get('sortBy') || 'createdAt',
         order: (searchParams.get('order') as 'asc' | 'desc') || 'desc',
         name: searchParams.get('name') || '',
         surname: searchParams.get('surname') || '',
@@ -53,6 +52,7 @@ const OrdersPage: React.FC = () => {
     const limit = 25;
     const totalPages = Math.ceil(total / limit) || 1;
 
+
     useEffect(() => {
         const params: Record<string, string> = {};
         Object.entries(filters).forEach(([key, value]) => {
@@ -68,19 +68,27 @@ const OrdersPage: React.FC = () => {
     const userRole = storedUser?.role || "manager";
     const currentUserSurname = storedUser?.surname || "Unknown";
 
+
     const handleSort = (column: string) => {
-        const isAsc = filters.sortBy === column && filters.order === 'asc';
+
+
+        const isCurrentField = filters.sortBy === column;
+        const newOrder = isCurrentField && filters.order === 'asc' ? 'desc' : 'asc';
+
         setFilters({
             ...filters,
-            sortBy: 'id',
-            order: isAsc ? 'desc' : 'asc',
+            sortBy: column,
+            order: newOrder,
             page: 1
         });
     };
 
+
     const renderSortIcon = (column: string) => {
-        if (filters.sortBy !== column) return <span className="text-gray-400 opacity-30 ml-1">↕</span>;
-        return filters.order === 'asc' ? <span className="ml-1">↑</span> : <span className="ml-1">↓</span>;
+        if (filters.sortBy !== column) return <span className="text-gray-400 opacity-40 ml-1 text-[10px]">↕</span>;
+        return filters.order === 'asc'
+            ? <span className="ml-1 text-white font-black text-[12px]">↑</span>
+            : <span className="ml-1 text-white font-black text-[12px]">↓</span>;
     };
 
     const handleReset = () => setFilters({
@@ -104,7 +112,7 @@ const OrdersPage: React.FC = () => {
             window.URL.revokeObjectURL(url);
         } catch (error) {
             console.error("Excel export failed", error);
-            alert("Помилка експорту Excel. Перевірте консоль розробника.");
+            alert("Excel export error.");
         }
     };
 
@@ -116,7 +124,6 @@ const OrdersPage: React.FC = () => {
             await fetchData();
         } catch (error) {
             console.error("Error adding comment", error);
-            alert("Не вдалося додати коментар");
         }
     };
 
@@ -128,23 +135,9 @@ const OrdersPage: React.FC = () => {
         } else {
             const leftSiblingIndex = Math.max(filters.page - siblingCount, 1);
             const rightSiblingIndex = Math.min(filters.page + siblingCount, totalPages);
-            const showLeftDots = leftSiblingIndex > 2;
-            const showRightDots = rightSiblingIndex < totalPages - 2;
-            if (!showLeftDots && showRightDots) {
-                for (let i = 1; i <= 5; i++) items.push(i);
-                items.push('...');
-                items.push(totalPages);
-            } else if (showLeftDots && !showRightDots) {
-                items.push(1);
-                items.push('...');
-                for (let i = totalPages - 4; i <= totalPages; i++) items.push(i);
-            } else {
-                items.push(1);
-                items.push('...');
-                for (let i = leftSiblingIndex; i <= rightSiblingIndex; i++) items.push(i);
-                items.push('...');
-                items.push(totalPages);
-            }
+            if (leftSiblingIndex > 2) { items.push(1); items.push('...'); }
+            for (let i = leftSiblingIndex; i <= rightSiblingIndex; i++) items.push(i);
+            if (rightSiblingIndex < totalPages - 1) { items.push('...'); items.push(totalPages); }
         }
         return items;
     };
@@ -174,9 +167,9 @@ const OrdersPage: React.FC = () => {
                     COURSE_TYPES={COURSE_TYPES} STATUSES={STATUSES}
                 />
 
-                <div className="overflow-x-auto shadow-md rounded-lg border border-gray-200">
+                <div className="overflow-x-auto shadow-md rounded-lg border border-gray-200 mt-4">
                     <table className="w-full text-left border-collapse text-[11px] min-w-[1700px]">
-                        <thead className="bg-[#8bc34a] text-white uppercase font-bold">
+                        <thead className="bg-[#8bc34a] text-white uppercase font-bold select-none">
                         <tr>
                             <th className="p-2 border border-white/20 cursor-pointer hover:bg-green-600 transition text-center" onClick={() => handleSort('id')}>id {renderSortIcon('id')}</th>
                             <th className="p-2 border border-white/20 cursor-pointer hover:bg-green-600 transition" onClick={() => handleSort('name')}>name {renderSortIcon('name')}</th>
@@ -185,8 +178,8 @@ const OrdersPage: React.FC = () => {
                             <th className="p-2 border border-white/20">phone</th>
                             <th className="p-2 border border-white/20 cursor-pointer hover:bg-green-600 transition" onClick={() => handleSort('age')}>age {renderSortIcon('age')}</th>
                             <th className="p-2 border border-white/20 cursor-pointer hover:bg-green-600 transition" onClick={() => handleSort('course')}>course {renderSortIcon('course')}</th>
-                            <th className="p-2 border border-white/20">course_format</th>
-                            <th className="p-2 border border-white/20">course_type</th>
+                            <th className="p-2 border border-white/20 cursor-pointer hover:bg-green-600 transition" onClick={() => handleSort('course_format')}>format {renderSortIcon('course_format')}</th>
+                            <th className="p-2 border border-white/20 cursor-pointer hover:bg-green-600 transition" onClick={() => handleSort('course_type')}>type {renderSortIcon('course_type')}</th>
                             <th className="p-2 border border-white/20 text-center cursor-pointer hover:bg-green-600 transition" onClick={() => handleSort('status')}>status {renderSortIcon('status')}</th>
                             <th className="p-2 border border-white/20 text-center">sum</th>
                             <th className="p-2 border border-white/20 text-center">alreadyPaid</th>
@@ -196,27 +189,25 @@ const OrdersPage: React.FC = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {orders.map((order) => {
-
-                            return (
-                                <OrderRow
-                                    key={order._id}
-                                    order={order}
-                                    idx={order.id}
-                                    filtersPage={filters.page}
-                                    currentUserSurname={currentUserSurname}
-                                    isExpanded={expandedOrderId === order._id}
-                                    onToggleExpand={() => setExpandedOrderId(expandedOrderId === order._id ? null : order._id)}
-                                    onCommentSubmit={handleCommentSubmit}
-                                    onEdit={setSelectedOrder}
-                                    commentText={commentTexts[order._id] || ""}
-                                    setCommentText={(text) => setCommentTexts(prev => ({ ...prev, [order._id]: text }))}
-                                />
-                            );
-                        })}
+                        {orders.map((order) => (
+                            <OrderRow
+                                key={order._id}
+                                order={order}
+                                idx={order.id}
+                                filtersPage={filters.page}
+                                currentUserSurname={currentUserSurname}
+                                isExpanded={expandedOrderId === order._id}
+                                onToggleExpand={() => setExpandedOrderId(expandedOrderId === order._id ? null : order._id)}
+                                onCommentSubmit={handleCommentSubmit}
+                                onEdit={setSelectedOrder}
+                                commentText={commentTexts[order._id] || ""}
+                                setCommentText={(text) => setCommentTexts(prev => ({ ...prev, [order._id]: text }))}
+                            />
+                        ))}
                         </tbody>
                     </table>
                 </div>
+
 
                 <div className="mt-8 mb-10 flex justify-center items-center gap-2">
                     <button
@@ -226,24 +217,20 @@ const OrdersPage: React.FC = () => {
                     >
                         <ChevronLeft size={20} />
                     </button>
-                    {getPaginationItems().map((item, index) => {
-                        if (item === '...') {
-                            return <span key={index} className="w-10 h-10 flex items-center justify-center text-[#8bc34a] font-bold">...</span>;
-                        }
-                        return (
-                            <button
-                                key={index}
-                                onClick={() => setFilters({ ...filters, page: Number(item) })}
-                                className={`w-10 h-10 flex items-center justify-center rounded-full text-sm font-bold transition-all shadow-md 
-                                    ${item === filters.page
-                                    ? 'bg-green-800 text-white scale-110'
-                                    : 'bg-[#8bc34a] text-white hover:bg-green-600'
-                                }`}
-                            >
-                                {item}
-                            </button>
-                        );
-                    })}
+                    {getPaginationItems().map((item, index) => (
+                        <button
+                            key={index}
+                            disabled={item === '...'}
+                            onClick={() => setFilters({ ...filters, page: Number(item) })}
+                            className={`w-10 h-10 flex items-center justify-center rounded-full text-sm font-bold transition-all shadow-md 
+                                ${item === filters.page
+                                ? 'bg-green-800 text-white scale-110'
+                                : item === '...' ? 'bg-transparent text-[#8bc34a] shadow-none cursor-default' : 'bg-[#8bc34a] text-white hover:bg-green-600'
+                            }`}
+                        >
+                            {item}
+                        </button>
+                    ))}
                     <button
                         onClick={() => setFilters({ ...filters, page: filters.page + 1 })}
                         disabled={filters.page === totalPages}

@@ -1,3 +1,4 @@
+// @ts-ignore
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 
@@ -17,18 +18,14 @@ export const AuthService = {
         return { accessToken, refreshToken };
     },
 
-
     login: async (credentials: { email: string; password: string }) => {
         const { email, password } = credentials;
 
         console.log('--- Login attempt ---');
-        console.log('Email from the front:', email);
-
-
+        // @ts-ignore
         const user = await User.findOne({ email: email.toLowerCase().trim() });
 
         if (!user) {
-            console.log('Result: User not found');
             throw new Error('Incorrect email or password');
         }
 
@@ -43,8 +40,6 @@ export const AuthService = {
         }
 
         const isMatch = await user.comparePassword(password);
-        console.log('Password check result:', isMatch);
-
         if (!isMatch) {
             throw new Error('Incorrect email or password');
         }
@@ -70,12 +65,12 @@ export const AuthService = {
         };
     },
 
-
     refresh: async (token: string) => {
         try {
             const refreshSecret = process.env.JWT_REFRESH_SECRET as string;
             const decoded: any = jwt.verify(token, refreshSecret);
 
+            // @ts-ignore
             const user = await User.findById(decoded.id);
             if (!user || user.is_banned) throw new Error('Unauthorized');
 
@@ -92,10 +87,23 @@ export const AuthService = {
 
     activate: async (token: string, password: string) => {
         const accessSecret = process.env.JWT_ACCESS_SECRET as string;
+
+
         const decoded: any = jwt.verify(token, accessSecret);
 
+
+        // @ts-ignore
         const user = await User.findById(decoded.id);
         if (!user) throw new Error('User not found');
+
+
+
+        if (!user.action_token || user.action_token !== token) {
+            const error: any = new Error('This link is invalid or has already been used.');
+            error.status = 410;
+            throw error;
+        }
+
 
         if (decoded.type === 'activate' && user.is_active) {
             const error: any = new Error('This account has already been activated.');
@@ -107,8 +115,11 @@ export const AuthService = {
         user.password = password;
         user.is_active = true;
 
+
+        user.action_token = null;
+
         await user.save();
-        console.log(`The password for ${user.email} was successfully saved and hashed by the model.`);
+        console.log(`Success: Password for ${user.email} updated. Token invalidated.`);
 
         return { message: 'Password successfully updated!' };
     }

@@ -13,22 +13,27 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 
-dotenv.config();
+dotenv.config({ path: 'backend/src/back/.env' });
+
+
+console.log('------------------------------------');
+console.log('🔑 JWT Secret Status:', process.env.JWT_ACCESS_SECRET ? '✅ LOADED' : '❌ NOT FOUND');
+console.log('------------------------------------');
 
 import authRoutes from './routes/auth.route.js';
 import orderRoutes from './routes/order.route.js';
 import adminRoutes from './routes/admin.route.js';
 import { initAdmin } from './utils/initAdmin.util.js';
 
-// @ts-ignore
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-
 const app = (express as any).default ? (express as any).default() : express();
 
+
 try {
+    // @ts-ignore
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
     const swaggerPath = path.join(__dirname, 'swagger.json');
+
     if (fs.existsSync(swaggerPath)) {
         const swaggerDocument = JSON.parse(fs.readFileSync(swaggerPath, 'utf8'));
         app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -37,6 +42,7 @@ try {
     console.error('❌ Failed to load swagger.json:', error);
 }
 
+
 app.use(cors({
     origin: ['http://localhost:5175', 'http://127.0.0.1:5175', 'http://localhost:5173', 'http://localhost:5174'],
     credentials: true,
@@ -44,18 +50,17 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-
 const jsonParser = (express as any).json ? (express as any).json() : express.json();
 app.use(jsonParser);
+
 
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
 
 const PORT = process.env.PORT || 9000;
-
-
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/crm';
+
 
 mongoose.connect(MONGO_URI)
     .then(async () => {
@@ -68,5 +73,4 @@ mongoose.connect(MONGO_URI)
     })
     .catch((err) => {
         console.error('❌ MongoDB connection error:', err);
-        console.log('💡');
     });
