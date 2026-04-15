@@ -66,7 +66,8 @@ To make testing easier, a Postman Collection is included in the project root:
 
 3. Start the development server:
     ```bash
-     npx tsx backend/src/back/server.ts
+    1. cd backend
+    2. npm run dev
 
 
 ### Frontend Setup (in new terminal window)

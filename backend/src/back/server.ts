@@ -13,8 +13,16 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 
-dotenv.config({ path: 'backend/src/back/.env' });
+// @ts-ignore
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
+
+const backendRoot = path.join(__dirname, '..', '..');
+
+
+const envPath = path.join(backendRoot, '.env');
+dotenv.config({ path: envPath });
 
 console.log('------------------------------------');
 console.log('🔑 JWT Secret Status:', process.env.JWT_ACCESS_SECRET ? '✅ LOADED' : '❌ NOT FOUND');
@@ -27,21 +35,21 @@ import { initAdmin } from './utils/initAdmin.util.js';
 
 const app = (express as any).default ? (express as any).default() : express();
 
-
+// 🛠 2. ПІДКЛЮЧЕННЯ SWAGGER
 try {
-    // @ts-ignore
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-    const swaggerPath = path.join(__dirname, 'swagger.json');
+    // Шукаємо swagger.json у папці backend
+    const swaggerPath = path.join(backendRoot, 'swagger.json');
 
     if (fs.existsSync(swaggerPath)) {
         const swaggerDocument = JSON.parse(fs.readFileSync(swaggerPath, 'utf8'));
         app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+        console.log('📄 Swagger UI: http://localhost:' + (process.env.PORT || 9000) + '/api-docs');
+    } else {
+        console.warn('⚠️ Swagger file not found at:', swaggerPath);
     }
 } catch (error) {
     console.error('❌ Failed to load swagger.json:', error);
 }
-
 
 app.use(cors({
     origin: ['http://localhost:5175', 'http://127.0.0.1:5175', 'http://localhost:5173', 'http://localhost:5174'],
@@ -53,7 +61,6 @@ app.use(cors({
 const jsonParser = (express as any).json ? (express as any).json() : express.json();
 app.use(jsonParser);
 
-
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
@@ -61,14 +68,12 @@ app.use('/api/admin', adminRoutes);
 const PORT = process.env.PORT || 9000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/crm';
 
-
 mongoose.connect(MONGO_URI)
     .then(async () => {
         console.log('✅ Connected to MongoDB');
         await initAdmin();
         app.listen(Number(PORT), '0.0.0.0', () => {
             console.log(`🚀 Server is running on http://localhost:${PORT}`);
-            console.log(`📄 Documentation available at http://localhost:${PORT}/api-docs`);
         });
     })
     .catch((err) => {
