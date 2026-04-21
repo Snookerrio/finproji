@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { X, Plus, List } from 'lucide-react';
 import { OrderService } from '../../services/order.service';
 import type { IOrder } from "../../interfaces/order.interface.ts";
-import {orderValidator} from "../../../../backend/src/back/validators/order.validator.ts";
 
 interface OrderEditModalProps {
     order: IOrder;
@@ -30,41 +29,59 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
     const [selectedOrder, setSelectedOrder] = useState<IOrder>({ ...order });
     const [isAddingGroup, setIsAddingGroup] = useState(false);
     const [newGroupName, setNewGroupName] = useState("");
-
+    const [loading, setLoading] = useState(false);
+    const [serverError, setServerError] = useState<string | null>(null);
 
     const [errors, setErrors] = useState<{ age?: string | null; price?: string | null }>({});
 
+
+    const validateFields = () => {
+        const newErrors: { age?: string | null; price?: string | null } = {};
+
+        if (selectedOrder.age !== undefined && (selectedOrder.age < 1 || selectedOrder.age > 100)) {
+            newErrors.age = "Age must be between 1 and 100";
+        }
+
+        if (Number(selectedOrder.alreadyPaid) > Number(selectedOrder.sum)) {
+            newErrors.price = "Paid amount cannot exceed total sum";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleAddGroup = async () => {
         if (!newGroupName.trim()) return;
+        setServerError(null);
         try {
             const res = await OrderService.createGroup(newGroupName);
             setGroups(prev => [...prev, res]);
             setSelectedOrder({ ...selectedOrder, group: res.name });
             setNewGroupName("");
             setIsAddingGroup(false);
-        } catch (error) {
-            alert("Error adding group");
+        } catch (error: any) {
+            setServerError(error.response?.data?.message || "Error adding group");
         }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setServerError(null);
 
 
-        const ageErr = orderValidator.age(Number(selectedOrder.age));
-        const priceErr = orderValidator.price(Number(selectedOrder.sum), Number(selectedOrder.alreadyPaid));
+        if (!validateFields()) return;
 
-        if (ageErr || priceErr) {
-            setErrors({ age: ageErr, price: priceErr });
-            return;
-        }
-
+        setLoading(true);
         try {
+
             await OrderService.update(selectedOrder._id, selectedOrder);
             onRefresh();
             onClose();
-        } catch (error) {
-            alert("Error saving order");
+        } catch (error: any) {
+
+            setServerError(error.response?.data?.message || "Error saving order");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -75,9 +92,16 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
                     <X size={32} />
                 </button>
 
-                <h2 className="text-2xl font-black uppercase text-gray-800 mb-10 border-b pb-4 tracking-tighter">
+                <h2 className="text-2xl font-black uppercase text-gray-800 mb-6 border-b pb-4 tracking-tighter">
                     Profile details
                 </h2>
+
+
+                {serverError && (
+                    <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-xs font-bold rounded-r-lg animate-pulse">
+                        ⚠️ {serverError}
+                    </div>
+                )}
 
                 <form onSubmit={(e) => void handleSubmit(e)} className="space-y-8">
                     <div className="grid grid-cols-2 gap-x-12 gap-y-6 text-[11px] font-bold">
@@ -232,7 +256,6 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
                             </select>
                         </div>
 
-
                         <div className="space-y-1">
                             <label className="text-gray-400 uppercase ml-2">Age</label>
                             <input
@@ -242,7 +265,6 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
                                 onChange={e => {
                                     const val = Math.abs(parseInt(e.target.value, 10));
                                     setSelectedOrder({ ...selectedOrder, age: isNaN(val) ? 0 : val });
-
                                     if (errors.age) setErrors({...errors, age: null});
                                 }}
                             />
@@ -260,9 +282,10 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
                         </button>
                         <button
                             type="submit"
-                            className="px-12 py-3 bg-[#4caf50] text-white rounded-2xl font-black uppercase text-[10px] hover:bg-green-700 transition-all shadow-md active:translate-y-1"
+                            disabled={loading}
+                            className="px-12 py-3 bg-[#4caf50] text-white rounded-2xl font-black uppercase text-[10px] hover:bg-green-700 transition-all shadow-md active:translate-y-1 disabled:opacity-50"
                         >
-                            SUBMIT
+                            {loading ? 'SAVING...' : 'SUBMIT'}
                         </button>
                     </div>
                 </form>

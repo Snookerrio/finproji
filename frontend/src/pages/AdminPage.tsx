@@ -1,28 +1,33 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { LogOut, Settings, X, ChevronLeft, ChevronRight,} from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { LogOut, Settings, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { AdminService } from '../services/admin.service';
 import { AuthService } from '../services/auth.service';
 
 import type { IUser } from "../interfaces/user.interface.ts";
 import type { IStats } from "../interfaces/stats.interface.ts";
+
+
 import { managerValidator } from "../../../backend/src/back/validators/manager.validator.ts";
+import { authValidator } from "../../../backend/src/back/validators/auth.validator.ts";
 
 const AdminPage: React.FC = () => {
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+
+    const page = parseInt(searchParams.get('page') || '1');
 
     const [users, setUsers] = useState<IUser[]>([]);
     const [stats, setStats] = useState<IStats | null>(null);
+    const [totalPages, setTotalPages] = useState(1);
 
     const [showCreate, setShowCreate] = useState(false);
     const [newUser, setNewUser] = useState({ email: '', name: '', surname: '' });
     const [validationError, setValidationError] = useState<string | null>(null);
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-
-
     const [myId, setMyId] = useState<string | null>(null);
+
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
@@ -36,6 +41,7 @@ const AdminPage: React.FC = () => {
         }
     }, []);
 
+
     const fetchData = useCallback(async (): Promise<void> => {
         try {
             const [userData, statsData] = await Promise.all([
@@ -45,8 +51,8 @@ const AdminPage: React.FC = () => {
             setUsers(userData.users || []);
             setTotalPages(userData.totalPages || 1);
             setStats(statsData);
-        } catch {
-            console.error("Error loading admin panel");
+        } catch (error) {
+            console.error("Error loading admin panel:", error);
         }
     }, [page]);
 
@@ -54,13 +60,22 @@ const AdminPage: React.FC = () => {
         void fetchData();
     }, [fetchData]);
 
+    const handlePageChange = (newPage: number) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            setSearchParams({ page: newPage.toString() });
+        }
+    };
+
     const handleCreate = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
         setValidationError(null);
 
+
+        const emailErr = authValidator.email(newUser.email);
         const nameErr = managerValidator.name(newUser.name);
         const surnameErr = managerValidator.name(newUser.surname);
 
+        if (emailErr) { setValidationError(emailErr); return; }
         if (nameErr) { setValidationError(`Name: ${nameErr}`); return; }
         if (surnameErr) { setValidationError(`Surname: ${surnameErr}`); return; }
 
@@ -68,9 +83,10 @@ const AdminPage: React.FC = () => {
             await AdminService.createManager(newUser);
             setShowCreate(false);
             setNewUser({ email: '', name: '', surname: '' });
-            setPage(1);
+            setSearchParams({ page: '1' });
             await fetchData();
         } catch (err: any) {
+
             setValidationError(err.response?.data?.message || "Error creating manager");
         }
     };
@@ -81,7 +97,7 @@ const AdminPage: React.FC = () => {
             if (token) {
                 const link = `${window.location.origin}/activate/${token}`;
                 await navigator.clipboard.writeText(link);
-                alert(`${actionType === 'activate' ? 'Activation' : 'Recovery'} copied!`);
+                alert(`${actionType === 'activate' ? 'Activation' : 'Recovery'} link copied!`);
             }
         } catch {
             alert("Link generation error");
@@ -139,10 +155,11 @@ const AdminPage: React.FC = () => {
             </header>
 
             <main className="p-4 max-w-5xl mx-auto">
+
                 {stats && (
                     <div className="text-center mb-6 text-[12px] text-gray-800 leading-tight">
                         <p className="font-bold mb-1 uppercase text-gray-400">Orders statistic</p>
-                        <div className="flex justify-center gap-3 flex-wrap bg-gray-50 py-3 rounded-2xl border border-gray-100">
+                        <div className="flex justify-center gap-3 flex-wrap bg-gray-50 py-3 rounded-2xl border border-gray-100 shadow-sm">
                             <span>total: <b className="text-blue-600">{stats.total}</b></span>
                             <span>In work: <b className="text-orange-500">{stats.inWork}</b></span>
                             <span>Agree: <b className="text-green-600">{stats.agree}</b></span>
@@ -159,10 +176,11 @@ const AdminPage: React.FC = () => {
                     + Create Manager
                 </button>
 
+
                 <div className="space-y-4">
-                    {users.map((user) => (
+                    {users.map((user: any) => (
                         <div key={user._id} className={`border rounded-2xl p-5 flex justify-between items-start bg-white shadow-sm hover:shadow-md transition ${user._id === myId ? 'border-blue-400 bg-blue-50/30' : 'border-green-500/30'}`}>
-                            <div className="text-[12px] leading-relaxed space-y-1 text-gray-800 w-2/3">
+                            <div className="text-[12px] leading-relaxed space-y-1 text-gray-800 w-full pr-4">
                                 <p className="text-gray-400 text-[10px] mb-1">
                                     ID: {user._id.toString().slice(-8)}
                                     {user._id === myId && <span className="ml-2 text-blue-600 font-black uppercase">[ YOU ]</span>}
@@ -173,9 +191,36 @@ const AdminPage: React.FC = () => {
                                 </div>
                                 <p><b>Email:</b> <span className="text-gray-600">{user.email}</span></p>
                                 <p><b>Full Name:</b> {user.name} {user.surname}</p>
+
+
+                                {user.stats && (
+                                    <div className="flex gap-3 mt-4 pt-3 border-t border-gray-50 text-[9px] uppercase font-bold flex-wrap">
+                                        <div className="flex flex-col min-w-[50px]">
+                                            <span className="text-gray-400">Total</span>
+                                            <span className="text-blue-600 text-sm">{user.stats.total || 0}</span>
+                                        </div>
+                                        <div className="flex flex-col min-w-[50px] border-l pl-3">
+                                            <span className="text-gray-400">Agree</span>
+                                            <span className="text-green-600 text-sm">{user.stats.agree || 0}</span>
+                                        </div>
+                                        <div className="flex flex-col min-w-[50px] border-l pl-3">
+                                            <span className="text-gray-400">In work</span>
+                                            <span className="text-orange-500 text-sm">{user.stats.inWork || 0}</span>
+                                        </div>
+                                        <div className="flex flex-col min-w-[50px] border-l pl-3">
+                                            <span className="text-gray-400">Disagree</span>
+                                            <span className="text-red-500 text-sm">{user.stats.disagree || 0}</span>
+                                        </div>
+                                        <div className="flex flex-col min-w-[50px] border-l pl-3">
+                                            <span className="text-gray-400">New</span>
+                                            <span className="text-gray-900 text-sm">{user.stats.new || 0}</span>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
-                            <div className="flex flex-col gap-2 w-28">
+
+                            <div className="flex flex-col gap-2 w-28 shrink-0">
                                 {user._id !== myId ? (
                                     <>
                                         {!user.is_active ? (
@@ -198,14 +243,32 @@ const AdminPage: React.FC = () => {
                     ))}
                 </div>
 
+
                 <div className="mt-12 flex justify-center items-center gap-3">
-                    <button disabled={page === 1} onClick={() => setPage(p => p - 1)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 text-gray-400 hover:bg-[#8bc34a] hover:text-white disabled:opacity-30 transition"><ChevronLeft size={20}/></button>
+                    <button
+                        disabled={page === 1}
+                        onClick={() => handlePageChange(page - 1)}
+                        className="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 text-gray-400 hover:bg-[#8bc34a] hover:text-white disabled:opacity-30 transition"
+                    >
+                        <ChevronLeft size={20}/>
+                    </button>
                     {getPaginationItems().map((item, index) => (
-                        <button key={index} disabled={item === '...'} onClick={() => setPage(Number(item))} className={`w-10 h-10 flex items-center justify-center rounded-xl text-sm font-bold transition ${item === page ? 'bg-[#4caf50] text-white shadow-lg' : 'bg-gray-50 text-gray-400'}`}>
+                        <button
+                            key={index}
+                            disabled={item === '...'}
+                            onClick={() => typeof item === 'number' && handlePageChange(item)}
+                            className={`w-10 h-10 flex items-center justify-center rounded-xl text-sm font-bold transition ${item === page ? 'bg-[#4caf50] text-white shadow-lg' : 'bg-gray-50 text-gray-400'}`}
+                        >
                             {item}
                         </button>
                     ))}
-                    <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 text-gray-400 hover:bg-[#8bc34a] hover:text-white disabled:opacity-30 transition"><ChevronRight size={20}/></button>
+                    <button
+                        disabled={page === totalPages}
+                        onClick={() => handlePageChange(page + 1)}
+                        className="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 text-gray-400 hover:bg-[#8bc34a] hover:text-white disabled:opacity-30 transition"
+                    >
+                        <ChevronRight size={20}/>
+                    </button>
                 </div>
             </main>
 
@@ -215,10 +278,9 @@ const AdminPage: React.FC = () => {
                     <div className="bg-white rounded-[40px] shadow-2xl w-full max-w-md p-10 relative border-t-[12px] border-[#8bc34a]">
                         <button onClick={() => setShowCreate(false)} className="absolute top-6 right-6 text-gray-300 hover:text-gray-500 transition"><X size={28}/></button>
                         <h2 className="text-3xl font-black text-gray-800 mb-2 uppercase tracking-tighter">New Manager</h2>
-                        <p className="text-gray-400 text-xs mb-8">Fill in the details to create a new team member</p>
 
                         {validationError && (
-                            <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-xs font-bold rounded-r-lg">
+                            <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-xs font-bold rounded-r-lg animate-shake">
                                 ⚠️ {validationError}
                             </div>
                         )}
@@ -226,7 +288,8 @@ const AdminPage: React.FC = () => {
                         <form onSubmit={(e) => void handleCreate(e)} className="space-y-4">
                             <div>
                                 <label className="text-[10px] font-black text-gray-400 uppercase ml-2 mb-1 block">Email Address</label>
-                                <input required type="email" placeholder="manager@gmail.com" className="w-full bg-gray-50 border-2 border-gray-100 p-4 rounded-2xl outline-none focus:border-green-400 transition"
+                                <input required type="email" placeholder="manager@gmail.com"
+                                       className="w-full bg-gray-50 border-2 border-gray-100 p-4 rounded-2xl outline-none focus:border-green-400 transition"
                                        value={newUser.email} onChange={e => setNewUser({...newUser, email: e.target.value})} />
                             </div>
                             <div className="grid grid-cols-2 gap-4">

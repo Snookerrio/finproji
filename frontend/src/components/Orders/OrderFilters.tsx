@@ -1,13 +1,12 @@
 import React from 'react';
 import { RotateCcw, FileSpreadsheet } from 'lucide-react';
-import type {IGroup} from "../../interfaces/group.interface.ts";
-import type {IFilters} from "../../interfaces/filters.interface.ts";
-
-
+import type { IGroup } from "../../interfaces/group.interface.ts";
+import type { IFilters } from "../../interfaces/filters.interface.ts";
 
 interface OrderFiltersProps {
     filters: IFilters;
-    setFilters: (f: IFilters) => void;
+
+    setFilters: (f: Partial<IFilters>) => void;
     handleReset: () => void;
     handleExportExcel: () => void;
 
@@ -31,8 +30,9 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({
                                                    }) => {
 
 
+
     const updateFilter = (key: keyof IFilters, value: string | boolean | number) => {
-        setFilters({ ...filters, [key]: value, page: 1 });
+        setFilters({ [key]: value });
     };
 
     return (
@@ -42,37 +42,37 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({
                 <input
                     placeholder="Name"
                     className="p-1 border rounded text-xs flex-1 min-w-[120px]"
-                    value={filters.name}
+                    value={filters.name || ''} // Додав || '', щоб не було помилок uncontrolled input
                     onChange={e => updateFilter('name', e.target.value)}
                 />
                 <input
                     placeholder="Surname"
                     className="p-1 border rounded text-xs flex-1 min-w-[120px]"
-                    value={filters.surname}
+                    value={filters.surname || ''}
                     onChange={e => updateFilter('surname', e.target.value)}
                 />
                 <input
                     placeholder="Email"
                     className="p-1 border rounded text-xs flex-1 min-w-[120px]"
-                    value={filters.email}
+                    value={filters.email || ''}
                     onChange={e => updateFilter('email', e.target.value)}
                 />
                 <input
                     placeholder="Phone"
                     className="p-1 border rounded text-xs flex-1 min-w-[120px]"
-                    value={filters.phone}
+                    value={filters.phone || ''}
                     onChange={e => updateFilter('phone', e.target.value)}
                 />
                 <input
                     placeholder="Age"
                     className="p-1 border rounded text-xs w-20"
-                    value={filters.age}
+                    value={filters.age || ''}
                     onChange={e => updateFilter('age', e.target.value)}
                 />
 
                 <select
                     className="p-1 border rounded text-xs bg-white w-40"
-                    value={filters.course}
+                    value={filters.course || ''}
                     onChange={e => updateFilter('course', e.target.value)}
                 >
                     <option value="">all courses</option>
@@ -83,7 +83,7 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({
                     <label className="text-xs flex items-center gap-1 cursor-pointer font-bold">
                         <input
                             type="checkbox"
-                            checked={filters.my}
+                            checked={!!filters.my}
                             onChange={e => updateFilter('my', e.target.checked)}
                         /> My
                     </label>
@@ -110,7 +110,7 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({
             <div className="flex flex-wrap gap-2">
                 <select
                     className="p-1 border rounded text-xs bg-white flex-1"
-                    value={filters.course_format}
+                    value={filters.course_format || ''}
                     onChange={e => updateFilter('course_format', e.target.value)}
                 >
                     <option value="">all formats</option>
@@ -119,7 +119,7 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({
 
                 <select
                     className="p-1 border rounded text-xs bg-white flex-1"
-                    value={filters.course_type}
+                    value={filters.course_type || ''}
                     onChange={e => updateFilter('course_type', e.target.value)}
                 >
                     <option value="">all types</option>
@@ -128,7 +128,7 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({
 
                 <select
                     className="p-1 border rounded text-xs bg-white flex-1"
-                    value={filters.status}
+                    value={filters.status || ''}
                     onChange={e => updateFilter('status', e.target.value)}
                 >
                     <option value="">all statuses</option>
@@ -137,7 +137,7 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({
 
                 <select
                     className="p-1 border rounded text-xs bg-white flex-1"
-                    value={filters.group}
+                    value={filters.group || ''}
                     onChange={e => updateFilter('group', e.target.value)}
                 >
                     <option value="">all groups</option>
@@ -147,13 +147,13 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({
                 <input
                     type="date"
                     className="p-1 border rounded text-xs flex-1"
-                    value={filters.start_date}
+                    value={filters.start_date || ''}
                     onChange={e => updateFilter('start_date', e.target.value)}
                 />
                 <input
                     type="date"
                     className="p-1 border rounded text-xs flex-1"
-                    value={filters.end_date}
+                    value={filters.end_date || ''}
                     onChange={e => updateFilter('end_date', e.target.value)}
                 />
             </div>

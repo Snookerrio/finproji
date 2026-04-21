@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, {  useState, useMemo, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Settings, LogOut, ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -12,7 +12,7 @@ import OrderEditModal from '../components/Orders/OrderEditModal';
 
 import type { IOrder } from "../interfaces/order.interface.ts";
 import type { IFilters } from "../interfaces/filters.interface.ts";
-import type { IUser } from "../interfaces/user.interface.ts";
+
 
 const STATUSES = ["New", "In work", "Agree", "Disagree", "Dubbing"];
 const COURSES = ["FS", "QACX", "JCX", "JSCX", "FE", "PCX"];
@@ -28,7 +28,7 @@ const OrdersPage: React.FC = () => {
     const [commentTexts, setCommentTexts] = useState<Record<string, string>>({});
 
 
-    const initialFilters = useMemo((): IFilters => ({
+    const filters = useMemo((): IFilters => ({
         page: Number(searchParams.get('page')) || 1,
         sortBy: searchParams.get('sortBy') || 'createdAt',
         order: (searchParams.get('order') as 'asc' | 'desc') || 'desc',
@@ -47,40 +47,44 @@ const OrdersPage: React.FC = () => {
         my: searchParams.get('my') === 'true'
     }), [searchParams]);
 
-    const { orders, total, groups, setGroups, filters, setFilters, fetchData } = useOrders(initialFilters);
+
+    const { orders, total, groups, setGroups, fetchData } = useOrders(filters);
 
     const limit = 25;
     const totalPages = Math.ceil(total / limit) || 1;
 
 
-    useEffect(() => {
-        const params: Record<string, string> = {};
-        Object.entries(filters).forEach(([key, value]) => {
+    const updateParams = useCallback((newFilters: Partial<IFilters>) => {
+        const params = new URLSearchParams(searchParams);
+
+        Object.entries(newFilters).forEach(([key, value]) => {
             if (value !== undefined && value !== '' && value !== false && value !== null) {
-                params[key] = value.toString();
+                params.set(key, value.toString());
+            } else {
+                params.delete(key);
             }
         });
+
+
+        if (!newFilters.page && newFilters.page !== filters.page) {
+            params.set('page', '1');
+        }
+
         setSearchParams(params);
-    }, [filters, setSearchParams]);
-
-    const storedUser: IUser | null = AuthService.getCurrentUser();
-    const fullName = storedUser ? `${storedUser.name} ${storedUser.surname}` : "User";
-    const userRole = storedUser?.role || "manager";
-    const currentUserSurname = storedUser?.surname || "Unknown";
-
+    }, [searchParams, setSearchParams, filters.page]);
 
     const handleSort = (column: string) => {
-
-
         const isCurrentField = filters.sortBy === column;
         const newOrder = isCurrentField && filters.order === 'asc' ? 'desc' : 'asc';
+        updateParams({ sortBy: column, order: newOrder, page: 1 });
+    };
 
-        setFilters({
-            ...filters,
-            sortBy: column,
-            order: newOrder,
-            page: 1
-        });
+    const handleReset = () => {
+        setSearchParams({ page: '1', sortBy: 'createdAt', order: 'desc' });
+    };
+
+    const handlePageChange = (newPage: number) => {
+        updateParams({ page: newPage });
     };
 
 
@@ -91,27 +95,18 @@ const OrdersPage: React.FC = () => {
             : <span className="ml-1 text-white font-black text-[12px]">↓</span>;
     };
 
-    const handleReset = () => setFilters({
-        page: 1, sortBy: 'createdAt', order: 'desc',
-        name: '', surname: '', email: '', phone: '', age: '',
-        course: '', course_format: '', course_type: '', status: '', group: '',
-        start_date: '', end_date: '', my: false
-    });
-
     const handleExportExcel = async () => {
         try {
             const blob = await OrderService.exportExcel(filters);
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            const dateStr = new Date().toISOString().split('T')[0];
-            link.setAttribute('download', `crm_orders_${dateStr}.xlsx`);
+            link.setAttribute('download', `crm_orders_${new Date().toISOString().split('T')[0]}.xlsx`);
             document.body.appendChild(link);
             link.click();
             link.remove();
             window.URL.revokeObjectURL(url);
         } catch (error) {
-            console.error("Excel export failed", error);
             alert("Excel export error.");
         }
     };
@@ -123,7 +118,7 @@ const OrdersPage: React.FC = () => {
             setCommentTexts(prev => ({ ...prev, [order._id]: "" }));
             await fetchData();
         } catch (error) {
-            console.error("Error adding comment", error);
+            console.error(error);
         }
     };
 
@@ -141,6 +136,11 @@ const OrdersPage: React.FC = () => {
         }
         return items;
     };
+
+    const storedUser = AuthService.getCurrentUser();
+    const fullName = storedUser ? `${storedUser.name} ${storedUser.surname}` : "User";
+    const userRole = storedUser?.role || "manager";
+    const currentUserSurname = storedUser?.surname || "Unknown";
 
     return (
         <div className="min-h-screen bg-white font-sans text-gray-800">
@@ -160,11 +160,17 @@ const OrdersPage: React.FC = () => {
             </header>
 
             <main className="p-2">
+
                 <OrderFilters
-                    filters={filters} setFilters={setFilters} handleReset={handleReset}
-                    handleExportExcel={handleExportExcel} groups={groups}
-                    COURSES={COURSES} COURSE_FORMATS={COURSE_FORMATS}
-                    COURSE_TYPES={COURSE_TYPES} STATUSES={STATUSES}
+                    filters={filters}
+                    setFilters={updateParams}
+                    handleReset={handleReset}
+                    handleExportExcel={handleExportExcel}
+                    groups={groups}
+                    COURSES={COURSES}
+                    COURSE_FORMATS={COURSE_FORMATS}
+                    COURSE_TYPES={COURSE_TYPES}
+                    STATUSES={STATUSES}
                 />
 
                 <div className="overflow-x-auto shadow-md rounded-lg border border-gray-200 mt-4">
@@ -211,7 +217,7 @@ const OrdersPage: React.FC = () => {
 
                 <div className="mt-8 mb-10 flex justify-center items-center gap-2">
                     <button
-                        onClick={() => setFilters({ ...filters, page: filters.page - 1 })}
+                        onClick={() => handlePageChange(filters.page - 1)}
                         disabled={filters.page === 1}
                         className="w-10 h-10 flex items-center justify-center rounded-full bg-[#8bc34a] text-white hover:bg-green-600 disabled:opacity-30 transition shadow-md"
                     >
@@ -221,7 +227,7 @@ const OrdersPage: React.FC = () => {
                         <button
                             key={index}
                             disabled={item === '...'}
-                            onClick={() => setFilters({ ...filters, page: Number(item) })}
+                            onClick={() => typeof item === 'number' && handlePageChange(item)}
                             className={`w-10 h-10 flex items-center justify-center rounded-full text-sm font-bold transition-all shadow-md 
                                 ${item === filters.page
                                 ? 'bg-green-800 text-white scale-110'
@@ -232,7 +238,7 @@ const OrdersPage: React.FC = () => {
                         </button>
                     ))}
                     <button
-                        onClick={() => setFilters({ ...filters, page: filters.page + 1 })}
+                        onClick={() => handlePageChange(filters.page + 1)}
                         disabled={filters.page === totalPages}
                         className="w-10 h-10 flex items-center justify-center rounded-full bg-[#8bc34a] text-white hover:bg-green-600 disabled:opacity-30 transition shadow-md"
                     >
